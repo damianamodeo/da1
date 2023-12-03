@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "theocratic-software"
+  },
+  "targets": {
+    "theocratic-software": {
+      "hosting": {
+        "examples": [
+          "theocratic-software-examples"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

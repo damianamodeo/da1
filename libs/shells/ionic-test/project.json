@@ -1,0 +1,8 @@
+{
+  "name": "shell-ionic-test",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shells/ionic-test/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}

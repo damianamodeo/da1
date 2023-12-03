@@ -1,0 +1,27 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+
+    "**/.nx": true,
+    "**/node_modules": true,
+    "**/.firebase": true,
+    "**/dist": true,
+    "**/*-e2e": true,
+    
+    // "**/apps/*/.files": true,
+    // "**/apps/*/*/.files": true,
+    
+    "**/libs/*/.files": true,
+    "**/libs/*/*/.files": true,
+
+    // "**/base": true,
+    // "**/apps/**": true,
+    // "**/apps-ionic/***/.files": true,
+  },
+  "editor.inlineSuggest.showToolbar": "always"
+}

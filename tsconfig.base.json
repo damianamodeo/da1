@@ -14,7 +14,18 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@config": ["libs/config/src/index.ts"],
+      "@data-firebase": ["libs/data/firebase/src/index.ts"],
+      "@data-mapbox": ["libs/data/mapbox/src/index.ts"],
+      "@feature-firebase": ["libs/features/firebase/src/index.ts"],
+      "@feature-mapbox": ["libs/features/mapbox/src/index.ts"],
+      "@feature-react-pdf": ["libs/features/react-pdf/src/index.ts"],
+      "@shell-ionic-test": ["libs/shells/ionic-test/src/index.ts"],
+      "@ui-base": ["libs/ui/base/src/index.ts"],
+      "@ui-ion": ["libs/ui/ion/src/index.ts"],
+      "@util": ["libs/utility/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
