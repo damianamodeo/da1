@@ -7,6 +7,18 @@
       "hosting": {
         "examples": [
           "theocratic-software-examples"
+        ],
+        "orderly": [
+          "theocratic-software-orderly"
+        ],
+        "orderly-alpha": [
+          "theocratic-software-orderly-alpha"
+        ],
+        "proclaimer-alpha": [
+          "theocratic-software-proclaimer-alpha"
+        ],
+        "proclaimer": [
+          "theocratic-software-proclaimer"
         ]
       }
     }
