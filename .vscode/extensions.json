@@ -6,6 +6,13 @@
     "firsttris.vscode-jest-runner",
     "taldennis-unfoldai-chatgpt-copilot.unfoldai",
     "donjayamanne.githistory",
-    "visualstudioexptteam.vscodeintellicode"
+    "visualstudioexptteam.vscodeintellicode",
+    "chrmarti.regex",
+    "monish.regexsnippets",
+    "reliutg.visual-regex",
+    "streetsidesoftware.code-spell-checker",
+    "xabikos.javascriptsnippets",
+    "shan.code-settings-sync",
+    "johnpapa.vscode-peacock"
   ]
 }
