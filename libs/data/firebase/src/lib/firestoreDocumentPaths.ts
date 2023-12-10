@@ -29,8 +29,8 @@ export type AddressList = [
   {
     houseNumber: string;
     unitNumber: string;
-    streetName: string;
-    suburbName: string;
+    street: string;
+    suburb: string;
     lat: number;
     lng: number;
     relevance: number;

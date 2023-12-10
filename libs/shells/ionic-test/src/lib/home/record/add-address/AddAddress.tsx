@@ -200,35 +200,34 @@ export const AddAddress = (): JSX.Element => {
     existingData: DocumentData | undefined;
     documentExists: boolean;
   }): DocumentData | undefined => {
-    const { return_list, ...rest } = existingData as {
-      return_list: AddressList;
+    const { write_list, ...rest } = existingData as {
+      write_list: AddressList;
     };
-    getFirestoreDocumentSize(options);
 
     const timestamp = new Date().getTime();
     const newAddress = {
-      suburbName: state.suburb,
-      streetName: state.street,
+      suburb: state.suburb,
+      street: state.street,
       houseNumber: state.houseNumber,
       unitNumber: state.unitNumber,
       relevance: state.coords ? state.coords.relevance : 0,
       lat: state.coords ? state.coords.lat : 0,
       lng: state.coords ? state.coords.lng : 0,
-      user: localStorage.getItem('user_id') || '',
+      user: localStorage.getItem('user') || 'no_user',
       timestamp,
     };
 
-    if (return_list) {
-      return_list.push(newAddress);
-      return_list.sort((a, b) => a.timestamp - b.timestamp);
+    if (write_list) {
+      write_list.push(newAddress);
+      write_list.sort((a, b) => a.timestamp - b.timestamp);
 
-      if (return_list.length > 10000) {
-        return_list.splice(0, return_list.length - 10000);
+      if (write_list.length > 10000) {
+        write_list.splice(0, write_list.length - 10000);
       }
-      return { return_list, ...rest };
+      return { write_list, ...rest };
     }
 
-    return { return_list: [newAddress], ...rest };
+    return { write_list: [newAddress], ...rest };
   };
 
   const onNewSuburbSelect = (data: any) => {
@@ -429,6 +428,9 @@ export const AddAddress = (): JSX.Element => {
       </IonModal>
 
       {/* ADD NEW SUBURB MODAL */}
+
+      {/* TODO:  */}
+
       <IonModal isOpen={state.suburb === 'Add New Suburb'}>
         <Autocomplete
           title="Add Suburb"

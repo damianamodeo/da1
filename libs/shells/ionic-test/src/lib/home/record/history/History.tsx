@@ -1,23 +1,35 @@
-import { firestoreDocumentPaths, useFirestoreData } from '@data-firebase';
+import {
+  AddressList,
+  firestoreDocumentPaths,
+  useFirestoreData,
+} from '@data-firebase';
 import { IonActionSheet, IonIcon, IonItem, IonList } from '@ionic/react';
 import { trashOutline } from 'ionicons/icons';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 export const History = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const data: any = useFirestoreData({
+    path: firestoreDocumentPaths.not_at_homes,
+  });
 
-  // const data: any = useFirestoreData({
-  //   path: firestoreDocumentPaths['notAtHomes/MaitlandCongregation'],
-  // });
-
-  // const addresses = Object.values(data);
+  const addresses: AddressList | any[] = useMemo(() => {
+    const returnList = data?.return_list || [];
+    const writeList = data?.write_list || [];
+    const mergedList = [...returnList, ...writeList];
+    const sortedList = mergedList.sort(
+      (a: any, b: any) => a.timestamp - b.timestamp
+    );
+    return sortedList.filter(
+      (address: any) => address.user === localStorage.getItem('user')
+    );
+  }, [data]);
 
   return (
-    <div className=''>
-      <IonList >
-        {/* {addresses?.map((address: any, index: number) => {
+    <div className="">
+      <IonList>
+        {addresses?.map((address: any, index: number) => {
           return (
-        
             <IonItem key={`${address.id} ${index} `}>
               {address.unitNumber && `${address.unitNumber}/`}
               {address.houseNumber} {address.street}, {address.suburb}
@@ -31,7 +43,7 @@ export const History = () => {
               ></IonIcon>
             </IonItem>
           );
-        })} */}
+        })}
       </IonList>
 
       <IonActionSheet
@@ -44,13 +56,6 @@ export const History = () => {
             role: 'destructive',
             handler: () => {
               console.log('deleted');
-              setIsOpen(false);
-            },
-          },
-          {
-            text: 'Share',
-            handler: () => {
-              console.log('shared');
               setIsOpen(false);
             },
           },
