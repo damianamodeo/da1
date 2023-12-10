@@ -6,17 +6,18 @@ import { useState } from 'react';
 export const History = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const data: any = useFirestoreData({
-    path: firestoreDocumentPaths['notAtHomes/MaitlandCongregation'],
-  });
+  // const data: any = useFirestoreData({
+  //   path: firestoreDocumentPaths['notAtHomes/MaitlandCongregation'],
+  // });
 
-  const addresses = Object.values(data);
+  // const addresses = Object.values(data);
 
   return (
-    <>
-      <IonList>
-        {addresses?.map((address: any, index: number) => {
+    <div className=''>
+      <IonList >
+        {/* {addresses?.map((address: any, index: number) => {
           return (
+        
             <IonItem key={`${address.id} ${index} `}>
               {address.unitNumber && `${address.unitNumber}/`}
               {address.houseNumber} {address.street}, {address.suburb}
@@ -30,7 +31,7 @@ export const History = () => {
               ></IonIcon>
             </IonItem>
           );
-        })}
+        })} */}
       </IonList>
 
       <IonActionSheet
@@ -63,7 +64,7 @@ export const History = () => {
           },
         ]}
       ></IonActionSheet>
-    </>
+    </div>
   );
 };
 

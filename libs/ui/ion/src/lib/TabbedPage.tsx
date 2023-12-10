@@ -11,7 +11,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { ReactNode, Suspense, useState } from 'react';
-import LoadingPage from './LoadingPage';
+import LoadingSpinner from './LoadingSpinner';
 
 type TabbedPageContent = { label: string; component: ReactNode }[];
 
@@ -51,8 +51,8 @@ export const TabbedPage = ({
           </IonSegment>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <Suspense fallback={<LoadingPage></LoadingPage>}>
+      <IonContent color={"light"}>
+        <Suspense fallback={<LoadingSpinner></LoadingSpinner>}>
           <div
             style={{
               height: '100%',
@@ -101,7 +101,7 @@ export const TabbedPage = ({
                     <div
                       style={{
                         // background: 'blue',
-                        padding: '10px',
+                        // padding: '10px',
                         height: '100%',
                         overflow: 'auto',
                       }}

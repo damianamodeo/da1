@@ -8,7 +8,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { ReactNode, Suspense } from 'react';
-import LoadingPage from './LoadingPage';
+import LoadingSpinner from './LoadingSpinner';
 
 type PageProps = {
   children: ReactNode;
@@ -30,7 +30,7 @@ export const Page = ({ children, label, backButtonText }: PageProps) => {
         </IonToolbar>
       </IonHeader>
       <IonContent color="light">
-        <Suspense fallback={<LoadingPage></LoadingPage>}>{children}</Suspense>
+        <Suspense fallback={<LoadingSpinner></LoadingSpinner>}>{children}</Suspense>
       </IonContent>
     </IonPage>
   );

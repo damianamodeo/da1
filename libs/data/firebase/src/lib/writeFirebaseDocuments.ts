@@ -1,5 +1,6 @@
 import { DocumentData, doc, runTransaction } from 'firebase/firestore';
 import { FirestorePaths, fdb } from '@data-firebase';
+import { GLOBAL_VARIABLES } from '@config';
 
 type Arguments = {
   path: FirestorePaths;
@@ -13,7 +14,8 @@ type Arguments = {
 };
 
 export const writeFirebaseDoc = async ({ path, data }: Arguments) => {
-  const documentRef = doc(fdb, path);
+  const collection = localStorage.getItem('congregation') || GLOBAL_VARIABLES.CONGREGATION;
+  const documentRef = doc(fdb, collection + '/' + path);
   try {
     const writtenData: any = await runTransaction(fdb, async (transaction) => {
       const document = await transaction.get(documentRef);
