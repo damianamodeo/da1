@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "emulator-start": "firebase emulators:start --import=./local --export-on-exit --only firestore",
-    "kill 8080": "lsof -i :8080",
+    "kill 8080": "lsof -t -i tcp:8080 | xargs kill",
     "deploy-rules": "firebase deploy --only firestore:rules"
   },
   "private": true,

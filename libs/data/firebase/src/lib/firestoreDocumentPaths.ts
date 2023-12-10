@@ -33,7 +33,7 @@ export type AddressList = [
     suburbName: string;
     lat: number;
     lng: number;
-    accuracy: number;
+    relevance: number;
     user: string;
     timestamp: number;
   }

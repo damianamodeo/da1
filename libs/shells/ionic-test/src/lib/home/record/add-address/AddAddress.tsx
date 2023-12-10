@@ -1,8 +1,10 @@
 // IMPORTS
 import {
+  AddressList,
   StreetOption,
   SuburbOption,
   firestoreDocumentPaths,
+  getFirestoreDocumentSize,
   useFirestoreData,
   writeFirebaseDoc,
 } from '@data-firebase';
@@ -146,10 +148,6 @@ export const AddAddress = (): JSX.Element => {
   const options: any = useFirestoreData({
     path: firestoreDocumentPaths.not_at_homes,
   });
-  const bytes = sizeof(options);
-  // console.log(bytes > 1000 ? "I'm in awe of the size of this lad!" : 'Ew..');
-  // console.log(typeof bytes === 'number'); //true
-  console.log(bytes ); //true
 
   const suburbOptions = [
     ...(options?.suburb_options?.map((suburb: Suburb) => {
@@ -195,6 +193,44 @@ export const AddAddress = (): JSX.Element => {
     }
   };
 
+  const submitToFirestore = ({
+    existingData,
+    documentExists,
+  }: {
+    existingData: DocumentData | undefined;
+    documentExists: boolean;
+  }): DocumentData | undefined => {
+    const { return_list, ...rest } = existingData as {
+      return_list: AddressList;
+    };
+    getFirestoreDocumentSize(options);
+
+    const timestamp = new Date().getTime();
+    const newAddress = {
+      suburbName: state.suburb,
+      streetName: state.street,
+      houseNumber: state.houseNumber,
+      unitNumber: state.unitNumber,
+      relevance: state.coords ? state.coords.relevance : 0,
+      lat: state.coords ? state.coords.lat : 0,
+      lng: state.coords ? state.coords.lng : 0,
+      user: localStorage.getItem('user_id') || '',
+      timestamp,
+    };
+
+    if (return_list) {
+      return_list.push(newAddress);
+      return_list.sort((a, b) => a.timestamp - b.timestamp);
+
+      if (return_list.length > 10000) {
+        return_list.splice(0, return_list.length - 10000);
+      }
+      return { return_list, ...rest };
+    }
+
+    return { return_list: [newAddress], ...rest };
+  };
+
   const onNewSuburbSelect = (data: any) => {
     dispatch({ type: 'SET_SEARCH_STRING', payload: '' });
     dispatch({
@@ -223,15 +259,15 @@ export const AddAddress = (): JSX.Element => {
           suburb_options: SuburbOption[];
         };
 
-        const mergedSuburbOptions = [...(suburb_options || []), newSuburbOption].reduce(
-          (acc: SuburbOption[], option) => {
-            if (!acc.some((opt) => opt.name === option.name)) {
-              acc.push(option);
-            }
-            return acc;
-          },
-          []
-        );
+        const mergedSuburbOptions = [
+          ...(suburb_options || []),
+          newSuburbOption,
+        ].reduce((acc: SuburbOption[], option) => {
+          if (!acc.some((opt) => opt.name === option.name)) {
+            acc.push(option);
+          }
+          return acc;
+        }, []);
 
         const sortedSuburbOptions = mergedSuburbOptions.sort((a, b) =>
           a.name.localeCompare(b.name)
@@ -377,6 +413,17 @@ export const AddAddress = (): JSX.Element => {
               `${state.houseNumber} ` +
               `${state.street}, ` +
               `${state.suburb}`}
+            <IonButton
+              expand="block"
+              onClick={() => {
+                writeFirebaseDoc({
+                  path: firestoreDocumentPaths.not_at_homes,
+                  data: submitToFirestore,
+                });
+              }}
+            >
+              Submit
+            </IonButton>
           </div>
         </IonContent>
       </IonModal>

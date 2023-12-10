@@ -9,8 +9,9 @@
 
     "**/.nx": true,
     "**/node_modules": true,
-    // "**/.firebase": true,
+    "**/.firebase": true,
     "**/dist": true,
+    "**/local": true,
     "**/*-e2e": true,
     
     // "**/apps/*/.files": true,
