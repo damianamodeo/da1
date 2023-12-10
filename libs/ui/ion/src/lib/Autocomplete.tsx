@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   IonButton,
   IonButtons,
-  IonCheckbox,
   IonContent,
   IonHeader,
   IonItem,
@@ -28,6 +27,8 @@ interface TypeaheadProps {
   onSelectionChange?: (items: string[]) => void;
 }
 
+// TODO: Convert Autocomplee to Async component
+
 export const Autocomplete = ({
   onSelect,
   onInputChange,
@@ -50,7 +51,7 @@ export const Autocomplete = ({
         </IonToolbar>
       </IonHeader>
 
-      <IonContent color="light" class="ion-padding">
+      <IonContent class="ion-padding">
         <IonList id="modal-list" inset={true}>
           {props.items.map((item: any) => (
             <IonItem

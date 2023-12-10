@@ -72,19 +72,21 @@ type Action =
   | { type: 'ON_SUBMIT'; payload: Coords };
 
 // REDUCER
-const initialState: State = {
-  suburb: localStorage.getItem('not-at-home-suburb') || '',
-  street: localStorage.getItem('not-at-home-street') || '',
-  houseNumber: localStorage.getItem('not-at-home-houseNumber') || '',
-  unitNumber: localStorage.getItem('not-at-home-unitNumber') || '',
-  coords: {
-    lat: 0,
-    lng: 0,
-    relevance: 0,
-  },
-  modal: false,
-  loading: false,
-  searchString: '',
+const initialState = (): State => {
+  return {
+    suburb: localStorage.getItem('not-at-home-suburb') || '',
+    street: localStorage.getItem('not-at-home-street') || '',
+    houseNumber: localStorage.getItem('not-at-home-houseNumber') || '',
+    unitNumber: localStorage.getItem('not-at-home-unitNumber') || '',
+    coords: {
+      lat: 0,
+      lng: 0,
+      relevance: 0,
+    },
+    modal: false,
+    loading: false,
+    searchString: '',
+  };
 };
 
 const reducer = (state: State, action: Action): State => {
@@ -142,7 +144,7 @@ export const AddAddress = (): JSX.Element => {
   // STATE
   const [state, dispatch]: [State, React.Dispatch<Action>] = useReducer<
     Reducer<State, Action>
-  >(reducer, initialState);
+  >(reducer, initialState());
 
   // DATA
   const options: any = useFirestoreData({
@@ -193,15 +195,15 @@ export const AddAddress = (): JSX.Element => {
     }
   };
 
-  const submitToFirestore = ({
+  const writeAddressToFirestore = ({
     existingData,
     documentExists,
   }: {
     existingData: DocumentData | undefined;
     documentExists: boolean;
   }): DocumentData | undefined => {
-    const { write_list, ...rest } = existingData as {
-      write_list: AddressList;
+    const { return_list, ...rest } = existingData as {
+      return_list: AddressList;
     };
 
     const timestamp = new Date().getTime();
@@ -217,20 +219,21 @@ export const AddAddress = (): JSX.Element => {
       timestamp,
     };
 
-    if (write_list) {
-      write_list.push(newAddress);
-      write_list.sort((a, b) => a.timestamp - b.timestamp);
+    if (return_list) {
+      return_list.push(newAddress);
+      return_list.sort((a, b) => a.timestamp - b.timestamp);
 
-      if (write_list.length > 10000) {
-        write_list.splice(0, write_list.length - 10000);
+      if (return_list.length > 10000) {
+        return_list.splice(0, return_list.length - 10000);
       }
-      return { write_list, ...rest };
+      return { return_list, ...rest };
     }
 
-    return { write_list: [newAddress], ...rest };
+    return { return_list: [newAddress], ...rest };
   };
 
   const onNewSuburbSelect = (data: any) => {
+    // TODO add error handling in case writeFirebaseDoc fails
     dispatch({ type: 'SET_SEARCH_STRING', payload: '' });
     dispatch({
       type: 'SET_SUBURB',
@@ -278,6 +281,7 @@ export const AddAddress = (): JSX.Element => {
   };
 
   const onNewStreetSelect = (data: any) => {
+    // TODO add error handling in case writeFirebaseDoc fails
     dispatch({ type: 'SET_SEARCH_STRING', payload: '' });
     dispatch({ type: 'SET_STREET', payload: data.text });
     writeFirebaseDoc({
@@ -322,6 +326,7 @@ export const AddAddress = (): JSX.Element => {
     });
   };
 
+  console.log(state);
   // RENDER
   return (
     <div className="ion-padding">
@@ -348,7 +353,8 @@ export const AddAddress = (): JSX.Element => {
             dispatch({ type: 'SET_STREET', payload: text });
           }}
         ></Picker>
-
+        {/* TODO right justify input values
+         */}
         <IonItem disabled={state.street.length === 0}>
           <IonInput
             value={state.houseNumber}
@@ -399,6 +405,10 @@ export const AddAddress = (): JSX.Element => {
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
+          {/* TODO add warning if relevance is less 1
+           */}
+          {/* TODO format and style modal
+           */}
           <div className="full centered">
             {state.loading ? <LoadingSpinner></LoadingSpinner> : 'LOADED'}
             <br />
@@ -412,12 +422,17 @@ export const AddAddress = (): JSX.Element => {
               `${state.houseNumber} ` +
               `${state.street}, ` +
               `${state.suburb}`}
+            {/* TODO add option to send to letter list instead with toggle
+             */}
             <IonButton
               expand="block"
               onClick={() => {
+                // TODO add error handling in case writeFirebaseDoc fails
+                // TODO set houseNumber and unitNumber to "" if writeFirebaseDoc is successful
+                // TODO close modal on click
                 writeFirebaseDoc({
                   path: firestoreDocumentPaths.not_at_homes,
-                  data: submitToFirestore,
+                  data: writeAddressToFirestore,
                 });
               }}
             >
@@ -428,8 +443,6 @@ export const AddAddress = (): JSX.Element => {
       </IonModal>
 
       {/* ADD NEW SUBURB MODAL */}
-
-      {/* TODO:  */}
 
       <IonModal isOpen={state.suburb === 'Add New Suburb'}>
         <Autocomplete
@@ -447,7 +460,12 @@ export const AddAddress = (): JSX.Element => {
           onSelect={(data: any) => {
             onNewSuburbSelect(data);
           }}
-        ></Autocomplete>
+        >
+          {/* TODO add instructions in modal to type and hide once typing has begun
+           */}
+          {/* TODO add a confirm button to submit new suburb
+           */}
+        </Autocomplete>
       </IonModal>
 
       {/* ADD NEW STREET MODAL */}
@@ -462,7 +480,12 @@ export const AddAddress = (): JSX.Element => {
           onSelect={(data: any) => {
             onNewStreetSelect(data);
           }}
-        ></Autocomplete>
+        >
+          {/* TODO add instructions in modal to type and hide once typing has begun
+           */}
+          {/* TODO add a confirm button to submit new street
+           */}
+        </Autocomplete>
       </IonModal>
     </div>
   );
