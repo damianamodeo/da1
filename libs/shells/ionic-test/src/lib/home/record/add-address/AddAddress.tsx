@@ -25,6 +25,8 @@ import {
   IonHeader,
   IonTitle,
   IonToolbar,
+  IonLabel,
+  IonToggle,
 } from '@ionic/react';
 import { Autocomplete, LoadingSpinner, Picker } from '@ui-ion';
 import { useToggle } from '@util';
@@ -54,6 +56,7 @@ type State = {
   modal?: boolean;
   loading?: boolean;
   searchString?: string;
+  sendToLetterList?: boolean;
 };
 
 type Action =
@@ -69,7 +72,8 @@ type Action =
     }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_SEARCH_STRING'; payload: string }
-  | { type: 'ON_SUBMIT'; payload: Coords };
+  | { type: 'ON_SUBMIT'; payload: Coords }
+  | { type: 'SET_LETTER_LIST'; payload: boolean };
 
 // REDUCER
 const initialState = (): State => {
@@ -86,6 +90,7 @@ const initialState = (): State => {
     modal: false,
     loading: false,
     searchString: '',
+    sendToLetterList: false,
   };
 };
 
@@ -126,13 +131,20 @@ const reducer = (state: State, action: Action): State => {
       localStorage.setItem('not-at-home-unitNumber', action.payload);
       return { ...state, unitNumber: action.payload };
     case 'CLOSE_MODAL':
-      return { ...state, modal: false };
+      return { ...state, modal: false, sendToLetterList: false };
     case 'OPEN_MODAL':
       return { ...state, modal: true };
     case 'ON_SUBMIT':
-      return { ...state, loading: false, coords: action.payload };
+      return {
+        ...state,
+        loading: false,
+        coords: action.payload,
+        sendToLetterList: false,
+      };
     case 'SET_SEARCH_STRING':
       return { ...state, searchString: action.payload };
+    case 'SET_LETTER_LIST':
+      return { ...state, sendToLetterList: action.payload };
 
     default:
       return state;
@@ -202,8 +214,8 @@ export const AddAddress = (): JSX.Element => {
     existingData: DocumentData | undefined;
     documentExists: boolean;
   }): DocumentData | undefined => {
-    const { return_list, ...rest } = existingData as {
-      return_list: AddressList;
+    const { return_list, write_list, ...rest } = existingData as {
+      [string: string]: AddressList;
     };
 
     const timestamp = new Date().getTime();
@@ -219,17 +231,31 @@ export const AddAddress = (): JSX.Element => {
       timestamp,
     };
 
-    if (return_list) {
-      return_list.push(newAddress);
-      return_list.sort((a, b) => a.timestamp - b.timestamp);
+    const list = state.sendToLetterList ? write_list : return_list;
+    const untouchedList = !state.sendToLetterList ? write_list : return_list;
 
-      if (return_list.length > 10000) {
-        return_list.splice(0, return_list.length - 10000);
+    if (list) {
+      list.push(newAddress);
+
+      list.sort((a, b) => a.timestamp - b.timestamp);
+
+      if (list.length > 10000) {
+        list.splice(0, list.length - 10000);
       }
-      return { return_list, ...rest };
+      return {
+        [state.sendToLetterList ? 'write_list' : 'return_list']: list,
+        [state.sendToLetterList ? 'return_list' : 'write_list']:
+          untouchedList || [],
+        ...rest,
+      };
     }
 
-    return { return_list: [newAddress], ...rest };
+    return {
+      [state.sendToLetterList ? 'write_list' : 'return_list']: [newAddress],
+      [state.sendToLetterList ? 'return_list' : 'write_list']:
+        untouchedList || [],
+      ...rest,
+    };
   };
 
   const onNewSuburbSelect = (data: any) => {
@@ -326,8 +352,8 @@ export const AddAddress = (): JSX.Element => {
     });
   };
 
-  console.log(state);
   // RENDER
+  console.log(state.sendToLetterList);
   return (
     <div className="ion-padding">
       {/* SUBMIT ADDRESS FORM */}
@@ -409,36 +435,55 @@ export const AddAddress = (): JSX.Element => {
            */}
           {/* TODO format and style modal
            */}
-          <div className="full centered">
-            {state.loading ? <LoadingSpinner></LoadingSpinner> : 'LOADED'}
-            <br />
-            lat: {state.coords?.lat}
-            <br />
-            lng: {state.coords?.lng}
-            <br />
-            relevance: {state.coords?.relevance}
-            <br />
-            {`${state.unitNumber && `${state.unitNumber}/`}` +
-              `${state.houseNumber} ` +
-              `${state.street}, ` +
-              `${state.suburb}`}
-            {/* TODO add option to send to letter list instead with toggle
-             */}
-            <IonButton
-              expand="block"
-              onClick={() => {
-                // TODO add error handling in case writeFirebaseDoc fails
-                // TODO set houseNumber and unitNumber to "" if writeFirebaseDoc is successful
-                // TODO close modal on click
-                writeFirebaseDoc({
-                  path: firestoreDocumentPaths.not_at_homes,
-                  data: writeAddressToFirestore,
-                });
-              }}
-            >
-              Submit
-            </IonButton>
-          </div>
+          {state.loading ? (
+            <div className="full centered">
+              <LoadingSpinner></LoadingSpinner>
+            </div>
+          ) : (
+            <>
+              <br />
+              lat: {state.coords?.lat}
+              <br />
+              lng: {state.coords?.lng}
+              <br />
+              relevance: {state.coords?.relevance}
+              <br />
+              {`${state.unitNumber && `${state.unitNumber}/`}` +
+                `${state.houseNumber} ` +
+                `${state.street}, ` +
+                `${state.suburb}`}
+              <IonList>
+                <IonItem>
+                  Send to letter list
+                  <IonToggle
+                    slot="end"
+                    checked={state.sendToLetterList}
+                    onIonChange={(e) => {
+                      dispatch({
+                        type: 'SET_LETTER_LIST',
+                        payload: e.detail.checked,
+                      });
+                    }}
+                  ></IonToggle>
+                </IonItem>
+              </IonList>
+              <IonButton
+                expand="block"
+                onClick={() => {
+                  // TODO add error handling in case writeFirebaseDoc fails
+                  // TODO set houseNumber and unitNumber to "" if writeFirebaseDoc is successful
+                  // TODO close modal on click
+                  writeFirebaseDoc({
+                    path: firestoreDocumentPaths.not_at_homes,
+                    data: writeAddressToFirestore,
+                  });
+                  dispatch({ type: 'CLOSE_MODAL' });
+                }}
+              >
+                Submit
+              </IonButton>
+            </>
+          )}
         </IonContent>
       </IonModal>
 

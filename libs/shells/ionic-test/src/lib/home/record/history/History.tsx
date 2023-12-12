@@ -48,7 +48,7 @@ export const History = () => {
                 }}
               ></IonIcon>
               {/* TODO add icon button to end to indicate return or write list which opens option to change */}
-              {address.return && (
+              {!address.return && (
                 <IonIcon
                   icon={mailOpen}
                   color="secondary"
@@ -58,7 +58,7 @@ export const History = () => {
                   }}
                 ></IonIcon>
               )}
-              {!address.return && (
+              {address.return && (
                 <IonIcon
                   icon={arrowUndo}
                   color="tertiary"

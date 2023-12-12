@@ -27,7 +27,7 @@ interface TypeaheadProps {
   onSelectionChange?: (items: string[]) => void;
 }
 
-// TODO: Convert Autocomplee to Async component
+// TODO: Convert Autocomplee to Async component so that its otpions can be dynamic
 
 export const Autocomplete = ({
   onSelect,
