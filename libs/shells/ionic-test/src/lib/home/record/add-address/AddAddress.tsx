@@ -27,6 +27,7 @@ import {
   IonToolbar,
   IonLabel,
   IonToggle,
+  IonListHeader,
 } from '@ionic/react';
 import { Autocomplete, LoadingSpinner, Picker } from '@ui-ion';
 import { useToggle } from '@util';
@@ -131,7 +132,7 @@ const reducer = (state: State, action: Action): State => {
       localStorage.setItem('not-at-home-unitNumber', action.payload);
       return { ...state, unitNumber: action.payload };
     case 'CLOSE_MODAL':
-      return { ...state, modal: false, sendToLetterList: false };
+      return { ...state, modal: false, sendToLetterList: false, loading: true };
     case 'OPEN_MODAL':
       return { ...state, modal: true };
     case 'ON_SUBMIT':
@@ -353,11 +354,13 @@ export const AddAddress = (): JSX.Element => {
   };
 
   // RENDER
-  console.log(state.sendToLetterList);
   return (
     <div className="ion-padding">
       {/* SUBMIT ADDRESS FORM */}
       <IonList inset>
+        <IonListHeader>
+          <IonLabel>Address</IonLabel>
+        </IonListHeader>
         <Picker
           value={state.suburb}
           label="Suburb"
@@ -433,7 +436,7 @@ export const AddAddress = (): JSX.Element => {
         <IonContent className="ion-padding">
           {/* TODO add warning if relevance is less 1
            */}
-          {/* TODO format and style modal
+          {/* TODO format and style submit address modal
            */}
           {state.loading ? (
             <div className="full centered">
