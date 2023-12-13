@@ -211,6 +211,7 @@ export const History = () => {
               {/* LETTER ICON */}
               {!address.return && (
                 <IonIcon
+                  color="primary"
                   icon={mailOpenOutline}
                   slot="end"
                   onClick={() =>
@@ -229,6 +230,7 @@ export const History = () => {
               {/* RETURN ICON */}
               {address.return && (
                 <IonIcon
+                  color="primary"
                   icon={arrowUndoOutline}
                   slot="end"
                   onClick={() =>

@@ -28,6 +28,8 @@ import {
   IonLabel,
   IonToggle,
   IonListHeader,
+  IonText,
+  IonNote,
 } from '@ionic/react';
 import { Autocomplete, LoadingSpinner, Picker } from '@ui-ion';
 import { useToggle } from '@util';
@@ -413,12 +415,13 @@ export const AddAddress = (): JSX.Element => {
         </IonItem>
       </IonList>
       <IonButton
+      className='ion-padding'
         style={{ marginTop: '2rem' }}
         disabled={state.houseNumber.length === 0}
         expand="block"
         onClick={handleSubmit}
       >
-        Submit
+        Search
       </IonButton>
 
       {/* SUBMIT ADDRESS MODAL */}
@@ -436,29 +439,47 @@ export const AddAddress = (): JSX.Element => {
         <IonContent className="ion-padding">
           {/* TODO add warning if relevance is less 1
            */}
-          {/* TODO format and style submit address modal
-           */}
+          {/* TODO add notification if address submitted successfully or not */}
           {state.loading ? (
             <div className="full centered">
               <LoadingSpinner></LoadingSpinner>
             </div>
           ) : (
             <>
-              <br />
-              lat: {state.coords?.lat}
-              <br />
-              lng: {state.coords?.lng}
-              <br />
-              relevance: {state.coords?.relevance}
-              <br />
-              {`${state.unitNumber && `${state.unitNumber}/`}` +
-                `${state.houseNumber} ` +
-                `${state.street}, ` +
-                `${state.suburb}`}
-              <IonList>
+              <IonList inset className="ion-padding">
+                <IonListHeader>
+                  <IonLabel>
+                    {state.coords?.relevance === 1 ? (
+                      <IonText color="success">Match Found</IonText>
+                    ) : (
+                      <>
+                        <IonText color="warning">No Match Found</IonText>
+                      </>
+                    )}
+
+                    <IonNote>
+                      <br></br>
+                      {`${state.unitNumber && `${state.unitNumber}/`}` +
+                        `${state.houseNumber} ` +
+                        `${state.street}, ` +
+                        `${state.suburb}`}
+                    </IonNote>
+                  </IonLabel>
+                </IonListHeader>
+                {state.coords?.relevance !== 1 && (
+                  // <IonItem>
+                  <IonNote>
+                    You can submit this address but it's location on the map
+                    will be inaccurate
+                  </IonNote>
+                  // </IonItem>
+                )}
+              </IonList>
+              <IonList className="ion-padding">
                 <IonItem>
-                  Send to letter list
+                  Send to Write List
                   <IonToggle
+                    color={'success'}
                     slot="end"
                     checked={state.sendToLetterList}
                     onIonChange={(e) => {
@@ -471,6 +492,7 @@ export const AddAddress = (): JSX.Element => {
                 </IonItem>
               </IonList>
               <IonButton
+                className="ion-padding"
                 expand="block"
                 onClick={() => {
                   // TODO add error handling in case writeFirebaseDoc fails
