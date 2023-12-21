@@ -13,6 +13,8 @@
     "streetsidesoftware.code-spell-checker",
     "xabikos.javascriptsnippets",
     "shan.code-settings-sync",
-    "johnpapa.vscode-peacock"
+    "johnpapa.vscode-peacock",
+    "google.wireit",
+    "fabiospampinato.vscode-commands"
   ]
 }

@@ -5,6 +5,9 @@ import HomePage from './Home';
 const AddAddress = lazy(() => import('./record/add-address/AddAddress'));
 const History = lazy(() => import('./record/history/History'));
 
+const Map = lazy(() => import('./return/Map'));
+const List = lazy(() => import('./return/List'));
+
 const ReturnPage = lazy(() => import('./Return'));
 
 const WritePage = lazy(() => import('./Write'));
@@ -38,9 +41,20 @@ export const Record = () => {
 
 export const Return = () => {
   return (
-    <Page label="Return" backButtonText="Home">
-      <ReturnPage></ReturnPage>
-    </Page>
+    <TabbedPage
+      label="Return"
+      backButtonText="Home"
+      content={[
+        {
+          label: 'Map',
+          component: <Map></Map>,
+        },
+        {
+          label: 'List',
+          component: <List></List>,
+        },
+      ]}
+    ></TabbedPage>
   );
 };
 

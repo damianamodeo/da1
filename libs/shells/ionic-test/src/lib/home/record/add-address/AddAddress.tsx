@@ -83,8 +83,8 @@ const initialState = (): State => {
   return {
     suburb: localStorage.getItem('not-at-home-suburb') || '',
     street: localStorage.getItem('not-at-home-street') || '',
-    houseNumber: localStorage.getItem('not-at-home-houseNumber') || '',
-    unitNumber: localStorage.getItem('not-at-home-unitNumber') || '',
+    houseNumber: localStorage.getItem('not-at-home-house') || '',
+    unitNumber: localStorage.getItem('not-at-home-unit') || '',
     coords: {
       lat: 0,
       lng: 0,
@@ -102,8 +102,8 @@ const reducer = (state: State, action: Action): State => {
     case 'SET_SUBURB':
       localStorage.setItem('not-at-home-suburb', action.payload.suburb);
       localStorage.removeItem('not-at-home-street');
-      localStorage.removeItem('not-at-home-houseNumber');
-      localStorage.removeItem('not-at-home-unitNumber');
+      localStorage.removeItem('not-at-home-house');
+      localStorage.removeItem('not-at-home-unit');
       return {
         ...state,
         suburb: action.payload.suburb,
@@ -114,8 +114,8 @@ const reducer = (state: State, action: Action): State => {
       };
     case 'SET_STREET':
       localStorage.setItem('not-at-home-street', action.payload);
-      localStorage.removeItem('not-at-home-houseNumber');
-      localStorage.removeItem('not-at-home-unitNumber');
+      localStorage.removeItem('not-at-home-house');
+      localStorage.removeItem('not-at-home-unit');
       return {
         ...state,
         street: action.payload,
@@ -123,15 +123,15 @@ const reducer = (state: State, action: Action): State => {
         unitNumber: '',
       };
     case 'SET_HOUSE_NUMBER':
-      localStorage.setItem('not-at-home-houseNumber', action.payload);
-      localStorage.removeItem('not-at-home-unitNumber');
+      localStorage.setItem('not-at-home-house', action.payload);
+      localStorage.removeItem('not-at-home-unit');
       return {
         ...state,
         houseNumber: action.payload,
         unitNumber: '',
       };
     case 'SET_UNIT_NUMBER':
-      localStorage.setItem('not-at-home-unitNumber', action.payload);
+      localStorage.setItem('not-at-home-unit', action.payload);
       return { ...state, unitNumber: action.payload };
     case 'CLOSE_MODAL':
       return { ...state, modal: false, sendToLetterList: false, loading: true };
@@ -193,7 +193,6 @@ export const AddAddress = (): JSX.Element => {
   const newStreetOptions: any = newStreetData.map((data) => {
     return { text: data.text, value: data };
   });
-
   // HANDLERS
   const handleSubmit = async () => {
     dispatch({ type: 'OPEN_MODAL' });
@@ -358,6 +357,7 @@ export const AddAddress = (): JSX.Element => {
   // RENDER
   return (
     <div className="ion-padding">
+      {/* prettier-ignore */}
       {/* SUBMIT ADDRESS FORM */}
       <IonList inset>
         <IonListHeader>
@@ -415,7 +415,7 @@ export const AddAddress = (): JSX.Element => {
         </IonItem>
       </IonList>
       <IonButton
-      className='ion-padding'
+        className="ion-padding"
         style={{ marginTop: '2rem' }}
         disabled={state.houseNumber.length === 0}
         expand="block"
@@ -470,13 +470,13 @@ export const AddAddress = (): JSX.Element => {
                   // <IonItem>
                   <IonNote>
                     You can submit this address but it's location on the map
-                    will be inaccurate
+                    will be inaccurate.
                   </IonNote>
                   // </IonItem>
                 )}
               </IonList>
               <IonList className="ion-padding">
-                <IonItem>
+                <IonItem lines="none">
                   Send to Write List
                   <IonToggle
                     color={'success'}

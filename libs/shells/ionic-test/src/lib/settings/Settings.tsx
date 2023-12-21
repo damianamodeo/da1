@@ -2,6 +2,7 @@ import { AppVersion } from '@ui-ion';
 import { IonButton, IonItem, IonList } from '@ionic/react';
 import { path } from '../content';
 
+// TODO add dark mode
 export const Settings = () => {
   return (
     <>
@@ -9,10 +10,6 @@ export const Settings = () => {
         <IonItem>
           <AppVersion></AppVersion>
         </IonItem>
-
-        <IonButton expand="block" routerLink={path.Appearance}>
-          Appearance
-        </IonButton>
       </IonList>
     </>
   );

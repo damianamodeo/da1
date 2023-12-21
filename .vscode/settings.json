@@ -1,27 +1,155 @@
 {
   "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-
-    "**/.nx": true,
-    "**/node_modules": true,
-    "**/.firebase": true,
-    "**/dist": true,
-    "**/local": true,
-    "**/*-e2e": true,
-    
-    // "**/apps/*/.files": true,
-    // "**/apps/*/*/.files": true,
-    
-    // "**/libs/**/.files": true,
-
-    "**/base": true,
-    "**/apps/**": true,
-    // "**/apps-ionic/***/.files": true,
+    "**/.git": false,
+    "**/.svn": false,
+    "**/.hg": false,
+    "**/CVS": false,
+    "**/.DS_Store": false,
+    "**/Thumbs.db": false,
+    "**/*.git": false,
+    "**/.firebase": false,
+    "**/.nx": false,
+    "**/.vscode": false,
+    "**/apps": false,
+    "**/dist": false,
+    "**/local": false,
+    "**/node_modules": false
   },
-  "editor.inlineSuggest.showToolbar": "always"
+  "editor.inlineSuggest.showToolbar": "always",
+  "explorerExclude.backup": {},
+
+  "indentRainbow.colors": [
+    // "rgba(255,255,64,0.9)",
+    // "rgba(127,255,127,0.9)",
+    // "rgba(255,127,255,0.9)",
+    // "rgba(79,236,236,0.9)",
+    "rgba(255,100,100,0.9)",
+    "rgba(255,255,0,0.9)",
+    "rgba(0,255,0,0.6)",
+    // "rgba(0,255,255,0.6)",
+    "rgba(100,200,255,0.9)"
+    // "rgba(255,0,255,0.6)",
+  ],
+  "indentRainbow.lightIndicatorStyleLineWidth": 0.3,
+
+  "prettier.bracketSameLine": true,
+  "prettier.quoteProps": "consistent",
+
+  "commands.workspaceCommands": {
+    "Workspace Scripts": {
+      "nestedItems": {
+        "serve latest project": {
+          "sequence": [
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "npx nx run app-ionic2:serve",
+                "name": "serve",
+                "reveal": true,
+                "waitForExit": false,
+                "reuse": "newest"
+              }
+            },
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "lsof -t -i tcp:8080 | xargs kill && exit",
+                "name": "kill",
+                "reveal": true,
+                "waitForExit": true,
+                "reuse": "newest"
+              }
+            },
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "firebase emulators:start --import=./local --export-on-exit --only firestore",
+                "name": "emulators",
+                "reveal": true,
+                "waitForExit": true,
+                "reuse": "newest"
+              }
+            }
+          ]
+        },
+        "end latest project": {
+          "sequence": [
+            {
+              "command": "commands.focusTerminal",
+              "args": {
+                "name": "emulators",
+                "target": "newest"
+              }
+            },
+            {
+              "command": "workbench.action.terminal.sendSequence",
+              "args": {
+                "text": "\u0003"
+              }
+            },
+            {
+              "command": "commands.focusTerminal",
+              "args": {
+                "name": "emulators",
+                "target": "newest"
+              }
+            },
+            {
+              "command": "workbench.action.terminal.kill"
+            },
+            {
+              "command": "commands.focusTerminal",
+              "args": {
+                "name": "serve",
+                "target": "newest"
+              }
+            },
+            {
+              "command": "workbench.action.terminal.kill"
+            }
+          ]
+        },
+        "deploy latest project": {
+          "sequence": [
+            {
+              "command": "commands.toggleSetting",
+              "args": {
+                "setting": "workbench.panel.opensMaximized",
+                "value": ["always"]
+              }
+            },
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "nx run app-ionic2:build",
+                "name": "build",
+                "reveal": true,
+                "waitForExit": true,
+                "reuse": "newest"
+              }
+            },
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "nx run app-ionic-test1:deploy",
+                "name": "deploy",
+                "reveal": true,
+                "waitForExit": true,
+                "reuse": "newest"
+              }
+            },
+            {
+              "command": "commands.toggleSetting",
+              "args": {
+                "setting": "workbench.panel.opensMaximized",
+                "value": ["preserve"]
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "commands.showKeybindings": true,
+  "commands.documentLinksEnabled": true
 }

@@ -25,6 +25,7 @@
       "@tools": ["libs/tools/src/index.ts"],
       "@ui-base": ["libs/ui/base/src/index.ts"],
       "@ui-ion": ["libs/ui/ion/src/index.ts"],
+      "@ui-mapbox": ["libs/ui/mapbox/src/index.ts"],
       "@util": ["libs/utility/src/index.ts"]
     }
   },

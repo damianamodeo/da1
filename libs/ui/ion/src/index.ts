@@ -1,3 +1,5 @@
+//  add change log component
+
 export * from './lib/AppVersion';
 export * from './lib/Autocomplete';
 export * from './lib/LoadingSpinner';

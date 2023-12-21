@@ -1,0 +1,21 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "nx",
+			"project": "",
+			"command": "run",
+			"positional": "app-ionic2:test",
+			"flags": [],
+			"problemMatcher": [],
+			"label": "nx: nx run app-ionic2:test"
+		},
+		{
+			"type": "npm",
+			"script": "emulator-start",
+			"problemMatcher": [],
+			"label": "npm: emulator-start",
+			"detail": "firebase emulators:start --import=./local --export-on-exit --only firestore"
+		}
+	]
+}

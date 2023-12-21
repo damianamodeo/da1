@@ -39,7 +39,14 @@ export function Swiper(props: any) {
   }, [currentTab]);
 
   return (
-    <swiper-container init={false} ref={swiperRef} style={{ ...style }}>
+    <swiper-container
+      init={false}
+      ref={swiperRef}
+      style={{ ...style }}
+      zoom={true}
+      touchMoveStopPropagation={true}
+
+    >
       {children}
     </swiper-container>
   );
@@ -48,5 +55,8 @@ export function Swiper(props: any) {
 export function SwiperSlide(props: any) {
   const { children, ...rest } = props;
 
-  return <swiper-slide {...rest}>{children}</swiper-slide>;
+  return <swiper-slide {...rest} 
+  touchMoveStopPropagation={true}
+  preventInteractionOnTransition
+  >{children}</swiper-slide>;
 }

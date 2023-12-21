@@ -5,6 +5,8 @@ const MINIMUM_QUERY_LENGTH = 2;
 
 import { useEffect, useState } from 'react';
 
+// TODO add bbox to suburb search
+
 export const useSearchSuburb = (
   suburbQuery: string,
   country?: string,

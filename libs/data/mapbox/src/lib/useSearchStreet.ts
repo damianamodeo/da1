@@ -8,6 +8,9 @@ export const useSearchStreet = (
 ) => {
   const [features, setFeatures] = useState<any[]>([]);
 
+  // TODO add bbox to street search
+  // TODO move api key to .env
+
   useEffect(() => {
     const fetchData = async () => {
       try {

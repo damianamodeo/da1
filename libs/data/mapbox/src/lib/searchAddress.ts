@@ -7,7 +7,7 @@ type QueryType = {
   bbox?: Bbox;
   country?: string;
 };
-
+// TODO add bbox to address search
 export const searchAddress = async ({
   houseNumber,
   street,
