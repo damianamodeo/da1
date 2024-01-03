@@ -81,7 +81,7 @@ Clusters.onClick = ({
     mapRef: any;
   }) => {
     const features = event.features;
-    if (!features) {
+    if (!features || features?.length < 1) {
       return;
     }
     if (features[0]?.properties?.cluster) {
@@ -99,6 +99,7 @@ Clusters.onClick = ({
       });
       return;
     }
+
     onPointClick({ event: event, features: features });
   };
 };
