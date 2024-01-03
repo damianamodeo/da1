@@ -3,11 +3,6 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonText,
 } from '@ionic/react';
 import { path } from '../content';
 
@@ -19,7 +14,8 @@ export const Home = () => {
           <IonCardTitle>Record</IonCardTitle>
         </IonCardHeader>
         <IonCardContent>
-        Input addresses for unanswered calls. The list will be shared with others for thorough and efficient follow-ups.
+          Input addresses for unanswered calls. The list will be shared with
+          others for thorough and efficient follow-ups.
         </IonCardContent>
       </IonCard>
       <IonCard routerLink={path.Return}>

@@ -5,7 +5,7 @@ import HomePage from './Home';
 const AddAddress = lazy(() => import('./record/add-address/AddAddress'));
 const History = lazy(() => import('./record/history/History'));
 
-const Map = lazy(() => import('./return/Map'));
+const Map = lazy(() => import('./return/map/Map'));
 const List = lazy(() => import('./return/List'));
 
 const ReturnPage = lazy(() => import('./Return'));

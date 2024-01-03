@@ -4,8 +4,6 @@
     "**/.svn": true,
     "**/.hg": true,
     "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true,
     "**/*.git": true,
     "**/.firebase": true,
     "**/.nx": true,
@@ -13,7 +11,8 @@
     "**/apps": true,
     "**/dist": true,
     "**/local": true,
-    "**/node_modules": false
+    "**/node_modules": true,
+    "**/firebase-export-*": true
   },
   "editor.inlineSuggest.showToolbar": "always",
   "explorerExclude.backup": {},
@@ -43,7 +42,7 @@
             {
               "command": "commands.runInTerminal",
               "args": {
-                "text": "npx nx run app-ionic2:serve",
+                "text": "npx nx run app-ionic2:serve --host",
                 "name": "serve",
                 "reveal": true,
                 "waitForExit": false,
@@ -134,7 +133,17 @@
                 "text": "nx run app-ionic-test1:deploy",
                 "name": "deploy",
                 "reveal": true,
-                "waitForExit": true,
+                // "waitForExit": true,
+                "reuse": "newest"
+              }
+            },
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "echo 'Deploy Time:' $(date +'%T')",
+                "name": "deploy",
+                "reveal": true,
+                // "waitForExit": true,
                 "reuse": "newest"
               }
             },
@@ -146,6 +155,16 @@
               }
             }
           ]
+        },
+        "test": {
+          "command": "commands.runInTerminal",
+          "args": {
+            "text": "echo 'Deploy Time:' $(date +'%T')",
+            "name": "deploy",
+            "reveal": true,
+            // "waitForExit": true,
+            "reuse": "newest"
+          }
         }
       }
     }

@@ -9,9 +9,58 @@
   "-useReducer": {
     "prefix": "react",
     "body": [
-      " const reducer = (state: any, { type, payload }: any) => {",
-      "   return { ...state, [type]: payload };",
-      " };"
+      "",
+      "",
+      "",
+      "",
+      "  const [state, dispatch]: [State, React.Dispatch<Action>] = useReducer<",
+      "    Reducer<State, Action>",
+      "  >(reducer, initialState);",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "description": "Creates a React Arrow Function Component with ES7 module system and TypeScript interface",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "-useReducer (setup)": {
+    "prefix": "react",
+    "body": [
+      "",
+      "",
+      "",
+      "",
+      "import { Reducer, useReducer } from 'react';",
+      "",
+      "const initialState = { modal: false, loading: true };",
+      "",
+      "type State = typeof initialState;",
+      "",
+      "type Action =",
+      "  | { type: 'SET_MODAL'; payload: boolean }",
+      "  | { type: 'SET_LOADING'; payload: boolean };",
+      "",
+      "const reducer = (state: State, action: Action) => {",
+      "  switch (action.type) {",
+      "    case 'SET_MODAL':",
+      "      return {",
+      "        ...state,",
+      "        modal: action.payload,",
+      "      };",
+      "    case 'SET_LOADING':",
+      "      return {",
+      "        ...state,",
+      "        loading: action.payload,",
+      "      };",
+      "    default:",
+      "      return state;",
+      "  }",
+      "};",
+      ""
+      ""
+      ""
+      ""
     ],
     "description": "Creates a React Arrow Function Component with ES7 module system and TypeScript interface",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"

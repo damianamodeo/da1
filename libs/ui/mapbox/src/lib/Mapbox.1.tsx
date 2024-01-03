@@ -1,15 +1,39 @@
-import { useState, SetStateAction, useRef } from 'react';
+import { useState, SetStateAction, useRef, RefObject } from 'react';
 import Map, { GeolocateControl, ViewState } from 'react-map-gl';
-
-// import DrawControl from './draw-control';
 import { GLOBAL_VARIABLES } from '@config';
-// import { ErrorBoundary } from '@ui-base';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-
+import type { MapMouseEvent, MapRef } from 'react-map-gl';
 const TOKEN = GLOBAL_VARIABLES.MAPBOX_API_KEY;
 
-export const Mapbox2 = ({ children }: any) => {
+export type MapboxProps = {
+  children: ({
+    view,
+    updateView,
+    mapRef,
+  }: {
+    view: ViewState;
+    updateView: (newView: SetStateAction<ViewState>) => void;
+    mapRef: RefObject<MapRef>;
+  }) => JSX.Element;
+  interactiveLayerIds?: (string | undefined)[];
+  onClick?: ({
+    event,
+    view,
+    updateView,
+    mapRef,
+  }: {
+    event: MapMouseEvent;
+    view: ViewState;
+    updateView: (newView: SetStateAction<ViewState>) => void;
+    mapRef: RefObject<MapRef>;
+  }) => void;
+};
+export const Mapbox = ({
+  children,
+  interactiveLayerIds,
+  onClick,
+}: MapboxProps) => {
   const initialViewState = localStorage.getItem('map-view-state')
     ? JSON.parse(localStorage.getItem('map-view-state') || '')
     : {
@@ -21,7 +45,7 @@ export const Mapbox2 = ({ children }: any) => {
         padding: { top: 0, bottom: 0, left: 0, right: 0 },
       };
   const [view, setView] = useState<ViewState>(initialViewState);
-  const mapRef = useRef(null);
+  const mapRef = useRef<MapRef>(null);
   const updateView = (newView: SetStateAction<ViewState>) => setView(newView);
 
   return (
@@ -39,12 +63,18 @@ export const Mapbox2 = ({ children }: any) => {
           setView(e.viewState);
         }}
         ref={mapRef}
+        interactiveLayerIds={interactiveLayerIds as string[]}
+        onClick={(event) => {
+          if (onClick) {
+            onClick({ event, view, updateView, mapRef });
+          }
+        }}
       >
-        <GeolocateControl ></GeolocateControl>
+        <GeolocateControl></GeolocateControl>
         {children({ view, updateView, mapRef })}
       </Map>
     </div>
   );
 };
 
-export default Mapbox2;
+export default Mapbox;
