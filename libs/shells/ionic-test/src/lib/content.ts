@@ -1,6 +1,6 @@
 import { settingsOutline, homeOutline } from 'ionicons/icons';
 import { Settings, Appearance } from './settings/Index';
-import { Home, Record, Return, Write } from './home/HomeIndex';
+import { Home, Record, Return, Write } from './home/Index';
 
 export const content = [
   // HOME

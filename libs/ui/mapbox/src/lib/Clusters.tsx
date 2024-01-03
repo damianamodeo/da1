@@ -1,118 +1,106 @@
-import { Marker } from 'react-map-gl';
-import useSupercluster from 'use-supercluster';
+import {
+  Feature,
+  FeatureCollection,
+  GeoJsonProperties,
+  Geometry,
+} from 'geojson';
+import { Key, SetStateAction } from 'react';
+import {
+  GeoJSONSource,
+  Layer,
+  LayerProps,
+  MapMouseEvent,
+  MapRef,
+  Source,
+  SourceProps,
+  ViewState,
+} from 'react-map-gl';
+import { JSX } from 'react/jsx-runtime';
 
-export type Clusters2Props = {
+export const Clusters = ({
+  locations,
+  layers,
+  source,
+}: {
   locations: {
     longitude: number;
     latitude: number;
     properties: { [key: string]: any };
   }[];
-  onMarkerClick: (properties: { [key: string]: any }) => void;
-  ClusterComponent: ({
-    properties,
-  }: {
-    properties: { [key: string]: any };
-  }) => JSX.Element;
-  MarkerComponent: ({
-    properties,
-  }: {
-    properties: { [key: string]: any };
-  }) => JSX.Element;
-};
+  view: ViewState;
+  updateView: SetStateAction<ViewState>;
+  mapRef: React.RefObject<MapRef>;
+  layers: LayerProps[];
+  source: Omit<Omit<Omit<SourceProps, 'data'>, 'type'>, 'cluster'>;
+}) => {
+  const points: Feature<Geometry, GeoJsonProperties>[] = locations.map(
+    ({ longitude, latitude, properties }) => ({
+      type: 'Feature',
+      properties: { cluster: false, ...properties },
+      geometry: {
+        type: 'Point',
+        coordinates: [longitude, latitude],
+      },
+    })
+  );
 
-export const Clusters2 = ({
-  view,
-  updateView,
-  mapRef,
-  locations,
-  onMarkerClick,
-  ClusterComponent,
-  MarkerComponent,
-}: {
-  view: any;
-  updateView: (view: any) => void;
-  mapRef: any;
-} & Clusters2Props) => {
-  const points = locations.map(({ longitude, latitude, properties }) => ({
-    type: 'Feature',
-    properties: { cluster: false, ...properties },
-    geometry: {
-      type: 'Point',
-      coordinates: [longitude, latitude],
-    },
-  }));
-
-  const bounds = mapRef.current
-    ? mapRef.current.getMap().getBounds().toArray().flat()
-    : null;
-
-  const { clusters, supercluster } = useSupercluster({
-    points,
-    bounds,
-    zoom: view.zoom,
-    options: { radius: 75, maxZoom: 13, minPoints: 4 },
-  });
+  const data: FeatureCollection<Geometry, GeoJsonProperties> = {
+    type: 'FeatureCollection',
+    features: [...points],
+  };
 
   return (
-    <>
-      {clusters.map((cluster) => {
-        const [longitude, latitude] = cluster.geometry.coordinates;
-        const {
-          cluster: isCluster,
-          point_count: pointCount,
-          ...rest
-        } = cluster.properties;
-        if (isCluster) {
-          return (
-            <Marker
-              key={`cluster-${cluster.id}`}
-              latitude={latitude}
-              longitude={longitude}
-            >
-              <div
-                onClick={() => {
-                  const expansionZoom = Math.min(
-                    supercluster.getClusterExpansionZoom(cluster.id),
-                    20
-                  );
-                  updateView({
-                    ...view,
-                    latitude,
-                    longitude,
-                    zoom: expansionZoom,
-                  });
-                  mapRef.current?.flyTo({
-                    center: [longitude, latitude],
-                    zoom: expansionZoom,
-                    duration: 2000,
-                  });
-                }}
-              >
-                <ClusterComponent properties={cluster.properties} />
-              </div>
-            </Marker>
-          );
-        }
-        return (
-          <Marker
-            key={`crime-${rest.timestamp}`}
-            latitude={latitude}
-            longitude={longitude}
-          >
-            <button
-              style={{ background: 'transparent', width: '25px' }}
-              className="centered"
-              onClick={() => {
-                onMarkerClick(rest);
-              }}
-            >
-              <MarkerComponent properties={cluster.properties} />
-            </button>
-          </Marker>
-        );
-      })}
-    </>
+    <Source {...source} type={'geojson'} cluster={true} data={data}>
+      {layers.map(
+        (
+          layer: JSX.IntrinsicAttributes & LayerProps,
+          index: Key | null | undefined
+        ) => (
+          <Layer key={index} {...layer}></Layer>
+        )
+      )}
+    </Source>
   );
 };
 
-export default Clusters2;
+Clusters.onClick = ({
+  sourceID,
+  onPointClick,
+}: {
+  sourceID: string;
+  onPointClick: (properties: { [key: string]: any }) => void;
+}) => {
+  return ({
+    event,
+    mapRef,
+  }: {
+    event: MapMouseEvent & {
+      features?: Feature[] &
+        { geometry?: { coordinates?: [number, number] } }[];
+    };
+    mapRef: any;
+  }) => {
+    const features = event.features;
+    if (!features) {
+      return;
+    }
+    if (features[0]?.properties?.cluster) {
+      const clusterId = features[0].properties.cluster_id;
+      const mapboxSource = mapRef.current.getSource(sourceID) as GeoJSONSource;
+      mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
+        if (err) {
+          return;
+        }
+        mapRef.current.easeTo({
+          center: features[0].geometry.coordinates || [0, 0],
+          zoom,
+          duration: 500,
+        });
+      });
+      return;
+    }
+    onPointClick({ event: event, features: features });
+  };
+};
+
+export default Clusters;

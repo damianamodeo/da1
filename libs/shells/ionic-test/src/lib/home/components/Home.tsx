@@ -4,7 +4,7 @@ import {
   IonCardHeader,
   IonCardTitle,
 } from '@ionic/react';
-import { path } from '../content';
+import { path } from '../../content';
 
 export const Home = () => {
   return (

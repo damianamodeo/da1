@@ -1,16 +1,16 @@
 import { Page, TabbedPage } from '@ui-ion';
 import { lazy } from 'react';
-import HomePage from './Home';
+import HomePage from './components/Home';
 
-const AddAddress = lazy(() => import('./record/add-address/AddAddress'));
-const History = lazy(() => import('./record/history/History'));
+const AddAddress = lazy(() => import('./components/record/add-address/AddAddress'));
+const History = lazy(() => import('./components/record/history/History'));
 
-const Map = lazy(() => import('./return/map/Map'));
-const List = lazy(() => import('./return/List'));
+const Map = lazy(() => import('./components/return/map/Map'));
+const List = lazy(() => import('./components/return/list/List'));
 
-const ReturnPage = lazy(() => import('./Return'));
+const ReturnPage = lazy(() => import('./components/return/Return'));
 
-const WritePage = lazy(() => import('./Write'));
+const WritePage = lazy(() => import('./components/write/Write'));
 
 export const Home = () => {
   return (
