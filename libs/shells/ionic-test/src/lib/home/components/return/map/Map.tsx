@@ -7,7 +7,11 @@ import {
   houseNumber,
   units,
 } from './components/Layers';
-import { firestoreDocumentPaths, useFirestoreData } from '@data-firebase';
+import {
+  AddressList,
+  firestoreDocumentPaths,
+  useFirestoreData,
+} from '@data-firebase';
 
 function Fallback({ error, resetErrorBoundary }: any) {
   return (
@@ -18,7 +22,7 @@ function Fallback({ error, resetErrorBoundary }: any) {
   );
 }
 
-import { Reducer, useReducer } from 'react';
+import { Reducer, useEffect, useReducer } from 'react';
 import ConfirmHouseDelete from './components/ConfirmHouseDelete';
 import ConfirmUnitsDelete from './components/ConfirmUnitsDelete';
 import prepareLocations from '../../../logic/prepareLocations';
@@ -26,7 +30,7 @@ import prepareLocations from '../../../logic/prepareLocations';
 const initialState = {
   modal: false,
   isUnits: true,
-  addresses: [{}] as { [key: string]: number | string }[],
+  addresses: [{}] as AddressList,
 };
 
 export type State = typeof initialState;
@@ -39,6 +43,10 @@ export type Action =
         isUnits: typeof initialState.isUnits;
         addresses: typeof initialState.addresses;
       };
+    }
+  | {
+      type: 'UPDATE_UNITS';
+      payload: typeof initialState.addresses;
     };
 
 const reducer = (state: State, action: Action) => {
@@ -54,6 +62,11 @@ const reducer = (state: State, action: Action) => {
         modal: true,
         isUnits: action.payload.isUnits,
         addresses: action.payload.addresses,
+      };
+    case 'UPDATE_UNITS':
+      return {
+        ...state,
+        addresses: action.payload,
       };
     default:
       return state;
@@ -86,6 +99,34 @@ export const Map = () => {
       }
     },
   });
+
+  useEffect(() => {
+    if (
+      addresses?.return_list === undefined ||
+      state.addresses[0] === undefined
+    ) {
+      return;
+    }
+
+    const filteredAddresses = addresses?.return_list.filter(
+      ({
+        houseNumber,
+        street,
+        suburb,
+      }: {
+        houseNumber: string;
+        street: string;
+        suburb: string;
+      }) => {
+        return (
+          houseNumber === state.addresses[0].houseNumber &&
+          street === state.addresses[0].street &&
+          suburb === state.addresses[0].suburb
+        );
+      }
+    );
+    dispatch({ type: 'UPDATE_UNITS', payload: filteredAddresses });
+ƒ  }, [addresses]);
 
   return (
     <>

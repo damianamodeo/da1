@@ -9,24 +9,35 @@ export const ConfirmHouseDelete = ({
   state: State;
   dispatch: React.Dispatch<Action>;
 }) => {
-  const handleDelete = async () => {
+  if (!state.addresses[0]) {
+    return null;
+  }
+  const handleConfirm = async (
+    action: 'delete_from_return' | 'move_to_write'
+  ) => {
     await editAddress({
-      action: 'delete_from_return',
+      action: action,
       timestamp: state.addresses[0].timestamp,
     }),
       dispatch({ type: 'SET_MODAL', payload: false });
   };
 
+  const { houseNumber, street, suburb } = state.addresses[0] 
+
   return (
     <IonActionSheet
       isOpen={state.modal && !state.isUnits}
       header="Delete Address"
-      subHeader={'state.addresses'}
+      subHeader={`${houseNumber} ${street} ${suburb}`}
       buttons={[
         {
           text: 'Delete',
           role: 'destructive',
-          handler: handleDelete,
+          handler: () => handleConfirm('move_to_write'),
+        },
+        {
+          text: 'Send to Write List',
+          handler: () => handleConfirm('move_to_write'),
         },
         {
           text: 'Cancel',

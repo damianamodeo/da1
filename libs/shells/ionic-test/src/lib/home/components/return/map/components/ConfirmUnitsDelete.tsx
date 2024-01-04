@@ -17,8 +17,8 @@ import { mailOpenOutline, trash } from 'ionicons/icons';
 import { State, Action } from '../Map';
 import editAddress from '../../../../logic/editAddress';
 import { useState } from 'react';
+import { AddressList } from '@data-firebase';
 
-// FIXME unit list doesnt update when moved or deleted
 export const ConfirmUnitsDelete = ({
   state,
   dispatch,
@@ -26,21 +26,36 @@ export const ConfirmUnitsDelete = ({
   state: State;
   dispatch: React.Dispatch<Action>;
 }) => {
+  if (state.addresses[0] === undefined) {
+    return null;
+  }
   const [confirmMoveActionSheet, setConfirmMoveActionSheet] = useState(false);
   const [confirmDeleteActionSheet, setConfirmDeleteActionSheet] =
     useState(false);
   const [timestamp, setTimestamp] = useState(0);
+  const [unitNumber, setUnitNumber] = useState('');
 
   const handleConfirm = async (
     action: 'delete_from_return' | 'move_to_write'
   ) => {
     await editAddress({
       action: action,
-      timestamp: state.addresses[0].timestamp,
+      timestamp: timestamp,
     });
+    const filteredAddresses = state.addresses.filter(
+      (address) => address.timestamp !== timestamp
+    ) as AddressList | [];
     setConfirmMoveActionSheet(false);
     setConfirmDeleteActionSheet(false);
+    if (filteredAddresses.length === 0) {
+      dispatch({ type: 'SET_MODAL', payload: false });
+      return;
+    }
+    dispatch({ type: 'UPDATE_UNITS', payload: filteredAddresses });
   };
+
+  const { houseNumber, street, suburb } = state.addresses[0];
+  const actionSheetLabel = `/${houseNumber} ${street} ${suburb}`;
 
   return (
     <>
@@ -61,9 +76,8 @@ export const ConfirmUnitsDelete = ({
           <IonList>
             <IonListHeader>
               <IonLabel>
-                {state.addresses[0].houseNumber} {state.addresses[0].street}{' '}
-                <br />
-                {state.addresses[0].suburb}
+                {houseNumber} {street} <br />
+                {suburb}
               </IonLabel>
             </IonListHeader>
             {state.addresses.map((address) => {
@@ -82,6 +96,7 @@ export const ConfirmUnitsDelete = ({
                     onClick={() => {
                       setTimestamp(address.timestamp as number);
                       setConfirmMoveActionSheet(true);
+                      setUnitNumber(address.unitNumber);
                     }}
                   ></IonIcon>
                   <IonIcon
@@ -92,6 +107,7 @@ export const ConfirmUnitsDelete = ({
                     onClick={() => {
                       setTimestamp(address.timestamp as number);
                       setConfirmDeleteActionSheet(true);
+                      setUnitNumber(address.unitNumber);
                     }}
                   ></IonIcon>
                 </IonItem>
@@ -104,7 +120,7 @@ export const ConfirmUnitsDelete = ({
       <IonActionSheet
         isOpen={confirmMoveActionSheet}
         header="Delete Address"
-        subHeader={'state.addresses'}
+        subHeader={`${unitNumber}${actionSheetLabel}`}
         buttons={[
           {
             text: 'Send to Write List',
@@ -122,7 +138,7 @@ export const ConfirmUnitsDelete = ({
       <IonActionSheet
         isOpen={confirmDeleteActionSheet}
         header="Delete Address"
-        subHeader={'state.addresses'}
+        subHeader={`${unitNumber}${actionSheetLabel}`}
         buttons={[
           {
             text: 'Delete',
