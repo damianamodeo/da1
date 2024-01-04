@@ -126,7 +126,7 @@ export const Map = () => {
       }
     );
     dispatch({ type: 'UPDATE_UNITS', payload: filteredAddresses });
-ƒ  }, [addresses]);
+  }, [addresses]);
 
   return (
     <>
