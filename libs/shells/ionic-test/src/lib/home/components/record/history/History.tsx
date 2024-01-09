@@ -12,7 +12,7 @@ import {
   mailOpenOutline,
   arrowUndoOutline,
 } from 'ionicons/icons';
-import { useMemo, useReducer, useState } from 'react';
+import { useMemo, useReducer } from 'react';
 
 // TYPES
 type State = {
@@ -179,6 +179,7 @@ export const History = () => {
     });
   };
   // RENDER
+  // TODO Add help text to show what this list is for and if user hasnt already added any addresses
   return (
     <div className="">
       <IonList>
