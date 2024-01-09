@@ -4,11 +4,11 @@
     "**/.svn": true,
     "**/.hg": true,
     "**/CVS": true,
+    "**/.DS_Store": true,
     "**/*.git": true,
     "**/.firebase": true,
     "**/.nx": true,
     "**/.vscode": true,
-    "**/apps": true,
     "**/dist": true,
     "**/local": true,
     "**/node_modules": true,
@@ -37,14 +37,97 @@
   "commands.workspaceCommands": {
     "Workspace Scripts": {
       "nestedItems": {
+        "serve for development": {
+          "sequence": [
+            // SERVE SELECTED APP
+            {
+              "command": "commands.runInTerminal",
+              // "args": {
+              //   "text": "npm create vite@latest ${input:folderName} -- --template ${input:template}",
+              //   "reveal": true,
+              //   "reuse": "newest"
+              // },
+              "args": {
+                "text": "npx nx run app-${input:app}:serve --host",
+                "name": "serve wip",
+                "reveal": true,
+                "iconColor": "charts.green",
+                "waitForExit": false,
+                "reuse": "newest"
+              },
+              "inputs": [
+                // {
+                //   "type": "promptString",
+                //   "id": "folderName",
+                //   "description": "Enter project name."
+                // },
+                {
+                  "type": "pickString",
+                  "id": "app",
+                  "description": "Select app to serve",
+                  "options": ["proclaimer", "ionic-template"]
+                }
+              ]
+            },
+            // SERVE TESTING
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "npx nx run app-testing:serve --host",
+                "name": "serve testing",
+                "iconColor": "charts.blue",
+                "reveal": true,
+                "waitForExit": false,
+                "reuse": "newest"
+              }
+            },
+            // KILL OLD EMULATOR
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "lsof -t -i tcp:8080 | xargs kill && exit",
+                "name": "kill",
+                "reveal": true,
+                "waitForExit": true,
+                "reuse": "newest"
+              }
+            },
+            // SERVE NEW EMULATOR
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "firebase emulators:start --import=./local --export-on-exit --only firestore",
+                "name": "emulators",
+                "iconColor": "charts.yellow",
+                "reveal": true,
+                "waitForExit": false,
+                "reuse": "newest"
+              }
+            }
+          ]
+        },
+
         "serve latest project": {
           "sequence": [
             {
               "command": "commands.runInTerminal",
               "args": {
-                "text": "npx nx run app-ionic2:serve --host",
-                "name": "serve",
+                "text": "npx nx run testing:serve --host",
+                "name": "serve testing",
+                "iconColor": "charts.blue",
                 "reveal": true,
+                "waitForExit": false,
+                "reuse": "newest"
+              }
+            },
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "npx nx run proclaimer:serve --host",
+                "name": "serve wip",
+                "reveal": true,
+
+                "iconColor": "charts.green",
                 "waitForExit": false,
                 "reuse": "newest"
               }
@@ -64,6 +147,7 @@
               "args": {
                 "text": "firebase emulators:start --import=./local --export-on-exit --only firestore",
                 "name": "emulators",
+                "iconColor": "charts.yellow",
                 "reveal": true,
                 "waitForExit": true,
                 "reuse": "newest"
@@ -156,7 +240,7 @@
             }
           ]
         },
-        "test": {
+        "test command": {
           "command": "commands.runInTerminal",
           "args": {
             "text": "echo 'Deploy Time:' $(date +'%T')",

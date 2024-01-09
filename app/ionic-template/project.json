@@ -1,0 +1,57 @@
+{
+  "name": "app-ionic-template",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "app/ionic-template/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/examples"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "app-ionic-template:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "app-ionic-template:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "app-ionic-template:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "app-ionic-template:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "app-ionic-template:build:development"
+        },
+        "production": {
+          "buildTarget": "app-ionic-template:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

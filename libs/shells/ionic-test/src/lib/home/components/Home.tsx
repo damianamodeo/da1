@@ -7,6 +7,7 @@ import {
 import { path } from '../../content';
 
 export const Home = () => {
+  // TODO Reword descriptions in Card Content
   return (
     <>
       <IonCard routerLink={path.Record}>

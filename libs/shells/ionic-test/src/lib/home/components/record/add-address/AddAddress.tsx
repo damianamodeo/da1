@@ -4,7 +4,6 @@ import {
   StreetOption,
   SuburbOption,
   firestoreDocumentPaths,
-  getFirestoreDocumentSize,
   useFirestoreData,
   writeFirebaseDoc,
 } from '@data-firebase';
@@ -32,10 +31,8 @@ import {
   IonNote,
 } from '@ionic/react';
 import { Autocomplete, LoadingSpinner, Picker } from '@ui-ion';
-import { useToggle } from '@util';
 import { DocumentData } from 'firebase/firestore';
-import { Reducer, useReducer, useState } from 'react';
-import sizeof from 'firestore-size';
+import { Reducer, useReducer } from 'react';
 
 // TYPES
 type Suburb = {
