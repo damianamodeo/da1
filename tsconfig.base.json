@@ -21,6 +21,7 @@
       "@feature-firebase": ["libs/features/firebase/src/index.ts"],
       "@feature-mapbox": ["libs/features/mapbox/src/index.ts"],
       "@feature-react-pdf": ["libs/features/react-pdf/src/index.ts"],
+      "@global/styles": ["libs/config/src/lib/global.css"],
       "@shell-ionic-test": ["libs/shells/ionic-test/src/index.ts"],
       "@shell-testing": ["libs/shells/testing/src/index.ts"],
       "@tools": ["libs/tools/src/index.ts"],

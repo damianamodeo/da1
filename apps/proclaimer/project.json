@@ -1,7 +1,7 @@
 {
   "name": "app-proclaimer",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "app/proclaimer/src",
+  "sourceRoot": "apps/proclaimer/src",
   "projectType": "application",
   "targets": {
     "deploy": {
@@ -15,7 +15,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/app/proclaimer"
+        "outputPath": "dist/apps/examples"
       },
       "configurations": {
         "development": {
@@ -63,14 +63,14 @@
       "outputs": ["{options.reportsDirectory}"],
       "options": {
         "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/app/proclaimer"
+        "reportsDirectory": "../../coverage/apps/proclaimer"
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["app/proclaimer/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/proclaimer/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "serve-static": {

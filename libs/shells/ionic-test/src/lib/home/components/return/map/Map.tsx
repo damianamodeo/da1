@@ -1,5 +1,5 @@
 import { ErrorBoundary } from 'react-error-boundary';
-import { Clusters, Mapbox } from '@ui-mapbox';
+import { Clusters, Mapbox, Mapbox1 } from '@ui-mapbox';
 import {
   clusterLayer,
   clusterCountLayer,
@@ -132,7 +132,8 @@ export const Map = () => {
     <>
       <div className="full centered">
         <ErrorBoundary FallbackComponent={Fallback}>
-          <Mapbox
+          <Mapbox1></Mapbox1>
+          {/* <Mapbox
             onClick={onClick}
             interactiveLayerIds={[clusterLayer.id, unclusteredPointLayer.id]}
           >
@@ -156,7 +157,7 @@ export const Map = () => {
                 ></Clusters>
               );
             }}
-          </Mapbox>
+          </Mapbox> */}
         </ErrorBoundary>
       </div>
 

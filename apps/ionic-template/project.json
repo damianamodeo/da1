@@ -1,7 +1,7 @@
 {
-  "name": "app-testing",
+  "name": "app-ionic-template",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "app/testing/src",
+  "sourceRoot": "apps/ionic-template/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -9,7 +9,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/app/testing"
+        "outputPath": "dist/apps/examples"
       },
       "configurations": {
         "development": {
@@ -24,15 +24,15 @@
       "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "app-testing:build"
+        "buildTarget": "app-ionic-template:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "app-testing:build:development",
+          "buildTarget": "app-ionic-template:build:development",
           "hmr": true
         },
         "production": {
-          "buildTarget": "app-testing:build:production",
+          "buildTarget": "app-ionic-template:build:production",
           "hmr": false
         }
       }
@@ -41,14 +41,14 @@
       "executor": "@nx/vite:preview-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "app-testing:build"
+        "buildTarget": "app-ionic-template:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "app-testing:build:development"
+          "buildTarget": "app-ionic-template:build:development"
         },
         "production": {
-          "buildTarget": "app-testing:build:production"
+          "buildTarget": "app-ionic-template:build:production"
         }
       }
     }

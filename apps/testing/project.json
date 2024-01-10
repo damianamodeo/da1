@@ -1,9 +1,15 @@
 {
-  "name": "app-ionic-template",
+  "name": "app-testing",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "app/ionic-template/src",
+  "sourceRoot": "apps/testing/src",
   "projectType": "application",
   "targets": {
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "firebase deploy --only hosting:examples"
+      }
+    },
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
@@ -24,15 +30,15 @@
       "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "app-ionic-template:build"
+        "buildTarget": "app-testing:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "app-ionic-template:build:development",
+          "buildTarget": "app-testing:build:development",
           "hmr": true
         },
         "production": {
-          "buildTarget": "app-ionic-template:build:production",
+          "buildTarget": "app-testing:build:production",
           "hmr": false
         }
       }
@@ -41,14 +47,14 @@
       "executor": "@nx/vite:preview-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "app-ionic-template:build"
+        "buildTarget": "app-testing:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "app-ionic-template:build:development"
+          "buildTarget": "app-testing:build:development"
         },
         "production": {
-          "buildTarget": "app-ionic-template:build:production"
+          "buildTarget": "app-testing:build:production"
         }
       }
     }

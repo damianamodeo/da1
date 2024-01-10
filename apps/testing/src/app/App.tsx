@@ -1,11 +1,8 @@
 import { ShellTesting } from '@shell-testing';
+import '@global/styles';
 
 export function App() {
-  return (
-    <div>
-      <ShellTesting></ShellTesting>
-    </div>
-  );
+  return <ShellTesting></ShellTesting>;
 }
 
 export default App;

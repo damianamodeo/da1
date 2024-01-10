@@ -7,7 +7,7 @@ import type { MapMouseEvent, MapRef } from 'react-map-gl';
 const TOKEN = GLOBAL_VARIABLES.MAPBOX_API_KEY;
 
 export type MapboxProps = {
-  children: ({
+  children?: ({
     view,
     updateView,
     mapRef,
@@ -71,7 +71,7 @@ export const Mapbox = ({
         }}
       >
         <GeolocateControl></GeolocateControl>
-        {children({ view, updateView, mapRef })}
+        {children && children({ view, updateView, mapRef })}
       </Map>
     </div>
   );

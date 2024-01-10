@@ -1,18 +1,18 @@
 {
   "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/*.git": true,
-    "**/.firebase": true,
-    "**/.nx": true,
-    "**/.vscode": true,
-    "**/dist": true,
-    "**/local": true,
-    "**/node_modules": true,
-    "**/firebase-export-*": true
+    "**/.git": false,
+    "**/.svn": false,
+    "**/.hg": false,
+    "**/CVS": false,
+    "**/.DS_Store": false,
+    "**/*.git": false,
+    "**/.firebase": false,
+    "**/.nx": false,
+    "**/.vscode": false,
+    "**/dist": false,
+    "**/local": false,
+    "**/node_modules": false,
+    "**/firebase-export-*": false
   },
   "editor.inlineSuggest.showToolbar": "always",
   "explorerExclude.backup": {},
@@ -201,32 +201,34 @@
                 "value": ["always"]
               }
             },
+            // DEPLOY SELECTED APP
             {
               "command": "commands.runInTerminal",
+
               "args": {
-                "text": "nx run app-ionic2:build",
-                "name": "build",
+                "text": "nx run app-${input:app}:build && nx run app-${input:app}:deploy",
+                "name": "deploy ${input:app}",
                 "reveal": true,
-                "waitForExit": true,
+                "iconColor": "charts.purple",
+                "waitForExit": false,
                 "reuse": "newest"
-              }
-            },
-            {
-              "command": "commands.runInTerminal",
-              "args": {
-                "text": "nx run app-ionic-test1:deploy",
-                "name": "deploy",
-                "reveal": true,
-                // "waitForExit": true,
-                "reuse": "newest"
-              }
+              },
+              "inputs": [
+                {
+                  "type": "pickString",
+                  "id": "app",
+                  "description": "Select app to serve",
+                  "options": ["proclaimer", "ionic-template"]
+                }
+              ]
             },
             {
               "command": "commands.runInTerminal",
               "args": {
                 "text": "echo 'Deploy Time:' $(date +'%T')",
-                "name": "deploy",
-                "reveal": true,
+                "name": "deploy time",
+                "iconColor": "charts.purple",
+                "reveal": false,
                 // "waitForExit": true,
                 "reuse": "newest"
               }
