@@ -1,6 +1,5 @@
 import { AppVersion } from '@ui-ion';
-import { IonButton, IonItem, IonList } from '@ionic/react';
-import { path } from '../content';
+import { IonItem, IonList } from '@ionic/react';
 
 // TODO add dark mode
 export const Settings = () => {

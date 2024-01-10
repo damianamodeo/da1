@@ -1,4 +1,4 @@
-import { Bbox } from "./types";
+import { Bbox } from './types';
 
 type QueryType = {
   houseNumber: string;

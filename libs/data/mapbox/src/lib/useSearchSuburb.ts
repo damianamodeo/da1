@@ -1,28 +1,34 @@
-const MAPBOX_API_TOKEN =
-  'pk.eyJ1IjoiZGFtaWFuYW1vZGVvIiwiYSI6ImNqeWxnb3lsejA4OXozYmxpajhzMXdvZjQifQ.OJBOK5ZvGEX2VaScbW_zUQ';
-
 const MINIMUM_QUERY_LENGTH = 2;
 
+import { GLOBAL_VARIABLES } from '@config';
 import { useEffect, useState } from 'react';
 
-// TODO add bbox to suburb search
+// TODO make bbox user dependent
 
 export const useSearchSuburb = (
   suburbQuery: string,
-  country?: string,
-  bbox?: number[]
+  country?: string
+  // bbox?: number[]
 ) => {
   const [features, setFeatures] = useState<any[]>([]);
+
+  const bbox = `&bbox=${146}%2C${-33}%2C${156}%2C${-31}`;
+  const access_token = `&access_token=${GLOBAL_VARIABLES.MAPBOX_API_KEY}`;
 
   useEffect(() => {
     const searchSuburb = async () => {
       try {
-        const types = 'place';
-        const proximity = '151.209889,-33.874666';
-        const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${suburbQuery}.json?types=${types}&proximity=${proximity}&access_token=${MAPBOX_API_TOKEN}`;
+        const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${suburbQuery}.json?types=place${bbox}${access_token}`;
         const response = await fetch(url);
         const data = await response.json();
         const features = data.features;
+        console.log('🚀  features:', features);
+
+        if (features === undefined) {
+          setFeatures([]);
+          return;
+        }
+
         setFeatures(features);
       } catch (error) {
         console.error(error);
