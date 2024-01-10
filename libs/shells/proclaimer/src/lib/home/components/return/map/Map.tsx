@@ -131,34 +131,31 @@ export const Map = () => {
   return (
     <>
       <div className="full centered">
-        <ErrorBoundary FallbackComponent={Fallback}>
-          <Mapbox1></Mapbox1>
-          {/* <Mapbox
-            onClick={onClick}
-            interactiveLayerIds={[clusterLayer.id, unclusteredPointLayer.id]}
-          >
-            {(controls: any) => {
-              return (
-                <Clusters
-                  {...controls}
-                  source={{
-                    id: 'not_at_homes',
-                    clusterMaxZoom: 13,
-                    clusterRadius: 50,
-                  }}
-                  locations={locations}
-                  layers={[
-                    clusterLayer,
-                    clusterCountLayer,
-                    unclusteredPointLayer,
-                    houseNumber,
-                    units,
-                  ]}
-                ></Clusters>
-              );
-            }}
-          </Mapbox> */}
-        </ErrorBoundary>
+        <Mapbox
+          onClick={onClick}
+          interactiveLayerIds={[clusterLayer.id, unclusteredPointLayer.id]}
+        >
+          {(controls: any) => {
+            return (
+              <Clusters
+                {...controls}
+                source={{
+                  id: 'not_at_homes',
+                  clusterMaxZoom: 13,
+                  clusterRadius: 50,
+                }}
+                locations={locations}
+                layers={[
+                  clusterLayer,
+                  clusterCountLayer,
+                  unclusteredPointLayer,
+                  houseNumber,
+                  units,
+                ]}
+              ></Clusters>
+            );
+          }}
+        </Mapbox>
       </div>
 
       <ConfirmUnitsDelete
@@ -173,5 +170,7 @@ export const Map = () => {
     </>
   );
 };
+
+export const MapboxTest = Mapbox1;
 
 export default Map;

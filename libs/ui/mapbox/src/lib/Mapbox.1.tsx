@@ -7,6 +7,7 @@ export const Mapbox1 = () => {
     <Map
       mapboxAccessToken={GLOBAL_VARIABLES.MAPBOX_API_KEY}
       mapStyle="mapbox://styles/mapbox/streets-v9"
+      onData={(e) => e.target.resize()}
     />
   );
 };
