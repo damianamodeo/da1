@@ -1,6 +1,7 @@
 import { Page, TabbedPage } from '@ui-ion';
 import { lazy } from 'react';
 import HomePage from './components/Home';
+import RecordPage from './components/record/Record';
 import ReturnPage from './components/return/Return';
 
 const AddAddress = lazy(
@@ -10,7 +11,6 @@ const History = lazy(() => import('./components/record/history/History'));
 
 const Map = lazy(() => import('./components/return/map/Map'));
 const List = lazy(() => import('./components/return/list/List'));
-
 
 const WritePage = lazy(() => import('./components/write/Write'));
 
@@ -23,22 +23,7 @@ export const Home = () => {
 };
 
 export const Record = () => {
-  return (
-    <TabbedPage
-      label="Record"
-      backButtonText="Home"
-      content={[
-        {
-          label: 'Add Address',
-          component: <AddAddress></AddAddress>,
-        },
-        {
-          label: 'History',
-          component: <History></History>,
-        },
-      ]}
-    ></TabbedPage>
-  );
+  return <RecordPage></RecordPage>;
 };
 
 export const Return = () => {
