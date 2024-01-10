@@ -2,7 +2,9 @@ import { Page, TabbedPage } from '@ui-ion';
 import { lazy } from 'react';
 import HomePage from './components/Home';
 
-const AddAddress = lazy(() => import('./components/record/add-address/AddAddress'));
+const AddAddress = lazy(
+  () => import('./components/record/add-address/AddAddress')
+);
 const History = lazy(() => import('./components/record/history/History'));
 
 const Map = lazy(() => import('./components/return/map/Map'));

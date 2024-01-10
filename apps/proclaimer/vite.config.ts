@@ -8,7 +8,7 @@ import htmlPlugin from 'vite-plugin-html-config';
 import Info from 'unplugin-info/vite';
 
 const htmlPluginOpt = {
-  title: 'Test 2',
+  title: 'Proclaimer',
   metas: [
     {
       name: 'theme-color',

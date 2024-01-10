@@ -22,7 +22,7 @@ export const ConfirmHouseDelete = ({
       dispatch({ type: 'SET_MODAL', payload: false });
   };
 
-  const { houseNumber, street, suburb } = state.addresses[0] 
+  const { houseNumber, street, suburb } = state.addresses[0];
 
   return (
     <IonActionSheet

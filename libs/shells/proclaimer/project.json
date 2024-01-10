@@ -1,7 +1,7 @@
 {
-  "name": "shell-ionic-test",
+  "name": "shell-proclaimer",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shells/ionic-test/src",
+  "sourceRoot": "libs/shells/proclaimer/src",
   "projectType": "library",
   "tags": [],
   "targets": {}

@@ -5,7 +5,7 @@ import {
 } from '@data-firebase';
 import { DocumentData } from 'firebase/firestore';
 
-    // TODO add error handeling
+// TODO add error handeling
 export const editAddress = async ({
   action,
   timestamp,
@@ -17,7 +17,6 @@ export const editAddress = async ({
     | 'move_to_return';
   timestamp: string | number;
 }) => {
-  
   await writeFirebaseDoc({
     path: firestoreDocumentPaths.not_at_homes,
     data: ({

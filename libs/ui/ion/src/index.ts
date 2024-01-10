@@ -6,4 +6,4 @@ export * from './lib/LoadingSpinner';
 export * from './lib/Page';
 export * from './lib/Picker';
 export * from './lib/TabbedPage';
-export * from './lib/TabsApp';
+export * from './lib/IonicApp';
