@@ -1,5 +1,11 @@
-import { firestoreDocumentPaths, useFirestoreData } from '@data-firebase';
 import {
+  IonBackButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
   IonAccordion,
   IonAccordionGroup,
   IonActionSheet,
@@ -8,6 +14,9 @@ import {
   IonLabel,
   IonList,
 } from '@ionic/react';
+import { LoadingSpinner } from '@ui-ion';
+import { Suspense } from 'react';
+import { firestoreDocumentPaths, useFirestoreData } from '@data-firebase';
 import { groupBy } from 'lodash';
 import { arrowUndoOutline, trash } from 'ionicons/icons';
 import { useState } from 'react';
@@ -73,123 +82,139 @@ export const Write = () => {
   };
 
   return (
-    <>
-      <IonAccordionGroup multiple>
-        {Object.keys(groupedBySuburb)
-          .sort()
-          .map((suburb) => {
-            const groupedByStreet = groupBy(groupedBySuburb[suburb], 'street');
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton></IonBackButton>
+          </IonButtons>
+          <IonTitle>Write2</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <Suspense fallback={<LoadingSpinner></LoadingSpinner>}>
+          <IonAccordionGroup multiple>
+            {Object.keys(groupedBySuburb)
+              .sort()
+              .map((suburb) => {
+                const groupedByStreet = groupBy(
+                  groupedBySuburb[suburb],
+                  'street'
+                );
 
-            return (
-              <IonAccordion key={suburb}>
-                <IonItem slot="header" color="light">
-                  {/* TODO add total addresses in suburb */}
-                  <IonLabel>{suburb}</IonLabel>
-                </IonItem>
-                <div className="ion-padding" slot="content">
-                  <IonAccordionGroup multiple key={suburb}>
-                    {Object.keys(groupedByStreet).map((street) => {
-                      return (
-                        <IonAccordion key={street}>
-                          <IonItem slot="header" color="light">
-                            {/* TODO add total addresses in street */}
-                            <IonLabel>{street}</IonLabel>
-                          </IonItem>
-                          <IonList
-                            className="ion-padding-bottom"
-                            slot="content"
-                          >
-                            {groupedBySuburb[suburb]
-                              .filter((item) => item.street === street)
-                              .map((address) => {
-                                const header = `${
-                                  address.unitNumber && `${address.unitNumber}/`
-                                }${address.houseNumber} 
+                return (
+                  <IonAccordion key={suburb}>
+                    <IonItem slot="header" color="light">
+                      {/* TODO add total addresses in suburb */}
+                      <IonLabel>{suburb}</IonLabel>
+                    </IonItem>
+                    <div className="ion-padding" slot="content">
+                      <IonAccordionGroup multiple key={suburb}>
+                        {Object.keys(groupedByStreet).map((street) => {
+                          return (
+                            <IonAccordion key={street}>
+                              <IonItem slot="header" color="light">
+                                {/* TODO add total addresses in street */}
+                                <IonLabel>{street}</IonLabel>
+                              </IonItem>
+                              <IonList
+                                className="ion-padding-bottom"
+                                slot="content"
+                              >
+                                {groupedBySuburb[suburb]
+                                  .filter((item) => item.street === street)
+                                  .map((address) => {
+                                    const header = `${
+                                      address.unitNumber &&
+                                      `${address.unitNumber}/`
+                                    }${address.houseNumber} 
                              ${address.street}${address.suburb}`;
-                                return (
-                                  <IonItem key={address.timestamp}>
-                                    {`${address.unitNumber && 'Unit '}`}
-                                    {address.unitNumber}
-                                    {`${address.unitNumber && ' of '}`}
-                                    {address.houseNumber}
-                                    <IonIcon
-                                      className="ion-padding-start"
-                                      color="primary"
-                                      icon={arrowUndoOutline}
-                                      slot="end"
-                                      onClick={() => {
-                                        setTimestamp(
-                                          address.timestamp as number
-                                        );
-                                        setConfirmMoveActionSheet(true);
-                                        setSubheader(header);
-                                      }}
-                                    ></IonIcon>
-                                    <IonIcon
-                                      className="ion-padding-start"
-                                      icon={trash}
-                                      color="danger"
-                                      slot="end"
-                                      onClick={() => {
-                                        setTimestamp(
-                                          address.timestamp as number
-                                        );
-                                        setConfirmDeleteActionSheet(true);
-                                        setSubheader(header);
-                                      }}
-                                    ></IonIcon>
-                                  </IonItem>
-                                );
-                              })}
-                          </IonList>
-                        </IonAccordion>
-                      );
-                    })}
-                  </IonAccordionGroup>
-                </div>
-              </IonAccordion>
-            );
-          })}
-      </IonAccordionGroup>
-      <IonActionSheet
-        isOpen={confirmMoveActionSheet}
-        header="Delete Address"
-        subHeader={subheader}
-        buttons={[
-          {
-            text: 'Send to Return List',
-            handler: () => handleConfirm('move_to_return'),
-          },
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            handler: () => {
-              setConfirmMoveActionSheet(false);
-            },
-          },
-        ]}
-      ></IonActionSheet>
+                                    return (
+                                      <IonItem key={address.timestamp}>
+                                        {`${address.unitNumber && 'Unit '}`}
+                                        {address.unitNumber}
+                                        {`${address.unitNumber && ' of '}`}
+                                        {address.houseNumber}
+                                        <IonIcon
+                                          className="ion-padding-start"
+                                          color="primary"
+                                          icon={arrowUndoOutline}
+                                          slot="end"
+                                          onClick={() => {
+                                            setTimestamp(
+                                              address.timestamp as number
+                                            );
+                                            setConfirmMoveActionSheet(true);
+                                            setSubheader(header);
+                                          }}
+                                        ></IonIcon>
+                                        <IonIcon
+                                          className="ion-padding-start"
+                                          icon={trash}
+                                          color="danger"
+                                          slot="end"
+                                          onClick={() => {
+                                            setTimestamp(
+                                              address.timestamp as number
+                                            );
+                                            setConfirmDeleteActionSheet(true);
+                                            setSubheader(header);
+                                          }}
+                                        ></IonIcon>
+                                      </IonItem>
+                                    );
+                                  })}
+                              </IonList>
+                            </IonAccordion>
+                          );
+                        })}
+                      </IonAccordionGroup>
+                    </div>
+                  </IonAccordion>
+                );
+              })}
+          </IonAccordionGroup>
+          <IonActionSheet
+            isOpen={confirmMoveActionSheet}
+            header="Delete Address"
+            subHeader={subheader}
+            buttons={[
+              {
+                text: 'Send to Return List',
+                handler: () => handleConfirm('move_to_return'),
+              },
+              {
+                text: 'Cancel',
+                role: 'cancel',
+                handler: () => {
+                  setConfirmMoveActionSheet(false);
+                },
+              },
+            ]}
+          ></IonActionSheet>
 
-      <IonActionSheet
-        isOpen={confirmDeleteActionSheet}
-        header="Delete Address"
-        subHeader={subheader}
-        buttons={[
-          {
-            text: 'Delete',
-            role: 'destructive',
-            handler: () => handleConfirm('delete_from_write'),
-          },
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            handler: () => {
-              setConfirmDeleteActionSheet(false);
-            },
-          },
-        ]}
-      ></IonActionSheet>
-    </>
+          <IonActionSheet
+            isOpen={confirmDeleteActionSheet}
+            header="Delete Address"
+            subHeader={subheader}
+            buttons={[
+              {
+                text: 'Delete',
+                role: 'destructive',
+                handler: () => handleConfirm('delete_from_write'),
+              },
+              {
+                text: 'Cancel',
+                role: 'cancel',
+                handler: () => {
+                  setConfirmDeleteActionSheet(false);
+                },
+              },
+            ]}
+          ></IonActionSheet>
+        </Suspense>
+      </IonContent>
+    </IonPage>
   );
 };
 
