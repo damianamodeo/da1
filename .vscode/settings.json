@@ -1,18 +1,18 @@
 {
   "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/*.git": true,
-    "**/.firebase": true,
-    "**/.nx": true,
-    "**/.vscode": true,
-    "**/dist": true,
-    "**/local": true,
-    "**/node_modules": true,
-    "**/firebase-export-*": true
+    "**/.git": false,
+    "**/.svn": false,
+    "**/.hg": false,
+    "**/CVS": false,
+    "**/.DS_Store": false,
+    "**/*.git": false,
+    "**/.firebase": false,
+    "**/.nx": false,
+    "**/.vscode": false,
+    "**/dist": false,
+    "**/local": false,
+    "**/node_modules": false,
+    "**/firebase-export-*": false
   },
   "editor.inlineSuggest.showToolbar": "always",
   "explorerExclude.backup": {},
@@ -42,15 +42,10 @@
             // SERVE SELECTED APP
             {
               "command": "commands.runInTerminal",
-              // "args": {
-              //   "text": "npm create vite@latest ${input:folderName} -- --template ${input:template}",
-              //   "reveal": true,
-              //   "reuse": "newest"
-              // },
               "args": {
                 "text": "npx nx run app-${input:app}:serve --host",
                 "name": "serve wip",
-                "reveal": true,
+                "reveal": false,
                 "iconColor": "charts.green",
                 "waitForExit": false,
                 "reuse": "newest"
@@ -69,14 +64,34 @@
                 }
               ]
             },
+            // PREVIEW SELECTED APP
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "npx nx run app-${input:app}:preview --host",
+                "name": "preview wip",
+                "reveal": false,
+                "iconColor": "charts.green",
+                "waitForExit": false,
+                "reuse": "newest"
+              },
+              "inputs": [
+                {
+                  "type": "pickString",
+                  "id": "app",
+                  "description": "Select app to serve",
+                  "options": ["proclaimer", "ionic-template"]
+                }
+              ]
+            },
             // SERVE TESTING
             {
               "command": "commands.runInTerminal",
               "args": {
                 "text": "npx nx run app-testing:serve --host",
                 "name": "serve testing",
-                "iconColor": "charts.blue",
-                "reveal": true,
+                "iconColor": "charts.green",
+                "reveal": false,
                 "waitForExit": false,
                 "reuse": "newest"
               }
@@ -98,7 +113,7 @@
               "args": {
                 "text": "firebase emulators:start --import=./local --export-on-exit --only firestore",
                 "name": "emulators",
-                "iconColor": "charts.yellow",
+                "iconColor": "charts.green",
                 "reveal": true,
                 "waitForExit": false,
                 "reuse": "newest"
@@ -106,7 +121,30 @@
             }
           ]
         },
-
+        "build app :DA": {
+          "sequence": [
+            // SERVE SELECTED APP
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "npx nx run app-${input:app}:build --host",
+                "name": "build",
+                "reveal": true,
+                "iconColor": "charts.orange",
+                "waitForExit": false,
+                "reuse": "newest"
+              },
+              "inputs": [
+                {
+                  "type": "pickString",
+                  "id": "app",
+                  "description": "Select app to serve",
+                  "options": ["proclaimer", "ionic-template"]
+                }
+              ]
+            }
+          ]
+        },
         "serve latest project": {
           "sequence": [
             {

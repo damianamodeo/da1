@@ -23,6 +23,7 @@ import { useState } from 'react';
 import editAddress from '../../logic/editAddress';
 
 export const Write = () => {
+  // TODO sort house numbers 
   const [confirmMoveActionSheet, setConfirmMoveActionSheet] = useState(false);
   const [confirmDeleteActionSheet, setConfirmDeleteActionSheet] =
     useState(false);
@@ -88,7 +89,7 @@ export const Write = () => {
           <IonButtons slot="start">
             <IonBackButton></IonBackButton>
           </IonButtons>
-          <IonTitle>Write2</IonTitle>
+          <IonTitle>Write</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
