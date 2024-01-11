@@ -1,11 +1,4 @@
 {
-  // Place your Latest workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
-  // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
-  // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
-  // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
-  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
-  // Placeholders with the same ids are connected.
-  // Example:
   "-useReducer": {
     "prefix": "react",
     "body": [
@@ -13,9 +6,9 @@
       "",
       "",
       "",
-      "  const [state, dispatch]: [State, React.Dispatch<Action>] = useReducer<",
-      "    Reducer<State, Action>",
-      "  >(reducer, initialState);",
+      "  const [state, dispatch]: [${TM_FILENAME_BASE}_State, React.Dispatch<${TM_FILENAME_BASE}_Actions>] = useReducer<",
+      "    Reducer<${TM_FILENAME_BASE}_State, ${TM_FILENAME_BASE}_Actions>",
+      "  >(reducer, stateInitialiser());",
       "",
       "",
       "",
@@ -35,31 +28,42 @@
       "",
       "const initialState = { modal: false, loading: true };",
       "",
-      "export type State = typeof initialState;",
+      "const stateInitialiser = () => {",
+      "  return localStorage.getItem('${TM_FILENAME_BASE}-state')",
+      "    ? JSON.parse(localStorage.getItem('${TM_FILENAME_BASE}-state') || '')",
+      "    : initialState;",
+      "};",
       "",
-      "export type Action =",
+      "export type ${TM_FILENAME_BASE}_State = typeof initialState;",
+      "",
+      "export type ${TM_FILENAME_BASE}_Actions =",
       "  | { type: 'SET_MODAL'; payload: boolean }",
       "  | { type: 'SET_LOADING'; payload: boolean };",
       "",
-      "const reducer = (state: State, action: Action) => {",
+      "const reducer = (state: ${TM_FILENAME_BASE}_State, action: ${TM_FILENAME_BASE}_Actions) => {",
+      "  let newState = state;",
       "  switch (action.type) {",
       "    case 'SET_MODAL':",
-      "      return {",
+      "      newState = {",
       "        ...state,",
       "        modal: action.payload,",
       "      };",
+      "      break;",
       "    case 'SET_LOADING':",
-      "      return {",
+      "      newState = {",
       "        ...state,",
       "        loading: action.payload,",
       "      };",
+      "      break;",
       "    default:",
-      "      return state;",
+      "      break;",
       "  }",
+      "  localStorage.setItem('${TM_FILENAME_BASE}-state', JSON.stringify(newState));",
+      "  return newState;",
       "};",
-      ""
-      ""
-      ""
+      "",
+      "",
+      "",
       ""
     ],
     "description": "Creates a React Arrow Function Component with ES7 module system and TypeScript interface",
