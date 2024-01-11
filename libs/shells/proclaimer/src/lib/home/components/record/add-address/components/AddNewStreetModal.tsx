@@ -7,17 +7,34 @@ import { useSearchStreet } from '@data-mapbox';
 import { IonModal } from '@ionic/react';
 import { Autocomplete } from '@ui-ion';
 import { DocumentData } from 'firebase/firestore';
+import { Action, State } from '../AddAddress';
+import { Dispatch } from 'react';
 
-export const AddNewStreetModal = (props: any) => {
-  const newStreetData = useSearchStreet(props.state.searchString || '');
+export const AddNewStreetModal = (props: {
+  state: State;
+  dispatch: Dispatch<Action>;
+}) => {
+  const newStreetData = useSearchStreet({
+    streetQuery: props.state.searchString || '',
+    suburb: props.state.suburb,
+    bbox: props.state.bbox,
+  });
   const newStreetOptions: any = newStreetData.map((data) => {
     return { text: data.text, value: data };
   });
 
   const onNewStreetSelect = (data: any) => {
     // TODO add error handling in case writeFirebaseDoc fails
+    // TODO add warning if option has relevance below 0.9
+    // TODO add returned suburb name instead of suburb name stored in state
     props.dispatch({ type: 'SET_SEARCH_STRING', payload: '' });
-    props.dispatch({ type: 'SET_STREET', payload: data.text });
+    props.dispatch({
+      type: 'SET_STREET',
+      payload: {
+        street: data.text,
+        streetCoords: [data.value.center[0], data.value.center[1]],
+      },
+    });
     writeFirebaseDoc({
       path: firestoreDocumentPaths.not_at_homes,
       data: ({
@@ -29,8 +46,8 @@ export const AddNewStreetModal = (props: any) => {
         const newStreetOption = {
           suburb: props.state.suburb,
           name: data.text,
-          lat: data.value.center[0],
-          lng: data.value.center[1],
+          lng: data.value.center[0],
+          lat: data.value.center[1],
         };
 
         const { street_options, ...rest } = existingData as {
@@ -67,7 +84,10 @@ export const AddNewStreetModal = (props: any) => {
         onCancel={() =>
           props.dispatch({
             type: 'SET_STREET',
-            payload: '',
+            payload: {
+              street: '',
+              streetCoords: props.state.streetCoords as [number, number],
+            },
           })
         }
         onInputChange={(v: string) => {

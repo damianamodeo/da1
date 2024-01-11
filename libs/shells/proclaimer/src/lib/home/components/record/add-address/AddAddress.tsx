@@ -1,20 +1,13 @@
-import {
-  StreetOption,
-  firestoreDocumentPaths,
-  writeFirebaseDoc,
-} from '@data-firebase';
-import { Bbox, useSearchStreet } from '@data-mapbox';
-import { DocumentData } from 'firebase/firestore';
+import { Bbox } from '@data-mapbox';
 import { Reducer, useReducer } from 'react';
 import { SubmitForm } from './components/SubmitForm';
 import { ConfirmSubmitModal } from './components/ConfirmSubmitModal';
 import { AddNewSuburbModal } from './components/AddNewSuburbModal';
 import { AddNewStreetModal } from './components/AddNewStreetModal';
 
-// TYPES
 export type Suburb = {
   name: string;
-  bbox: Bbox;
+  bbox: [number, number, number, number];
 };
 
 type Coords = {
@@ -23,22 +16,15 @@ type Coords = {
   relevance: number;
 };
 
-type State = {
-  suburb: string;
-  street: string;
-  houseNumber: string;
-  unitNumber: string;
-  bbox?: Bbox;
-  coords?: Coords;
-  modal?: boolean;
-  loading?: boolean;
-  searchString?: string;
-  sendToLetterList?: boolean;
-};
-
-type Action =
-  | { type: 'SET_SUBURB'; payload: { suburb: string; bbox: Bbox } }
-  | { type: 'SET_STREET'; payload: string }
+export type Action =
+  | {
+      type: 'SET_SUBURB';
+      payload: { suburb: string; bbox: [number, number, number, number] };
+    }
+  | {
+      type: 'SET_STREET';
+      payload: { street: string; streetCoords: [number, number] };
+    }
   | { type: 'SET_HOUSE_NUMBER'; payload: string }
   | { type: 'SET_UNIT_NUMBER'; payload: string }
   | { type: 'OPEN_MODAL' }
@@ -53,32 +39,36 @@ type Action =
   | { type: 'SET_LETTER_LIST'; payload: boolean };
 
 // REDUCER
-const initialState = (): State => {
-  return {
-    suburb: localStorage.getItem('not-at-home-suburb') || '',
-    street: localStorage.getItem('not-at-home-street') || '',
-    houseNumber: localStorage.getItem('not-at-home-house') || '',
-    unitNumber: localStorage.getItem('not-at-home-unit') || '',
-    coords: {
-      lat: 0,
-      lng: 0,
-      relevance: 0,
-    },
-    modal: false,
-    loading: false,
-    searchString: '',
-    sendToLetterList: false,
-  };
+const initialStatePrimer = {
+  suburb: '',
+  bbox: [0, 0, 0, 0] as [number, number, number, number],
+  street: '',
+  streetCoords: [0, 0],
+  houseNumber: '',
+  unitNumber: '',
+  coords: {
+    lat: 0,
+    lng: 0,
+    relevance: 0,
+  },
+  modal: false,
+  loading: false,
+  searchString: '',
+  sendToLetterList: false,
+};
+const initialState = () => {
+  return localStorage.getItem('not-at-home-state')
+    ? JSON.parse(localStorage.getItem('not-at-home-state') || '')
+    : initialStatePrimer;
 };
 
+export type State = typeof initialStatePrimer;
+
 const reducer = (state: State, action: Action): State => {
+  let newState: State = state;
   switch (action.type) {
     case 'SET_SUBURB':
-      localStorage.setItem('not-at-home-suburb', action.payload.suburb);
-      localStorage.removeItem('not-at-home-street');
-      localStorage.removeItem('not-at-home-house');
-      localStorage.removeItem('not-at-home-unit');
-      return {
+      newState = {
         ...state,
         suburb: action.payload.suburb,
         street: '',
@@ -86,53 +76,60 @@ const reducer = (state: State, action: Action): State => {
         unitNumber: '',
         bbox: action.payload.bbox,
       };
+      break;
     case 'SET_STREET':
-      localStorage.setItem('not-at-home-street', action.payload);
-      localStorage.removeItem('not-at-home-house');
-      localStorage.removeItem('not-at-home-unit');
-      return {
+      newState = {
         ...state,
-        street: action.payload,
+        street: action.payload.street,
+        streetCoords: action.payload.streetCoords,
         houseNumber: '',
         unitNumber: '',
       };
+      break;
     case 'SET_HOUSE_NUMBER':
-      localStorage.setItem('not-at-home-house', action.payload);
-      localStorage.removeItem('not-at-home-unit');
-      return {
+      newState = {
         ...state,
         houseNumber: action.payload,
         unitNumber: '',
       };
+      break;
     case 'SET_UNIT_NUMBER':
-      localStorage.setItem('not-at-home-unit', action.payload);
-      return { ...state, unitNumber: action.payload };
+      newState = { ...state, unitNumber: action.payload };
+      break;
     case 'CLOSE_MODAL':
-      return { ...state, modal: false, sendToLetterList: false, loading: true };
+      newState = {
+        ...state,
+        modal: false,
+        sendToLetterList: false,
+        loading: true,
+      };
+      break;
     case 'OPEN_MODAL':
-      return { ...state, modal: true };
+      newState = { ...state, modal: true };
+      break;
     case 'ON_SUBMIT':
-      return {
+      newState = {
         ...state,
         loading: false,
         coords: action.payload,
         sendToLetterList: false,
       };
+      break;
     case 'SET_SEARCH_STRING':
-      return { ...state, searchString: action.payload };
+      newState = { ...state, searchString: action.payload };
+      break;
     case 'SET_LETTER_LIST':
-      return { ...state, sendToLetterList: action.payload };
-
-    default:
-      return state;
+      newState = { ...state, sendToLetterList: action.payload };
+      break;
   }
+  localStorage.setItem('not-at-home-state', JSON.stringify(newState));
+  return newState;
 };
 
 export const AddAddress = (): JSX.Element => {
   const [state, dispatch]: [State, React.Dispatch<Action>] = useReducer<
     Reducer<State, Action>
   >(reducer, initialState());
-
   return (
     <div className="ion-padding">
       <SubmitForm state={state} dispatch={dispatch} />

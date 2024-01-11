@@ -22,6 +22,7 @@ import {
 import { LoadingSpinner } from '@ui-ion';
 import { DocumentData } from 'firebase/firestore';
 
+// TODO hide address search result until recieved
 export const ConfirmSubmitModal = (props: any) => {
   const writeAddressToFirestore = ({
     existingData,

@@ -1,4 +1,4 @@
-import { searchAddress } from '@data-mapbox';
+import { getAddressCoords } from '@data-mapbox';
 import {
   IonButton,
   IonInput,
@@ -8,10 +8,13 @@ import {
   IonListHeader,
 } from '@ionic/react';
 import { Picker } from '@ui-ion';
-import { Suburb } from '../AddAddress';
+import { Action, State, Suburb } from '../AddAddress';
 import { firestoreDocumentPaths, useFirestoreData } from '@data-firebase';
 
-export const SubmitForm = (props: any) => {
+export const SubmitForm = (props: {
+  state: State;
+  dispatch: React.Dispatch<Action>;
+}) => {
   const options: any = useFirestoreData({
     path: firestoreDocumentPaths.not_at_homes,
   });
@@ -35,11 +38,12 @@ export const SubmitForm = (props: any) => {
   const handleSubmit = async () => {
     props.dispatch({ type: 'OPEN_MODAL' });
     try {
-      const coords = await searchAddress({
+      const coords = await getAddressCoords({
         houseNumber: props.state.houseNumber,
         street: props.state.street,
         suburb: props.state.suburb,
-        bbox: props.state.bbox,
+        bbox: props.state.bbox as [number, number, number, number],
+        proximity: props.state.streetCoords as [number, number],
       });
       props.dispatch({ type: 'ON_SUBMIT', payload: coords });
     } catch (error) {
@@ -61,7 +65,7 @@ export const SubmitForm = (props: any) => {
               type: 'SET_SUBURB',
               payload: {
                 suburb: text,
-                bbox: value.bbox,
+                bbox: value,
               },
             });
           }}
@@ -72,10 +76,23 @@ export const SubmitForm = (props: any) => {
           disabled={props.state.suburb.length === 0}
           label="Street"
           options={streetOptions}
-          onSelect={({ text }) => {
+          onSelect={({ value }) => {
+            if (value === 'add-street') {
+              props.dispatch({
+                type: 'SET_STREET',
+                payload: {
+                  street: 'Add New Street',
+                  streetCoords: [0, 0],
+                },
+              });
+              return;
+            }
             props.dispatch({
               type: 'SET_STREET',
-              payload: text,
+              payload: {
+                street: value.name,
+                streetCoords: [value.lng, value.lat],
+              },
             });
           }}
         ></Picker>

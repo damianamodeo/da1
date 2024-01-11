@@ -4,11 +4,10 @@ import { GLOBAL_VARIABLES } from '@config';
 import { useEffect, useState } from 'react';
 
 // TODO make bbox user dependent
+// TODO move api key to .env
 
 export const useSearchSuburb = (
   suburbQuery: string,
-  country?: string
-  // bbox?: number[]
 ) => {
   const [features, setFeatures] = useState<any[]>([]);
 
@@ -22,13 +21,10 @@ export const useSearchSuburb = (
         const response = await fetch(url);
         const data = await response.json();
         const features = data.features;
-        console.log('🚀  features:', features);
-
         if (features === undefined) {
           setFeatures([]);
           return;
         }
-
         setFeatures(features);
       } catch (error) {
         console.error(error);
