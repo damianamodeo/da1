@@ -34,6 +34,7 @@ export const useSearchStreet = ({
   // TODO add suburb bbox to street search
   // TODO make bbox user dependent
   // TODO move api key to .env
+  // TODO prevent unnecessary run of this function
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +43,7 @@ export const useSearchStreet = ({
         const data = await response.json();
         const features = data.features;
 
-        console.log('🚀  features:', features);
+        // console.log('🚀  features:', features);
 
         if (features === undefined) {
           setFeatures([]);
