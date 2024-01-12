@@ -6,7 +6,13 @@ import { useEffect, useState } from 'react';
 const collection =
   localStorage.getItem('congregation') || GLOBAL_VARIABLES.CONGREGATION;
 
-export const useFirestoreData = ({ path }: { path: FirestorePaths }) => {
+export const useFirestoreData = ({
+  path,
+  componentName = 'anon-component',
+}: {
+  path: FirestorePaths;
+  componentName?: string;
+}) => {
   const [data, setData] = useState({} as DocumentData | undefined);
 
   useEffect(() => {
@@ -14,6 +20,8 @@ export const useFirestoreData = ({ path }: { path: FirestorePaths }) => {
       if (!doc.data()) {
         // return new Error();
       }
+      console.count(`Read Firestore : ${path} : ${componentName} `);
+
       setData(doc.data());
     });
     return () => {
