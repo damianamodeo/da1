@@ -1,5 +1,4 @@
-import { ErrorBoundary } from 'react-error-boundary';
-import { Clusters, Mapbox, Mapbox1 } from '@ui-mapbox';
+import { Clusters, Mapbox } from '@ui-mapbox';
 import {
   clusterLayer,
   clusterCountLayer,
@@ -12,15 +11,6 @@ import {
   firestoreDocumentPaths,
   useFirestoreData,
 } from '@data-firebase';
-
-function Fallback({ error, resetErrorBoundary }: any) {
-  return (
-    <div role="alert">
-      <p>Something went wrong:</p>
-      <pre style={{ color: 'red' }}>{error.message}</pre>
-    </div>
-  );
-}
 
 import { Reducer, useEffect, useReducer } from 'react';
 import ConfirmHouseDelete from './components/ConfirmHouseDelete';
@@ -170,7 +160,5 @@ export const Map = () => {
     </>
   );
 };
-
-export const MapboxTest = Mapbox1;
 
 export default Map;
