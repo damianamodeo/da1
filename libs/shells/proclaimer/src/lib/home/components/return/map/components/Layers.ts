@@ -92,7 +92,7 @@ export const houseNumber: LayerProps = {
     'text-halo-blur': ['case', ['<', ['get', 'relevance'], 1], 10, 0],
   },
   layout: {
-    'text-offset': ['case', ['==', ['get', 'unitCount'], 0], [0, 0], [0, 0.3]],
+    'text-offset': ['case', ['==', ['get', 'unitCount'], 0], ["literal",[0, 0]], ["literal",[0, 0.3]]],
     'text-anchor': [
       'case',
       ['==', ['get', 'unitCount'], 0],
@@ -150,11 +150,10 @@ export const units: LayerProps = {
       ['linear'],
       ['zoom'],
       16,
-      [-0.1, 0.2],
+      ["literal",[-0.1, 0.2]],
       22,
-      [0, 0.5],
+      ["literal",[0, 0.5]],
     ],
-
     'text-ignore-placement': true,
     'text-field': [
       'case',
