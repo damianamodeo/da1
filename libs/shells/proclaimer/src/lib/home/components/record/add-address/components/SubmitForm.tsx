@@ -36,7 +36,7 @@ export const SubmitForm = (props: {
     { text: 'Add New Street', value: 'add-street' },
   ];
   const handleSubmit = async () => {
-    props.dispatch({ type: 'OPEN_MODAL' });
+    props.dispatch({ type: 'OPEN_SUBMIT_MODAL' });
     try {
       const coords = await getAddressCoords({
         houseNumber: props.state.houseNumber,
@@ -45,7 +45,7 @@ export const SubmitForm = (props: {
         bbox: props.state.bbox as [number, number, number, number],
         proximity: props.state.streetCoords as [number, number],
       });
-      props.dispatch({ type: 'ON_SUBMIT', payload: coords });
+      props.dispatch({ type: 'ON_SEARCH', payload: coords });
     } catch (error) {
       console.error('Error getting address coordinates:', error);
     }

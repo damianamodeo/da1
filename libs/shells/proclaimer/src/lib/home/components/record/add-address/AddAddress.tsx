@@ -1,4 +1,3 @@
-import { Bbox } from '@data-mapbox';
 import { Reducer, useReducer } from 'react';
 import { SubmitForm } from './components/SubmitForm';
 import { ConfirmSubmitModal } from './components/ConfirmSubmitModal';
@@ -27,15 +26,11 @@ export type Action =
     }
   | { type: 'SET_HOUSE_NUMBER'; payload: string }
   | { type: 'SET_UNIT_NUMBER'; payload: string }
-  | { type: 'OPEN_MODAL' }
-  | { type: 'CLOSE_MODAL' }
-  | {
-      type: 'SET_COORDS';
-      payload: Coords;
-    }
-  | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_SEARCH_STRING'; payload: string }
-  | { type: 'ON_SUBMIT'; payload: Coords }
+  | { type: 'ON_SEARCH'; payload: Coords }
+  | { type: 'OPEN_SUBMIT_MODAL' }
+  | { type: 'ON_SUBMIT' }
+  | { type: 'CLOSE_SUBMIT_MODAL' }
   | { type: 'SET_LETTER_LIST'; payload: boolean };
 
 const initialState = {
@@ -50,7 +45,7 @@ const initialState = {
     lng: 0,
     relevance: 0,
   },
-  modal: false,
+  submitModal: false,
   loading: false,
   searchString: '',
   sendToLetterList: false,
@@ -58,7 +53,7 @@ const initialState = {
 const stateInitialiser = () => {
   return localStorage.getItem('not-at-home-state')
     ? JSON.parse(localStorage.getItem('not-at-home-state') || '')
-    : initialStatePrimer;
+    : initialState;
 };
 
 export type State = typeof initialState;
@@ -95,23 +90,32 @@ const reducer = (state: State, action: Action): State => {
     case 'SET_UNIT_NUMBER':
       newState = { ...state, unitNumber: action.payload };
       break;
-    case 'CLOSE_MODAL':
-      newState = {
-        ...state,
-        modal: false,
-        sendToLetterList: false,
-        loading: true,
-      };
+    case 'OPEN_SUBMIT_MODAL':
+      newState = { ...state, submitModal: true };
       break;
-    case 'OPEN_MODAL':
-      newState = { ...state, modal: true };
-      break;
-    case 'ON_SUBMIT':
+    case 'ON_SEARCH':
       newState = {
         ...state,
         loading: false,
         coords: action.payload,
         sendToLetterList: false,
+      };
+      break;
+    case 'CLOSE_SUBMIT_MODAL':
+      newState = {
+        ...state,
+        submitModal: false,
+        loading: false,
+        sendToLetterList: false,
+      };
+      break;
+    case 'ON_SUBMIT':
+      newState = {
+        ...state,
+        submitModal: false,
+        loading: false,
+        sendToLetterList: false,
+        ...(state.unitNumber ? { unitNumber: '' } : { houseNumber: '' }),
       };
       break;
     case 'SET_SEARCH_STRING':

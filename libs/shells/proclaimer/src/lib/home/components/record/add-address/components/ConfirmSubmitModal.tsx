@@ -26,7 +26,6 @@ import { DocumentData } from 'firebase/firestore';
 export const ConfirmSubmitModal = (props: any) => {
   const writeAddressToFirestore = ({
     existingData,
-    documentExists,
   }: {
     existingData: DocumentData | undefined;
     documentExists: boolean;
@@ -78,8 +77,9 @@ export const ConfirmSubmitModal = (props: any) => {
       ...rest,
     };
   };
+
   return (
-    <IonModal isOpen={props.state.modal}>
+    <IonModal isOpen={props.state.submitModal}>
       <IonHeader>
         <IonToolbar>
           <IonTitle>Confirm</IonTitle>
@@ -87,7 +87,7 @@ export const ConfirmSubmitModal = (props: any) => {
             <IonButton
               onClick={() =>
                 props.dispatch({
-                  type: 'CLOSE_MODAL',
+                  type: 'CLOSE_SUBMIT_MODAL',
                 })
               }
             >
@@ -165,7 +165,7 @@ export const ConfirmSubmitModal = (props: any) => {
                   data: writeAddressToFirestore,
                 });
                 props.dispatch({
-                  type: 'CLOSE_MODAL',
+                  type: 'ON_SUBMIT',
                 });
               }}
             >
