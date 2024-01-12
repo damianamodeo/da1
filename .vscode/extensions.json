@@ -15,6 +15,7 @@
     "shan.code-settings-sync",
     "johnpapa.vscode-peacock",
     "google.wireit",
-    "fabiospampinato.vscode-commands"
+    "fabiospampinato.vscode-commands",
+    "wallabyjs.console-ninja"
   ]
 }
