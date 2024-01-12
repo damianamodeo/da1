@@ -232,6 +232,7 @@
         },
         "deploy latest project": {
           "sequence": [
+            // SET PANEL MAXIMIZE OPTION
             {
               "command": "commands.toggleSetting",
               "args": {
@@ -239,7 +240,7 @@
                 "value": ["always"]
               }
             },
-            // DEPLOY SELECTED APP
+            // BUILD & DEPLOY SELECTED APP
             {
               "command": "commands.runInTerminal",
 
@@ -260,6 +261,7 @@
                 }
               ]
             },
+            // DISPLAY DEPLOY TIME
             {
               "command": "commands.runInTerminal",
               "args": {
@@ -271,6 +273,7 @@
                 "reuse": "newest"
               }
             },
+            // SET PANEL MAXIMIZE OPTION
             {
               "command": "commands.toggleSetting",
               "args": {
