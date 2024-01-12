@@ -38,8 +38,7 @@ export type Action =
   | { type: 'ON_SUBMIT'; payload: Coords }
   | { type: 'SET_LETTER_LIST'; payload: boolean };
 
-// REDUCER
-const initialStatePrimer = {
+const initialState = {
   suburb: '',
   bbox: [0, 0, 0, 0] as [number, number, number, number],
   street: '',
@@ -56,13 +55,13 @@ const initialStatePrimer = {
   searchString: '',
   sendToLetterList: false,
 };
-const initialState = () => {
+const stateInitialiser = () => {
   return localStorage.getItem('not-at-home-state')
     ? JSON.parse(localStorage.getItem('not-at-home-state') || '')
     : initialStatePrimer;
 };
 
-export type State = typeof initialStatePrimer;
+export type State = typeof initialState;
 
 const reducer = (state: State, action: Action): State => {
   let newState: State = state;
@@ -129,7 +128,7 @@ const reducer = (state: State, action: Action): State => {
 export const AddAddress = (): JSX.Element => {
   const [state, dispatch]: [State, React.Dispatch<Action>] = useReducer<
     Reducer<State, Action>
-  >(reducer, initialState());
+  >(reducer, stateInitialiser());
   return (
     <div className="ion-padding">
       <SubmitForm state={state} dispatch={dispatch} />

@@ -16,6 +16,7 @@
     "johnpapa.vscode-peacock",
     "google.wireit",
     "fabiospampinato.vscode-commands",
-    "wallabyjs.console-ninja"
+    "wallabyjs.console-ninja",
+    "pwabuilder.pwa-studio"
   ]
 }
