@@ -20,7 +20,7 @@ export const useFirestoreData = ({
       if (!doc.data()) {
         // return new Error();
       }
-      console.count(`Read Firestore : ${path} : ${componentName} `);
+      // console.count(`Read Firestore : ${path} : ${componentName} `);
 
       setData(doc.data());
     });
