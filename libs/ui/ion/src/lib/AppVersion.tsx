@@ -12,15 +12,15 @@ export const AppVersion = () => {
   }).format(buildTime);
 
   const timeDifference = timeToNow(buildTime);
-
+  // TODO format AppVersion component
   return (
     <IonItem detail={false}>
-        <strong>App Build Time</strong>
-        <br />
-        <IonText>{formattedBuildTime}</IonText>
-        <IonText>
-          <div>updated {timeDifference}</div>
-        </IonText>
+      <strong>App Build Time</strong>
+      <br />
+      <IonText>{formattedBuildTime}</IonText>
+      <IonText>
+        <div>updated {timeDifference}</div>
+      </IonText>
     </IonItem>
   );
 };

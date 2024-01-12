@@ -4,6 +4,7 @@ import { GLOBAL_VARIABLES } from '@config';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import type { MapMouseEvent, MapRef } from 'react-map-gl';
+import { ErrorBoundary } from 'react-error-boundary';
 const TOKEN = GLOBAL_VARIABLES.MAPBOX_API_KEY;
 
 export type MapboxProps = {
@@ -48,31 +49,37 @@ export const Mapbox = ({
   const mapRef = useRef<MapRef>(null);
   const updateView = (newView: SetStateAction<ViewState>) => setView(newView);
 
+  const ErrorFallback = ({ error }: { error: Error | null }) => {
+    return <div>Something went wrong: {error?.message}</div>;
+  };
+  
   return (
     <div className="full centered">
-      <Map
-        mapboxAccessToken={TOKEN}
-        reuseMaps
-        initialViewState={{
-          ...view,
-        }}
-        mapStyle="mapbox://styles/damianamodeo/clefifzvz000u01nw8h84n67m"
-        onRender={(event) => event.target.resize()}
-        onMoveEnd={(e) => {
-          localStorage.setItem('map-view-state', JSON.stringify(e.viewState));
-          setView(e.viewState);
-        }}
-        ref={mapRef}
-        interactiveLayerIds={interactiveLayerIds as string[]}
-        onClick={(event) => {
-          if (onClick) {
-            onClick({ event, view, updateView, mapRef });
-          }
-        }}
-      >
-        <GeolocateControl></GeolocateControl>
-        {children && children({ view, updateView, mapRef })}
-      </Map>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <Map
+          mapboxAccessToken={TOKEN}
+          reuseMaps
+          initialViewState={{
+            ...view,
+          }}
+          mapStyle="mapbox://styles/damianamodeo/clefifzvz000u01nw8h84n67m"
+          onRender={(event) => event.target.resize()}
+          onMoveEnd={(e) => {
+            localStorage.setItem('map-view-state', JSON.stringify(e.viewState));
+            setView(e.viewState);
+          }}
+          ref={mapRef}
+          interactiveLayerIds={interactiveLayerIds as string[]}
+          onClick={(event) => {
+            if (onClick) {
+              onClick({ event, view, updateView, mapRef });
+            }
+          }}
+        >
+          <GeolocateControl></GeolocateControl>
+          {children && children({ view, updateView, mapRef })}
+        </Map>
+      </ErrorBoundary>
     </div>
   );
 };
