@@ -16,7 +16,6 @@ import { Suspense } from 'react';
 import { path } from '../../AppShell';
 
 export const Home = () => {
-  // TODO Reword descriptions in Card Content
   return (
     <IonPage>
       <IonHeader>
@@ -34,8 +33,8 @@ export const Home = () => {
               <IonCardTitle>Record</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-              Input addresses for unanswered calls. The list will be shared with
-              others for thorough and efficient follow-ups.
+              Form to submit addresses for not-at-homes. The list will be shared
+              with others for others to.
             </IonCardContent>
           </IonCard>
           <IonCard routerLink={path.Return}>
@@ -43,7 +42,8 @@ export const Home = () => {
               <IonCardTitle>Return</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-              Find addresses of homes to call on where no one was found at home.
+              Map of addresses where residents were not-at-home, requiring the
+              need for a follow-up visit.
             </IonCardContent>
           </IonCard>
           <IonCard routerLink={path.Write}>
@@ -51,8 +51,8 @@ export const Home = () => {
               <IonCardTitle>Write</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-              Find addresses of people that have not been found at home to send
-              your letters.
+              List of addresses where residents were not-at-home multiple times,
+              requiring a letter to be sent.
             </IonCardContent>
           </IonCard>
         </Suspense>

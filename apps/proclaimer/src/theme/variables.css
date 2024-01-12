@@ -236,24 +236,3 @@ html {
   https://ionicframework.com/docs/layout/dynamic-font-scaling */
   --ion-dynamic-font: var(--ion-default-dynamic-font);
 }
-
-/* Damian's Code Below */
-
-@media (orientation: landscape) {
-  ion-content::part(scroll) {
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-  }
-}
-
-.full {
-  width: 100%;
-  height: 100%;
-}
-
-.centered {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}

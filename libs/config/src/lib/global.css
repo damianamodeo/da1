@@ -9,3 +9,22 @@
   justify-content: center;
   align-items: center;
 }
+
+.text-balanced {
+  text-wrap: balance;
+}
+
+.test{
+  background-color: aquamarine;
+}
+
+@media (orientation: landscape) {
+  ion-content::part(scroll) {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+ion-card-content {
+  text-wrap: balance;
+}

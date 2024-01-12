@@ -5,6 +5,8 @@ import Home from './home/components/Home';
 import Record from './home/components/record/Record';
 import Return from './home/components/return/Return';
 import Write from './home/components/write/Write';
+import "@global/styles"
+
 
 const content = [
   // HOME
