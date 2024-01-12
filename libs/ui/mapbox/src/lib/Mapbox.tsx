@@ -5,6 +5,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import type { MapMouseEvent, MapRef } from 'react-map-gl';
 import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorFallback } from '@ui-base';
 const TOKEN = GLOBAL_VARIABLES.MAPBOX_API_KEY;
 
 export type MapboxProps = {
@@ -49,10 +50,6 @@ export const Mapbox = ({
   const mapRef = useRef<MapRef>(null);
   const updateView = (newView: SetStateAction<ViewState>) => setView(newView);
 
-  const ErrorFallback = ({ error }: { error: Error | null }) => {
-    return <div>Something went wrong: {error?.message}</div>;
-  };
-  
   return (
     <div className="full centered">
       <ErrorBoundary FallbackComponent={ErrorFallback}>
