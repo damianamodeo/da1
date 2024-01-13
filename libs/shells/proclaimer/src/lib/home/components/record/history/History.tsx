@@ -51,6 +51,12 @@ const reducer = (state: State, action: Action) => {
   }
 };
 // COMPONENT
+
+const HelpText = ({ showHelpText }: { showHelpText: boolean }) => {
+  if (!showHelpText) return null;
+  return <IonItem>Addresses you submit will show up here</IonItem>;
+};
+
 export const History = () => {
   // STATE
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -178,10 +184,10 @@ export const History = () => {
       payload: initialState,
     });
   };
-  // RENDER
-  // TODO Add help text to show what this list is for and if user hasnt already added any addresses
+  
   return (
     <div className="">
+      <HelpText showHelpText={addresses.length === 0}></HelpText>
       <IonList>
         {addresses?.map((address: any, index: number) => {
           return (
