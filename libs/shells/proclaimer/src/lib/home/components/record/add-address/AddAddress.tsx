@@ -22,7 +22,11 @@ export type Action =
     }
   | {
       type: 'SET_STREET';
-      payload: { street: string; streetCoords: [number, number] };
+      payload: {
+        street: string;
+        streetCoords: [number, number];
+        suburb: string;
+      };
     }
   | { type: 'SET_HOUSE_NUMBER'; payload: string }
   | { type: 'SET_UNIT_NUMBER'; payload: string }
@@ -74,6 +78,7 @@ const reducer = (state: State, action: Action): State => {
     case 'SET_STREET':
       newState = {
         ...state,
+        suburb: action.payload.suburb,
         street: action.payload.street,
         streetCoords: action.payload.streetCoords,
         houseNumber: '',

@@ -26,7 +26,7 @@ export const SubmitForm = (props: {
   ];
 
   const streetOptions = [
-    ...(props.state.suburb.length > 0 && options?.street_options
+    ...(!!props.state.suburb && options?.street_options
       ? options?.street_options
           .filter((street: any) => street.suburb === props.state.suburb)
           .map((street: any) => {
@@ -83,6 +83,7 @@ export const SubmitForm = (props: {
                 payload: {
                   street: 'Add New Street',
                   streetCoords: [0, 0],
+                  suburb: props.state.suburb,
                 },
               });
               return;
@@ -92,6 +93,7 @@ export const SubmitForm = (props: {
               payload: {
                 street: value.name,
                 streetCoords: [value.lng, value.lat],
+                suburb: props.state.suburb,
               },
             });
           }}
