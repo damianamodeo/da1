@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   IonButton,
   IonButtons,
@@ -14,6 +13,11 @@ import {
 } from '@ionic/react';
 
 // TODO: Convert Autocomplee to Async component so that its otpions can be dynamic
+
+const HelpText = ({ showHelpText }: { showHelpText: boolean }) => {
+  if (!showHelpText) return null;
+  return <IonItem>Start typing...</IonItem>;
+};
 
 export const Autocomplete = ({
   onSelect,
@@ -36,14 +40,11 @@ export const Autocomplete = ({
           ></IonSearchbar>
         </IonToolbar>
       </IonHeader>
-
       <IonContent class="ion-padding">
         <IonList id="modal-list" inset={true}>
+          <HelpText showHelpText={props.items.length === 0}></HelpText>
           {props.items.map((item: any) => (
-            <IonItem
-              key={item.value.place_name}
-              onClick={() => onSelect(item)}
-            >
+            <IonItem key={item.value.place_name} onClick={() => onSelect(item)}>
               <IonLabel>
                 {item.text}
                 <IonNote style={{ display: 'block' }}>
