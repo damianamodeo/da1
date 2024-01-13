@@ -17,6 +17,7 @@
     "google.wireit",
     "fabiospampinato.vscode-commands",
     "wallabyjs.console-ninja",
-    "pwabuilder.pwa-studio"
+    "pwabuilder.pwa-studio",
+    "genieai.chatgpt-vscode"
   ]
 }
