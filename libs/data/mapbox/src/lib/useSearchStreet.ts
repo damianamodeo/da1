@@ -30,11 +30,9 @@ export const useSearchStreet = ({
   const access_token = `&access_token=${GLOBAL_VARIABLES.MAPBOX_API_KEY}`;
   const url = `${baseURL}${query}.json?${type}${bboxStr}${suburbStr}${countryStr}${access_token}`;
 
-
   // TODO add suburb bbox to street search
   // TODO make bbox user dependent
   // TODO move api key to .env
-  // TODO prevent unnecessary run of this function
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,9 +40,6 @@ export const useSearchStreet = ({
         const response = await fetch(url);
         const data = await response.json();
         const features = data.features;
-
-        // console.log('🚀  features:', features);
-
         if (features === undefined) {
           setFeatures([]);
           return;

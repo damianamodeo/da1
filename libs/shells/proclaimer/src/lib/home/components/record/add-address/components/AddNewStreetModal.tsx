@@ -49,8 +49,6 @@ export const AddNewStreetModal = (props: {
           ? data.value.context[1].text
           : newSuburb;
 
-        console.log('🚀  newSuburb:', newSuburb);
-
         const newStreetOption = {
           suburb: newSuburb,
           name: data.text,
