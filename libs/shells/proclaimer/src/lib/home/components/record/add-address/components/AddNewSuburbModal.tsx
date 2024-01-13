@@ -3,16 +3,30 @@ import {
   firestoreDocumentPaths,
   writeFirebaseDoc,
 } from '@data-firebase';
-import { useSearchSuburb } from '@data-mapbox';
+import { searchForSuburb } from '@data-mapbox';
 import { IonModal } from '@ionic/react';
 import { Autocomplete } from '@ui-ion';
 import { DocumentData } from 'firebase/firestore';
+import { useState } from 'react';
 
 export const AddNewSuburbModal = (props: any) => {
-  const newSuburbData = useSearchSuburb(props.state.searchString || '');
-  const newSuburbOptions = newSuburbData.map((data) => {
-    return { text: data.text, value: data };
-  });
+  const [options, setOptions] = useState([]);
+
+  const handleInputChange = async (value: string) => {
+    {
+      props.dispatch({
+        type: 'SET_SEARCH_STRING',
+        payload: value,
+      });
+    }
+    const newSuburbData = await searchForSuburb(value);
+    const newSuburbOptions = newSuburbData.map(
+      (data: { [key: string]: any }) => {
+        return { text: data.text, value: data };
+      }
+    );
+    setOptions(newSuburbOptions);
+  };
   const onNewSuburbSelect = (data: any) => {
     // TODO add error handling in case writeFirebaseDoc fails
     props.dispatch({ type: 'SET_SEARCH_STRING', payload: '' });
@@ -64,7 +78,7 @@ export const AddNewSuburbModal = (props: any) => {
     <IonModal isOpen={props.state.suburb === 'Add New Suburb'}>
       <Autocomplete
         title="Add Suburb"
-        items={newSuburbOptions}
+        items={options}
         onCancel={() =>
           props.dispatch({
             type: 'SET_SUBURB',
@@ -74,18 +88,11 @@ export const AddNewSuburbModal = (props: any) => {
             },
           })
         }
-        onInputChange={(v: string) => {
-          props.dispatch({
-            type: 'SET_SEARCH_STRING',
-            payload: v,
-          });
-        }}
+        onInputChange={handleInputChange}
         onSelect={(data: any) => {
           onNewSuburbSelect(data);
         }}
       >
-        {/* TODO add instructions in modal to type and hide once typing has begun
-         */}
         {/* TODO add a confirm button to submit new suburb
          */}
       </Autocomplete>
