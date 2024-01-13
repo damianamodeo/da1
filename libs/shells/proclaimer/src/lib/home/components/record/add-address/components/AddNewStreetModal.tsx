@@ -4,25 +4,38 @@ import {
   firestoreDocumentPaths,
   writeFirebaseDoc,
 } from '@data-firebase';
-import { useSearchStreet } from '@data-mapbox';
+import { searchForStreet } from '@data-mapbox';
 import { IonModal } from '@ionic/react';
 import { Autocomplete } from '@ui-ion';
 import { DocumentData } from 'firebase/firestore';
 import { Action, State } from '../AddAddress';
-import { Dispatch } from 'react';
+import { Dispatch, useState } from 'react';
 
 export const AddNewStreetModal = (props: {
   state: State;
   dispatch: Dispatch<Action>;
 }) => {
-  const newStreetData = useSearchStreet({
-    streetQuery: props.state.searchString || '',
-    suburb: props.state.suburb,
-    bbox: props.state.bbox,
-  });
-  const newStreetOptions: any = newStreetData.map((data) => {
-    return { text: data.text, value: data };
-  });
+  const [options, setOptions] = useState([]);
+
+  const handleInputChange = async (value: string) => {
+    props.dispatch({
+      type: 'SET_SEARCH_STRING',
+      payload: value,
+    });
+    const newStreetData = await searchForStreet({
+      streetQuery: value,
+      suburb: props.state.suburb,
+      bbox: props.state.bbox,
+    });
+
+    const newStreetOptions: any = newStreetData.map(
+      (data: { [key: string]: any }) => {
+        return { text: data.text, value: data };
+      }
+    );
+
+    setOptions(newStreetOptions);
+  };
 
   const onNewStreetSelect = async (data: any) => {
     // TODO add error handling in case writeFirebaseDoc fails
@@ -89,15 +102,14 @@ export const AddNewStreetModal = (props: {
         suburb: newSuburb,
       },
     });
-
-    console.log('🚀  newSuburb:', newSuburb);
+    setOptions([]);
   };
 
   return (
     <IonModal isOpen={props.state.street === 'Add New Street'}>
       <Autocomplete
         title="Add Street"
-        items={newStreetOptions}
+        items={options}
         onCancel={() => {
           props.dispatch({
             type: 'SET_STREET',
@@ -108,12 +120,7 @@ export const AddNewStreetModal = (props: {
             },
           });
         }}
-        onInputChange={(v: string) => {
-          props.dispatch({
-            type: 'SET_SEARCH_STRING',
-            payload: v,
-          });
-        }}
+        onInputChange={handleInputChange}
         onSelect={(data: any) => {
           onNewStreetSelect(data);
         }}
