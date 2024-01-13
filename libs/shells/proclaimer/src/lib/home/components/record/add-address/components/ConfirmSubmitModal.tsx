@@ -158,8 +158,6 @@ export const ConfirmSubmitModal = (props: any) => {
               expand="block"
               onClick={() => {
                 // TODO add error handling in case writeFirebaseDoc fails
-                // TODO set houseNumber and unitNumber to "" if writeFirebaseDoc is successful
-                // TODO close modal on click
                 writeFirebaseDoc({
                   path: firestoreDocumentPaths.not_at_homes,
                   data: writeAddressToFirestore,

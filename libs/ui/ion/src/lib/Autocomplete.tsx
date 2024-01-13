@@ -12,20 +12,6 @@ import {
   IonNote,
   IonLabel,
 } from '@ionic/react';
-import type { CheckboxCustomEvent } from '@ionic/react';
-
-type Item = {
-  text: string;
-  value: string;
-};
-interface TypeaheadProps {
-  items: Item[];
-  selectedItems: string[];
-  title?: string;
-  onInputChange: () => void;
-  onSelectionCancel?: () => void;
-  onSelectionChange?: (items: string[]) => void;
-}
 
 // TODO: Convert Autocomplee to Async component so that its otpions can be dynamic
 
@@ -57,7 +43,6 @@ export const Autocomplete = ({
             <IonItem
               key={item.value.place_name}
               onClick={() => onSelect(item)}
-              // value={item.value}
             >
               <IonLabel>
                 {item.text}
