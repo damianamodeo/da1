@@ -13,6 +13,7 @@ import {
   arrowUndoOutline,
 } from 'ionicons/icons';
 import { useMemo, useReducer } from 'react';
+import editAddress from '../../../logic/editAddress';
 
 // TYPES
 type State = {
@@ -22,8 +23,8 @@ type State = {
     | 'delete_from_write'
     | 'delete_from_return'
     | 'move_to_write'
-    | 'move_to_return'
-    | 'none';
+    | 'move_to_return';
+  modal: boolean;
 };
 
 type Action = {
@@ -34,7 +35,8 @@ type Action = {
 const initialState: State = {
   timestamp: 0,
   address: '',
-  action: 'none',
+  action: 'move_to_return',
+  modal: false,
 };
 
 const reducer = (state: State, action: Action) => {
@@ -45,6 +47,7 @@ const reducer = (state: State, action: Action) => {
         timestamp: action.payload.timestamp,
         address: action.payload.address,
         action: action.payload.action,
+        modal: action.payload.modal,
       };
     default:
       return state;
@@ -81,87 +84,6 @@ export const History = () => {
   }, [data]);
   // HANDLERS
 
-  const editAddress = () => {
-    writeFirebaseDoc({
-      path: firestoreDocumentPaths.not_at_homes,
-      data: ({
-        existingData,
-      }: {
-        existingData: DocumentData | undefined;
-      }): DocumentData | undefined => {
-        const { return_list, write_list, ...rest } = existingData as {
-          [string: string]: AddressList;
-        };
-
-        let newReturnList;
-        let newWriteList;
-
-        switch (state.action) {
-          case 'delete_from_write':
-            newWriteList = write_list.filter(
-              (address: any) => address.timestamp !== state.timestamp
-            );
-            console.log('modifiedList:', newWriteList);
-            return {
-              ...rest,
-              return_list,
-              write_list: newWriteList,
-            };
-
-          case 'delete_from_return':
-            newReturnList = return_list.filter(
-              (address: any) => address.timestamp !== state.timestamp
-            );
-            return {
-              ...rest,
-              return_list: newReturnList,
-              write_list,
-            };
-
-          case 'move_to_write':
-            const addressToMoveToWrite = return_list.find(
-              (address: any) => address.timestamp === state.timestamp
-            );
-
-            newReturnList = return_list.filter(
-              (address: any) => address.timestamp !== state.timestamp
-            );
-
-            newWriteList = [...write_list, addressToMoveToWrite].sort(
-              (a: any, b: any) => b.timestamp - a.timestamp
-            );
-
-            return {
-              ...rest,
-              return_list: newReturnList,
-              write_list: newWriteList,
-            };
-
-          case 'move_to_return':
-            const addressToMoveToReturn = write_list.find(
-              (address: any) => address.timestamp === state.timestamp
-            );
-
-            newWriteList = write_list.filter(
-              (address: any) => address.timestamp !== state.timestamp
-            );
-
-            newReturnList = [...return_list, addressToMoveToReturn].sort(
-              (a: any, b: any) => b.timestamp - a.timestamp
-            );
-
-            return {
-              ...rest,
-              return_list: newReturnList,
-              write_list: newWriteList,
-            };
-        }
-
-        return;
-      },
-    });
-  };
-
   const handleEdit = (newState: State) => {
     dispatch({
       type: 'SET_ADDRESS',
@@ -170,7 +92,7 @@ export const History = () => {
   };
 
   const handleConfirmRemove = () => {
-    editAddress();
+    editAddress({ action: state.action, timestamp: state.timestamp });
     dispatch({
       type: 'SET_ADDRESS',
       payload: initialState,
@@ -178,13 +100,13 @@ export const History = () => {
   };
 
   const handleConfirmModify = () => {
-    editAddress();
+    editAddress({ action: state.action, timestamp: state.timestamp });
     dispatch({
       type: 'SET_ADDRESS',
       payload: initialState,
     });
   };
-  
+
   return (
     <div className="">
       <HelpText showHelpText={addresses.length === 0}></HelpText>
@@ -208,6 +130,7 @@ export const History = () => {
                     action: `delete_from_${
                       address.return ? 'return' : 'write'
                     }`,
+                    modal: true,
                   })
                 }
               ></IonIcon>
@@ -230,6 +153,7 @@ export const History = () => {
                         address.suburb
                       }`,
                       action: 'move_to_return',
+                      modal: true,
                     })
                   }
                 ></IonIcon>
@@ -249,6 +173,7 @@ export const History = () => {
                         address.suburb
                       }`,
                       action: 'move_to_write',
+                      modal: true,
                     })
                   }
                 ></IonIcon>
@@ -260,8 +185,9 @@ export const History = () => {
       {/* DELETE MODAL */}
       <IonActionSheet
         isOpen={
-          state.action === 'delete_from_write' ||
-          state.action === 'delete_from_return'
+          state.modal &&
+          (state.action === 'delete_from_write' ||
+            state.action === 'delete_from_return')
         }
         header="Delete Address"
         subHeader={state.address}
@@ -286,7 +212,9 @@ export const History = () => {
       {/* MODIFY LIST MODAL */}
       <IonActionSheet
         isOpen={
-          state.action === 'move_to_write' || state.action === 'move_to_return'
+          (state.action === 'move_to_write' ||
+            state.action === 'move_to_return') &&
+          state.modal
         }
         header="Change List"
         subHeader={state.address}
