@@ -17,11 +17,14 @@ export const AddNewStreetModal = (props: {
 }) => {
   const [options, setOptions] = useState([]);
 
-  const handleInputChange = async (value: string) => {
+  const handleCancel = () => {
     props.dispatch({
-      type: 'SET_SEARCH_STRING',
-      payload: value,
+      type: 'SET_MODAL',
+      payload: '',
     });
+  };
+
+  const handleInputChange = async (value: string) => {
     const newStreetData = await searchForStreet({
       streetQuery: value,
       suburb: props.state.suburb,
@@ -37,11 +40,11 @@ export const AddNewStreetModal = (props: {
     setOptions(newStreetOptions);
   };
 
-  const onNewStreetSelect = async (data: any) => {
+  const handleSelect = async (data: any) => {
     // TODO add error handling in case writeFirebaseDoc fails
     // TODO add warning if option has relevance below 0.9
 
-    let newSuburb = props.state.suburb;
+    let newSuburb = { name: props.state.suburb, bbox: props.state.bbox };
 
     await writeFirebaseDoc({
       path: firestoreDocumentPaths.not_at_homes,
@@ -56,18 +59,18 @@ export const AddNewStreetModal = (props: {
           suburb_options: SuburbOption[];
         };
 
-        newSuburb = suburb_options.some(
-          (obj) => obj.name === data.value.context[1].text
-        )
-          ? data.value.context[1].text
-          : newSuburb;
+        newSuburb =
+          suburb_options.find(
+            (obj) => obj.name === data.value.context[1].text
+          ) || newSuburb;
 
         const newStreetOption = {
-          suburb: newSuburb,
+          suburb: newSuburb.name,
           name: data.text,
           lng: data.value.center[0],
           lat: data.value.center[1],
         };
+
         const updatedStreetOptions = (street_options || [])
           .reduce(
             (uniqueStreets: StreetOption[], streetOption: StreetOption) => {
@@ -75,16 +78,20 @@ export const AddNewStreetModal = (props: {
                 !uniqueStreets.some(
                   (s) =>
                     s.name === streetOption.name &&
-                    s.suburb === props.state.suburb
+                    s.name === streetOption.suburb &&
+                    s.lng === streetOption.lng &&
+                    s.lat === streetOption.lat
                 )
               ) {
                 uniqueStreets.push(streetOption);
               }
+
               return uniqueStreets;
             },
             [newStreetOption]
           )
           .sort((a, b) => a.name.localeCompare(b.name));
+
         return {
           street_options: updatedStreetOptions,
           suburb_options,
@@ -93,37 +100,32 @@ export const AddNewStreetModal = (props: {
       },
     });
 
-    props.dispatch({ type: 'SET_SEARCH_STRING', payload: '' });
     props.dispatch({
       type: 'SET_STREET',
       payload: {
         street: data.text,
         streetCoords: [data.value.center[0], data.value.center[1]],
-        suburb: newSuburb,
+        suburb: newSuburb.name,
+        bbox: newSuburb.bbox,
       },
     });
+
+    props.dispatch({
+      type: 'SET_MODAL',
+      payload: '',
+    });
+
     setOptions([]);
   };
 
   return (
-    <IonModal isOpen={props.state.street === 'Add New Street'}>
+    <IonModal isOpen={props.state.modal === 'add-street'}>
       <Autocomplete
         title="Add Street"
         items={options}
-        onCancel={() => {
-          props.dispatch({
-            type: 'SET_STREET',
-            payload: {
-              street: '',
-              streetCoords: props.state.streetCoords as [number, number],
-              suburb: props.state.suburb,
-            },
-          });
-        }}
+        onCancel={handleCancel}
         onInputChange={handleInputChange}
-        onSelect={(data: any) => {
-          onNewStreetSelect(data);
-        }}
+        onSelect={handleSelect}
       >
         {/* TODO add a confirm button to submit new street
          */}

@@ -17,6 +17,10 @@ type Coords = {
 
 export type Action =
   | {
+      type: 'SET_MODAL';
+      payload: '' | 'submit' | 'add-suburb' | 'add-street';
+    }
+  | {
       type: 'SET_SUBURB';
       payload: { suburb: string; bbox: [number, number, number, number] };
     }
@@ -26,18 +30,17 @@ export type Action =
         street: string;
         streetCoords: [number, number];
         suburb: string;
+        bbox: [number, number, number, number];
       };
     }
   | { type: 'SET_HOUSE_NUMBER'; payload: string }
   | { type: 'SET_UNIT_NUMBER'; payload: string }
-  | { type: 'SET_SEARCH_STRING'; payload: string }
-  | { type: 'ON_SEARCH'; payload: Coords }
-  | { type: 'OPEN_SUBMIT_MODAL' }
+  | { type: 'SET_COORDS'; payload: Coords }
   | { type: 'ON_SUBMIT' }
-  | { type: 'CLOSE_SUBMIT_MODAL' }
   | { type: 'SET_LETTER_LIST'; payload: boolean };
 
 const initialState = {
+  modal: '' as '' | 'submit' | 'add-suburb' | 'add-street',
   suburb: '',
   bbox: [0, 0, 0, 0] as [number, number, number, number],
   street: '',
@@ -49,9 +52,7 @@ const initialState = {
     lng: 0,
     relevance: 0,
   },
-  submitModal: false,
   loading: false,
-  searchString: '',
   sendToLetterList: false,
 };
 const stateInitialiser = () => {
@@ -65,6 +66,14 @@ export type State = typeof initialState;
 const reducer = (state: State, action: Action): State => {
   let newState: State = state;
   switch (action.type) {
+    case 'SET_MODAL':
+      newState = {
+        ...state,
+        modal: action.payload,
+        loading: action.payload === 'submit' ? true : false,
+      };
+      break;
+
     case 'SET_SUBURB':
       newState = {
         ...state,
@@ -75,6 +84,7 @@ const reducer = (state: State, action: Action): State => {
         bbox: action.payload.bbox,
       };
       break;
+
     case 'SET_STREET':
       newState = {
         ...state,
@@ -83,8 +93,10 @@ const reducer = (state: State, action: Action): State => {
         streetCoords: action.payload.streetCoords,
         houseNumber: '',
         unitNumber: '',
+        bbox: action.payload.bbox,
       };
       break;
+
     case 'SET_HOUSE_NUMBER':
       newState = {
         ...state,
@@ -92,44 +104,29 @@ const reducer = (state: State, action: Action): State => {
         unitNumber: '',
       };
       break;
+
     case 'SET_UNIT_NUMBER':
       newState = { ...state, unitNumber: action.payload };
       break;
-    case 'OPEN_SUBMIT_MODAL':
-      newState = { ...state, submitModal: true };
+
+    case 'SET_COORDS':
+      newState = { ...state, coords: action.payload, loading: false };
       break;
-    case 'ON_SEARCH':
-      newState = {
-        ...state,
-        loading: false,
-        coords: action.payload,
-        sendToLetterList: false,
-      };
-      break;
-    case 'CLOSE_SUBMIT_MODAL':
-      newState = {
-        ...state,
-        submitModal: false,
-        loading: false,
-        sendToLetterList: false,
-      };
-      break;
+
     case 'ON_SUBMIT':
       newState = {
         ...state,
-        submitModal: false,
-        loading: false,
-        sendToLetterList: false,
-        ...(state.unitNumber ? { unitNumber: '' } : { houseNumber: '' }),
+        modal: '',
+        houseNumber: state.unitNumber ? state.houseNumber : '',
+        unitNumber: '',
       };
       break;
-    case 'SET_SEARCH_STRING':
-      newState = { ...state, searchString: action.payload };
-      break;
+
     case 'SET_LETTER_LIST':
       newState = { ...state, sendToLetterList: action.payload };
       break;
   }
+
   localStorage.setItem('not-at-home-state', JSON.stringify(newState));
   return newState;
 };
@@ -138,6 +135,7 @@ export const AddAddress = (): JSX.Element => {
   const [state, dispatch]: [State, React.Dispatch<Action>] = useReducer<
     Reducer<State, Action>
   >(reducer, stateInitialiser());
+
   return (
     <div className="ion-padding">
       <SubmitForm state={state} dispatch={dispatch} />

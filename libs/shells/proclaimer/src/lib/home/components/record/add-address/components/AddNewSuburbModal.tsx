@@ -12,28 +12,28 @@ import { useState } from 'react';
 export const AddNewSuburbModal = (props: any) => {
   const [options, setOptions] = useState([]);
 
+  const handleCancel = () => {
+    props.dispatch({
+      type: 'SET_MODAL',
+      payload: '',
+    });
+  };
+
   const handleInputChange = async (value: string) => {
-    {
-      props.dispatch({
-        type: 'SET_SEARCH_STRING',
-        payload: value,
-      });
-    }
     const newSuburbData = await searchForSuburb(value);
+
     const newSuburbOptions = newSuburbData.map(
       (data: { [key: string]: any }) => {
         return { text: data.text, value: data };
       }
     );
+
     setOptions(newSuburbOptions);
   };
-  const onNewSuburbSelect = (data: any) => {
+
+  const handleSelect = (data: any) => {
     // TODO add error handling in case writeFirebaseDoc fails
-    props.dispatch({ type: 'SET_SEARCH_STRING', payload: '' });
-    props.dispatch({
-      type: 'SET_SUBURB',
-      payload: { suburb: data.text, bbox: data.value.bbox },
-    });
+
     writeFirebaseDoc({
       path: firestoreDocumentPaths.not_at_homes,
       data: ({
@@ -73,25 +73,26 @@ export const AddNewSuburbModal = (props: any) => {
         return { suburb_options: sortedSuburbOptions, ...rest };
       },
     });
+
+    props.dispatch({
+      type: 'SET_SUBURB',
+      payload: { suburb: data.text, bbox: data.value.bbox },
+    });
+
+    props.dispatch({
+      type: 'SET_MODAL',
+      payload: '',
+    });
   };
+
   return (
-    <IonModal isOpen={props.state.suburb === 'Add New Suburb'}>
+    <IonModal isOpen={props.state.modal === 'add-suburb'}>
       <Autocomplete
         title="Add Suburb"
         items={options}
-        onCancel={() =>
-          props.dispatch({
-            type: 'SET_SUBURB',
-            payload: {
-              suburb: '',
-              bbox: [0, 0, 0, 0],
-            },
-          })
-        }
+        onCancel={handleCancel}
         onInputChange={handleInputChange}
-        onSelect={(data: any) => {
-          onNewSuburbSelect(data);
-        }}
+        onSelect={handleSelect}
       >
         {/* TODO add a confirm button to submit new suburb
          */}

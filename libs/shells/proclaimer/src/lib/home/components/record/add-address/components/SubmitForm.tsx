@@ -18,11 +18,12 @@ export const SubmitForm = (props: {
   const options: any = useFirestoreData({
     path: firestoreDocumentPaths.not_at_homes,
   });
+
   const suburbOptions = [
     ...(options?.suburb_options?.map((suburb: Suburb) => {
       return { text: suburb.name, value: suburb.bbox };
     }) || []),
-    { text: 'Add New Suburb', value: 'add-suburb' },
+    { text: 'ADD NEW SUBURB', value: 'new' },
   ];
 
   const streetOptions = [
@@ -33,10 +34,56 @@ export const SubmitForm = (props: {
             return { text: street.name, value: street };
           })
       : []),
-    { text: 'Add New Street', value: 'add-street' },
+    { text: 'ADD NEW STREET', value: 'new' },
   ];
-  const handleSubmit = async () => {
-    props.dispatch({ type: 'OPEN_SUBMIT_MODAL' });
+
+  const handleSuburbSelect = ({ text, value }: any) => {
+    if (value === 'new') {
+      props.dispatch({ type: 'SET_MODAL', payload: 'add-suburb' });
+      return;
+    }
+
+    props.dispatch({
+      type: 'SET_SUBURB',
+      payload: {
+        suburb: text,
+        bbox: value,
+      },
+    });
+  };
+
+  const handleStreetSelect = ({ value }: any) => {
+    if (value === 'new') {
+      props.dispatch({ type: 'SET_MODAL', payload: 'add-street' });
+      return;
+    }
+
+    props.dispatch({
+      type: 'SET_STREET',
+      payload: {
+        street: value.name,
+        streetCoords: [value.lng, value.lat],
+        suburb: props.state.suburb,
+        bbox: props.state.bbox,
+      },
+    });
+  };
+
+  const handleHouseNumberInput = (e: any) =>
+    props.dispatch({
+      type: 'SET_HOUSE_NUMBER',
+      payload: e.target.value as string,
+    });
+
+  const handleUnitNumberInput = (e: any) =>
+    props.dispatch({
+      type: 'SET_UNIT_NUMBER',
+      payload: e.target.value as string,
+    });
+
+  const handleSearch = async () => {
+    props.dispatch({ type: 'SET_MODAL', payload: 'submit' });
+
     try {
       const coords = await getAddressCoords({
         houseNumber: props.state.houseNumber,
@@ -45,30 +92,25 @@ export const SubmitForm = (props: {
         bbox: props.state.bbox as [number, number, number, number],
         proximity: props.state.streetCoords as [number, number],
       });
-      props.dispatch({ type: 'ON_SEARCH', payload: coords });
+
+      props.dispatch({ type: 'SET_COORDS', payload: coords });
     } catch (error) {
       console.error('Error getting address coordinates:', error);
     }
   };
+
   return (
     <>
       <IonList inset>
         <IonListHeader>
           <IonLabel>Address</IonLabel>
         </IonListHeader>
+
         <Picker
           value={props.state.suburb}
           label="Suburb"
           options={suburbOptions}
-          onSelect={({ text, value }) => {
-            props.dispatch({
-              type: 'SET_SUBURB',
-              payload: {
-                suburb: text,
-                bbox: value,
-              },
-            });
-          }}
+          onSelect={handleSuburbSelect}
         ></Picker>
 
         <Picker
@@ -76,28 +118,9 @@ export const SubmitForm = (props: {
           disabled={props.state.suburb.length === 0}
           label="Street"
           options={streetOptions}
-          onSelect={({ value }) => {
-            if (value === 'add-street') {
-              props.dispatch({
-                type: 'SET_STREET',
-                payload: {
-                  street: 'Add New Street',
-                  streetCoords: [0, 0],
-                  suburb: props.state.suburb,
-                },
-              });
-              return;
-            }
-            props.dispatch({
-              type: 'SET_STREET',
-              payload: {
-                street: value.name,
-                streetCoords: [value.lng, value.lat],
-                suburb: props.state.suburb,
-              },
-            });
-          }}
+          onSelect={handleStreetSelect}
         ></Picker>
+
         {/* TODO right justify input values
          */}
         <IonItem disabled={props.state.street.length === 0}>
@@ -105,12 +128,7 @@ export const SubmitForm = (props: {
             value={props.state.houseNumber}
             label="House"
             clearInput={true}
-            onIonInput={(e) =>
-              props.dispatch({
-                type: 'SET_HOUSE_NUMBER',
-                payload: e.target.value as string,
-              })
-            }
+            onIonInput={handleHouseNumberInput}
           ></IonInput>
         </IonItem>
 
@@ -119,15 +137,11 @@ export const SubmitForm = (props: {
             value={props.state.unitNumber}
             label="Unit"
             clearInput={true}
-            onIonInput={(e) =>
-              props.dispatch({
-                type: 'SET_UNIT_NUMBER',
-                payload: e.target.value as string,
-              })
-            }
+            onIonInput={handleUnitNumberInput}
           ></IonInput>
         </IonItem>
       </IonList>
+
       <IonButton
         className="ion-padding"
         style={{
@@ -135,7 +149,7 @@ export const SubmitForm = (props: {
         }}
         disabled={props.state.houseNumber.length === 0}
         expand="block"
-        onClick={handleSubmit}
+        onClick={handleSearch}
       >
         Search
       </IonButton>

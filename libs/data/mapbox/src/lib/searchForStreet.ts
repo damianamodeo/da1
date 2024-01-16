@@ -30,10 +30,8 @@ export const searchForStreet = async ({
     `&bbox=${bbox[0] - SEARCH_TOLERANCE}%2C${bbox[1] - SEARCH_TOLERANCE}%2C${
       bbox[2] + SEARCH_TOLERANCE
     }%2C${bbox[3] + SEARCH_TOLERANCE}`;
-  const suburbStr = suburb && `&suburb=${suburb}`;
-  const countryStr = country && `&country=${country}`;
   const access_token = `&access_token=${GLOBAL_VARIABLES.MAPBOX_API_KEY}`;
-  const url = `${baseURL}${query}.json?${type}${bboxStr}${suburbStr}${countryStr}${access_token}`;
+  const url = `${baseURL}${query}.json?${type}${bboxStr}${access_token}`;
 
   try {
     const response = await fetch(url);
@@ -43,8 +41,8 @@ export const searchForStreet = async ({
       return [];
     }
     return features;
-  } catch (error) {
-    console.error('Error fetching data:', error);
+  } catch (error: any) {
+    console.error('Error fetching data:', error.message);
   }
 };
 

@@ -5,7 +5,7 @@ type QueryType = {
   street: number | string;
   suburb: number | string;
   bbox?: [number, number, number, number];
-  proximity?: [number, number];
+  proximity: [number, number];
 };
 // TODO move api key to .env
 // TODO possibly return street coords if no exact match is found
@@ -31,6 +31,10 @@ export const getAddressCoords = async ({
       return response.json();
     })
     .then((data) => {
+      if (data.features.length === 0) {
+        return { lng: proximity[0], lat: proximity[1], relevance: 0 };
+      }
+
       return {
         lng: data.features[0].center[0],
         lat: data.features[0].center[1],

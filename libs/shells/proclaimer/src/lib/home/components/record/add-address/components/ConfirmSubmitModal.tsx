@@ -21,9 +21,27 @@ import {
 } from '@ionic/react';
 import { LoadingSpinner } from '@ui-ion';
 import { DocumentData } from 'firebase/firestore';
+import { Action, State } from '../AddAddress';
 
 // TODO hide address search result until recieved
-export const ConfirmSubmitModal = (props: any) => {
+export const ConfirmSubmitModal = (props: {
+  state: State;
+  dispatch: React.Dispatch<Action>;
+}) => {
+  const handleClose = () => {
+    return props.dispatch({
+      type: 'SET_MODAL',
+      payload: '',
+    });
+  };
+
+  const handleLetterListToggle = (e: any) => {
+    props.dispatch({
+      type: 'SET_LETTER_LIST',
+      payload: e.detail.checked,
+    });
+  };
+
   const writeAddressToFirestore = ({
     existingData,
   }: {
@@ -78,21 +96,24 @@ export const ConfirmSubmitModal = (props: any) => {
     };
   };
 
+  const handleSubmit = () => {
+    writeFirebaseDoc({
+      path: firestoreDocumentPaths.not_at_homes,
+      data: writeAddressToFirestore,
+    });
+
+    props.dispatch({
+      type: 'ON_SUBMIT',
+    });
+  };
+
   return (
-    <IonModal isOpen={props.state.submitModal}>
+    <IonModal isOpen={props.state.modal === 'submit'}>
       <IonHeader>
         <IonToolbar>
           <IonTitle>Confirm</IonTitle>
           <IonButtons slot="end">
-            <IonButton
-              onClick={() =>
-                props.dispatch({
-                  type: 'CLOSE_SUBMIT_MODAL',
-                })
-              }
-            >
-              Close
-            </IonButton>
+            <IonButton onClick={handleClose}>Close</IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -128,14 +149,12 @@ export const ConfirmSubmitModal = (props: any) => {
                   </IonNote>
                 </IonLabel>
               </IonListHeader>
-              {
-                props.state.coords?.relevance !== 1 && ( // <IonItem>
-                  <IonNote>
-                    You can submit this address but it's location on the map
-                    will be inaccurate.
-                  </IonNote>
-                ) // </IonItem>
-              }
+              {props.state.coords?.relevance !== 1 && (
+                <IonNote>
+                  You can submit this address but it's location on the map will
+                  be inaccurate.
+                </IonNote>
+              )}
             </IonList>
             <IonList className="ion-padding">
               <IonItem lines="none">
@@ -144,28 +163,14 @@ export const ConfirmSubmitModal = (props: any) => {
                   color={'success'}
                   slot="end"
                   checked={props.state.sendToLetterList}
-                  onIonChange={(e) => {
-                    props.dispatch({
-                      type: 'SET_LETTER_LIST',
-                      payload: e.detail.checked,
-                    });
-                  }}
+                  onIonChange={handleLetterListToggle}
                 ></IonToggle>
               </IonItem>
             </IonList>
             <IonButton
               className="ion-padding"
               expand="block"
-              onClick={() => {
-                // TODO add error handling in case writeFirebaseDoc fails
-                writeFirebaseDoc({
-                  path: firestoreDocumentPaths.not_at_homes,
-                  data: writeAddressToFirestore,
-                });
-                props.dispatch({
-                  type: 'ON_SUBMIT',
-                });
-              }}
+              onClick={handleSubmit}
             >
               Submit
             </IonButton>
