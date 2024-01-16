@@ -1,8 +1,4 @@
-import {
-  AddressList,
-  firestoreDocumentPaths,
-  writeFirebaseDoc,
-} from '@data-firebase';
+import { AddressList } from '@data-firebase';
 import {
   IonItem,
   IonList,
@@ -22,6 +18,7 @@ import {
 import { LoadingSpinner } from '@ui-ion';
 import { DocumentData } from 'firebase/firestore';
 import { Action, State } from '../AddAddress';
+import { addAddress } from '../../../../util/addAddress';
 
 // TODO hide address search result until recieved
 export const ConfirmSubmitModal = (props: {
@@ -42,65 +39,8 @@ export const ConfirmSubmitModal = (props: {
     });
   };
 
-  const writeAddressToFirestore = ({
-    existingData,
-  }: {
-    existingData: DocumentData | undefined;
-    documentExists: boolean;
-  }): DocumentData | undefined => {
-    const { return_list, write_list, ...rest } = existingData as {
-      [string: string]: AddressList;
-    };
-
-    const timestamp = new Date().getTime();
-    const newAddress = {
-      suburb: props.state.suburb,
-      street: props.state.street,
-      houseNumber: props.state.houseNumber,
-      unitNumber: props.state.unitNumber,
-      relevance: props.state.coords ? props.state.coords.relevance : 0,
-      lat: props.state.coords ? props.state.coords.lat : 0,
-      lng: props.state.coords ? props.state.coords.lng : 0,
-      user: localStorage.getItem('user') || 'no_user',
-      timestamp,
-    };
-
-    const list = props.state.sendToLetterList ? write_list : return_list;
-    const untouchedList = !props.state.sendToLetterList
-      ? write_list
-      : return_list;
-
-    if (list) {
-      list.push(newAddress);
-
-      list.sort((a, b) => a.timestamp - b.timestamp);
-
-      if (list.length > 10000) {
-        list.splice(0, list.length - 10000);
-      }
-      return {
-        [props.state.sendToLetterList ? 'write_list' : 'return_list']: list,
-        [props.state.sendToLetterList ? 'return_list' : 'write_list']:
-          untouchedList || [],
-        ...rest,
-      };
-    }
-
-    return {
-      [props.state.sendToLetterList ? 'write_list' : 'return_list']: [
-        newAddress,
-      ],
-      [props.state.sendToLetterList ? 'return_list' : 'write_list']:
-        untouchedList || [],
-      ...rest,
-    };
-  };
-
   const handleSubmit = () => {
-    writeFirebaseDoc({
-      path: firestoreDocumentPaths.not_at_homes,
-      data: writeAddressToFirestore,
-    });
+    addAddress({ action: 'add_to_return', address: props.state });
 
     props.dispatch({
       type: 'ON_SUBMIT',

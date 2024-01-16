@@ -55,6 +55,7 @@ const initialState = {
   loading: false,
   sendToLetterList: false,
 };
+
 const stateInitialiser = () => {
   return localStorage.getItem('not-at-home-state')
     ? JSON.parse(localStorage.getItem('not-at-home-state') || '')
@@ -71,6 +72,7 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         modal: action.payload,
         loading: action.payload === 'submit' ? true : false,
+        sendToLetterList: false,
       };
       break;
 

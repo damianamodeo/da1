@@ -1,10 +1,10 @@
 import { IonicApp } from '@ui-ion';
 import { settingsOutline, homeOutline } from 'ionicons/icons';
 import { Settings, Appearance } from './settings/Index';
-import Home from './home/components/Home';
-import Record from './home/components/record/Record';
-import Return from './home/components/return/Return';
-import Write from './home/components/write/Write';
+import Home from './home/pages/Home';
+import Record from './home/pages/record/Record';
+import Return from './home/pages/return/Return';
+import Write from './home/pages/write/Write';
 import "@global/styles"
 
 

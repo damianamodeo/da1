@@ -22,22 +22,22 @@ export type StreetOption = {
   name: string;
   lat: number;
   lng: number;
-  suburb: string
+  suburb: string;
 };
 
-export type AddressList = [
-  {
-    houseNumber: string;
-    unitNumber: string;
-    street: string;
-    suburb: string;
-    lat: number;
-    lng: number;
-    relevance: number;
-    user: string;
-    timestamp: number;
-  }
-];
+export type NotAtHomeAddress = {
+  houseNumber: string;
+  unitNumber: string;
+  street: string;
+  suburb: string;
+  lat: number;
+  lng: number;
+  relevance: number;
+  user: string;
+  timestamp: number;
+};
+
+export type AddressList = NotAtHomeAddress[];
 
 export const firestoreDocumentPaths = {
   not_at_homes: 'not_at_homes',
