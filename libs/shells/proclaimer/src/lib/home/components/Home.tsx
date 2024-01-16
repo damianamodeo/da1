@@ -33,8 +33,8 @@ export const Home = () => {
               <IonCardTitle>Record</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-              Form to submit addresses for not-at-homes. The list will be shared
-              with others for others to.
+              Form to submit addresses of not-at-homes to a map that will be
+              shared with others.
             </IonCardContent>
           </IonCard>
           <IonCard routerLink={path.Return}>
@@ -42,8 +42,8 @@ export const Home = () => {
               <IonCardTitle>Return</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-              Map of addresses where residents were not-at-home, requiring the
-              need for a follow-up visit.
+              Map of addresses where residents were not-at-home allowing for
+              follow up visits.
             </IonCardContent>
           </IonCard>
           <IonCard routerLink={path.Write}>
@@ -51,8 +51,8 @@ export const Home = () => {
               <IonCardTitle>Write</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-              List of addresses where residents were not-at-home multiple times,
-              requiring a letter to be sent.
+              List of addresses that were not-at-home multiple times requiring a
+              letter to be sent.
             </IonCardContent>
           </IonCard>
         </Suspense>
