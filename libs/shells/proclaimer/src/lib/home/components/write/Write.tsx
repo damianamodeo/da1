@@ -20,7 +20,7 @@ import { firestoreDocumentPaths, useFirestoreData } from '@data-firebase';
 import { groupBy } from 'lodash';
 import { arrowUndoOutline, trash } from 'ionicons/icons';
 import { useState } from 'react';
-import editAddress from '../../logic/editAddress';
+import editAddress from '../../util/editAddress';
 
 export const Write = () => {
   // TODO sort house numbers 

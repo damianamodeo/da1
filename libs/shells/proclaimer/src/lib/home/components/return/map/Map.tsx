@@ -5,7 +5,7 @@ import {
   unclusteredPointLayer,
   houseNumber,
   units,
-} from './components/Layers';
+} from './util/layers';
 import {
   AddressList,
   firestoreDocumentPaths,
@@ -15,7 +15,7 @@ import {
 import { Reducer, useEffect, useReducer } from 'react';
 import ConfirmHouseDelete from './components/ConfirmHouseDelete';
 import ConfirmUnitsDelete from './components/ConfirmUnitsDelete';
-import prepareLocations from '../../../logic/prepareLocations';
+import prepareLocations from './util/prepareLocations';
 
 const initialState = {
   modal: false,

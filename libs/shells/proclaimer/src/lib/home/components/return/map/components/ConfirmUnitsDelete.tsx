@@ -15,7 +15,7 @@ import {
 } from '@ionic/react';
 import { mailOpenOutline, trash } from 'ionicons/icons';
 import { State, Action } from '../Map';
-import editAddress from '../../../../logic/editAddress';
+import editAddress from '../../../../util/editAddress';
 import { useState } from 'react';
 import { AddressList } from '@data-firebase';
 

@@ -13,7 +13,7 @@ import {
   arrowUndoOutline,
 } from 'ionicons/icons';
 import { useMemo, useReducer } from 'react';
-import editAddress from '../../../logic/editAddress';
+import editAddress from '../../../util/editAddress';
 
 // TYPES
 type State = {

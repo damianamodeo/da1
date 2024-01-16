@@ -1,5 +1,7 @@
 import type { LayerProps } from 'react-map-gl';
 
+// TODO find where returning null instead of number
+
 const clusterSizing = [4, 12, 100, 30, 400, 60];
 
 export const clusterLayer: LayerProps = {

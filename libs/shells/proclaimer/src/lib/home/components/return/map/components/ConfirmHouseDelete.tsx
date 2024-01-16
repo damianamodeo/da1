@@ -1,6 +1,6 @@
 import { IonActionSheet } from '@ionic/react';
 import { State, Action } from '../Map';
-import editAddress from '../../../../logic/editAddress';
+import editAddress from '../../../../util/editAddress';
 
 export const ConfirmHouseDelete = ({
   state,
