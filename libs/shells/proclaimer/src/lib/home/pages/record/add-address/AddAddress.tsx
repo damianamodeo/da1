@@ -1,6 +1,6 @@
 import { Reducer, useReducer } from 'react';
-import { SubmitForm } from './components/SubmitForm';
-import { ConfirmSubmitModal } from './components/ConfirmSubmitModal';
+import { SubmitForm } from './components/submit-form/SubmitForm';
+import { ConfirmSubmitModal } from './components/submit-form/ConfirmSubmitModal';
 import { AddNewSuburbModal } from './components/AddNewSuburbModal';
 import { AddNewStreetModal } from './components/AddNewStreetModal';
 
@@ -141,7 +141,6 @@ export const AddAddress = (): JSX.Element => {
   return (
     <div className="ion-padding">
       <SubmitForm state={state} dispatch={dispatch} />
-      <ConfirmSubmitModal state={state} dispatch={dispatch} />
       <AddNewSuburbModal
         suburb={state.suburb}
         state={state}

@@ -8,8 +8,9 @@ import {
   IonListHeader,
 } from '@ionic/react';
 import { Picker } from '@ui-ion';
-import { Action, State, Suburb } from '../AddAddress';
+import { Action, State, Suburb } from '../../AddAddress';
 import { firestoreDocumentPaths, useFirestoreData } from '@data-firebase';
+import { ConfirmSubmitModal } from './ConfirmSubmitModal';
 
 export const SubmitForm = (props: {
   state: State;
@@ -153,6 +154,7 @@ export const SubmitForm = (props: {
       >
         Search
       </IonButton>
+      <ConfirmSubmitModal state={props.state} dispatch={props.dispatch} />
     </>
   );
 };

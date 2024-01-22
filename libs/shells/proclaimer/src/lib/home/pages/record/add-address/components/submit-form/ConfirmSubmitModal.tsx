@@ -17,8 +17,8 @@ import {
 } from '@ionic/react';
 import { LoadingSpinner } from '@ui-ion';
 import { DocumentData } from 'firebase/firestore';
-import { Action, State } from '../AddAddress';
-import { addAddress } from '../../../../util/addAddress';
+import { Action, State } from '../../AddAddress';
+import { addAddress } from '../../../../../util/addAddress';
 
 // TODO hide address search result until recieved
 export const ConfirmSubmitModal = (props: {
