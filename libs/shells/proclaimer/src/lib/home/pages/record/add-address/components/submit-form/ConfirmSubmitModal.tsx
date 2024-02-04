@@ -24,12 +24,15 @@ import { addAddress } from '../../../../../util/addAddress';
 export const ConfirmSubmitModal = (props: {
   state: State;
   dispatch: React.Dispatch<Action>;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const handleClose = () => {
-    return props.dispatch({
+    props.dispatch({
       type: 'SET_MODAL',
       payload: '',
     });
+    props.setLoading(true);
   };
 
   const handleLetterListToggle = (e: any) => {
@@ -41,6 +44,7 @@ export const ConfirmSubmitModal = (props: {
 
   const handleSubmit = () => {
     addAddress({ action: 'add_to_return', address: props.state });
+    props.setLoading(true);
 
     props.dispatch({
       type: 'ON_SUBMIT',
@@ -61,7 +65,7 @@ export const ConfirmSubmitModal = (props: {
         {/* TODO add warning if relevance is less 1
          */}
         {/* TODO add notification if address submitted successfully or not */}
-        {props.state.loading ? (
+        {props.loading ? (
           <div className="full centered">
             <LoadingSpinner></LoadingSpinner>
           </div>

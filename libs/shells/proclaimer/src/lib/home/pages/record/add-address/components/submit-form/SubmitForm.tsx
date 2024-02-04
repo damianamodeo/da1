@@ -11,32 +11,20 @@ import { Picker } from '@ui-ion';
 import { Action, State, Suburb } from '../../AddAddress';
 import { firestoreDocumentPaths, useFirestoreData } from '@data-firebase';
 import { ConfirmSubmitModal } from './ConfirmSubmitModal';
+import { getStreetOptions, getSuburbOptions } from './util/getOptions';
+import { useState } from 'react';
 
 export const SubmitForm = (props: {
   state: State;
   dispatch: React.Dispatch<Action>;
 }) => {
+  const [loading, setLoading] = useState(true);
   const options: any = useFirestoreData({
     path: firestoreDocumentPaths.not_at_homes,
   });
 
-  const suburbOptions = [
-    ...(options?.suburb_options?.map((suburb: Suburb) => {
-      return { text: suburb.name, value: suburb.bbox };
-    }) || []),
-    { text: 'ADD NEW SUBURB', value: 'new' },
-  ];
-
-  const streetOptions = [
-    ...(!!props.state.suburb && options?.street_options
-      ? options?.street_options
-          .filter((street: any) => street.suburb === props.state.suburb)
-          .map((street: any) => {
-            return { text: street.name, value: street };
-          })
-      : []),
-    { text: 'ADD NEW STREET', value: 'new' },
-  ];
+  const suburbOptions = getSuburbOptions(options);
+  const streetOptions = getStreetOptions(options, props.state.suburb);
 
   const handleSuburbSelect = ({ text, value }: any) => {
     if (value === 'new') {
@@ -94,6 +82,7 @@ export const SubmitForm = (props: {
         proximity: props.state.streetCoords as [number, number],
       });
 
+      setLoading(false);
       props.dispatch({ type: 'SET_COORDS', payload: coords });
     } catch (error) {
       console.error('Error getting address coordinates:', error);
@@ -154,7 +143,13 @@ export const SubmitForm = (props: {
       >
         Search
       </IonButton>
-      <ConfirmSubmitModal state={props.state} dispatch={props.dispatch} />
+
+      <ConfirmSubmitModal
+        loading={loading}
+        setLoading={setLoading}
+        state={props.state}
+        dispatch={props.dispatch}
+      />
     </>
   );
 };
