@@ -1,21 +1,13 @@
-import { Bbox } from '@data-mapbox';
-
-// NOT AT HOMES DOCUMENT
-// const not_at_homes: {
-//   suburb_options: SuburbOptions;
-//   street_options: StreetOptions;
-//   return_list: AddressList;
-//   write_list: AddressList;
-// } = {
-//   suburb_options: [{ name: '', bbox: [0, 0, 0, 0] }],
-//   street_options: [{ name: '', lat: 0, lng: 0 }],
-//   return_list: [{}],
-//   write_list: [],
-// };
+export type NotAtHomeDocument = {
+  return_list: NotAtHomeAddress[];
+  write_list: NotAtHomeAddress[];
+  suburb_options: SuburbOption[];
+  street_options: StreetOption[];
+};
 
 export type SuburbOption = {
   name: string;
-  bbox: Bbox;
+  bbox: [number, number, number, number];
 };
 
 export type StreetOption = {
@@ -27,14 +19,14 @@ export type StreetOption = {
 
 export type NotAtHomeAddress = {
   houseNumber: string;
-  unitNumber: string;
-  street: string;
-  suburb: string;
   lat: number;
   lng: number;
   relevance: number;
+  street: string;
+  suburb: string;
+  timestamp: Date;
+  unitNumber: string;
   user: string;
-  timestamp: number;
 };
 
 export type AddressList = NotAtHomeAddress[];
