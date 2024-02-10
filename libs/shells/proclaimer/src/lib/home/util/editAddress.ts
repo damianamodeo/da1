@@ -15,7 +15,7 @@ export const editAddress = async ({
     | 'delete_from_return'
     | 'move_to_write'
     | 'move_to_return';
-  timestamp: string | number;
+  timestamp: Date;
 }) => {
   await writeFirebaseDoc({
     path: firestoreDocumentPaths.not_at_homes,

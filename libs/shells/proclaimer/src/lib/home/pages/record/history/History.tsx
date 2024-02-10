@@ -17,7 +17,7 @@ import editAddress from '../../../util/editAddress';
 
 // TYPES
 type State = {
-  timestamp: number;
+  timestamp: Date;
   address: string;
   action:
     | 'delete_from_write'
@@ -33,7 +33,7 @@ type Action = {
 };
 // REDUCER
 const initialState: State = {
-  timestamp: 0,
+  timestamp: new Date(),
   address: '',
   action: 'move_to_return',
   modal: false,

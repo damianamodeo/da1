@@ -19,8 +19,7 @@ export const addAddress = ({ address }: any) => {
         [string: string]: AddressList;
       };
 
-      const timestamp = new Date().getTime();
-      const newAddress = {
+      const newAddress: NotAtHomeAddress = {
         suburb: address.suburb,
         street: address.street,
         houseNumber: address.houseNumber,
@@ -29,7 +28,7 @@ export const addAddress = ({ address }: any) => {
         lat: address.coords ? address.coords.lat : 0,
         lng: address.coords ? address.coords.lng : 0,
         user: localStorage.getItem('user') || 'no_user',
-        timestamp,
+        timestamp: new Date(),
       };
 
       const list = address.sendToLetterList ? write_list : return_list;
@@ -40,7 +39,7 @@ export const addAddress = ({ address }: any) => {
       if (list) {
         list.push(newAddress);
 
-        list.sort((a, b) => a.timestamp - b.timestamp);
+        list.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
 
         if (list.length > 10000) {
           list.splice(0, list.length - 10000);

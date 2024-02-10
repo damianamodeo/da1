@@ -32,7 +32,7 @@ export const ConfirmUnitsDelete = ({
   const [confirmMoveActionSheet, setConfirmMoveActionSheet] = useState(false);
   const [confirmDeleteActionSheet, setConfirmDeleteActionSheet] =
     useState(false);
-  const [timestamp, setTimestamp] = useState(0);
+  const [timestamp, setTimestamp] = useState(new Date());
   const [unitNumber, setUnitNumber] = useState('');
 
   const handleConfirm = async (
@@ -83,7 +83,7 @@ export const ConfirmUnitsDelete = ({
             {state.addresses.map((address) => {
               if (!address.timestamp) return;
               return (
-                <IonItem key={address.timestamp} className="ion-padding-start">
+                <IonItem key={address.timestamp.getTime()} className="ion-padding-start">
                   Unit:
                   <span className="ion-padding-start ">
                     {address.unitNumber}
@@ -94,7 +94,7 @@ export const ConfirmUnitsDelete = ({
                     icon={mailOpenOutline}
                     slot="end"
                     onClick={() => {
-                      setTimestamp(address.timestamp as number);
+                      setTimestamp(address.timestamp);
                       setConfirmMoveActionSheet(true);
                       setUnitNumber(address.unitNumber);
                     }}
@@ -105,7 +105,7 @@ export const ConfirmUnitsDelete = ({
                     color="danger"
                     slot="end"
                     onClick={() => {
-                      setTimestamp(address.timestamp as number);
+                      setTimestamp(address.timestamp);
                       setConfirmDeleteActionSheet(true);
                       setUnitNumber(address.unitNumber);
                     }}

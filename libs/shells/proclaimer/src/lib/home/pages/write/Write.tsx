@@ -27,7 +27,7 @@ export const Write = () => {
   const [confirmMoveActionSheet, setConfirmMoveActionSheet] = useState(false);
   const [confirmDeleteActionSheet, setConfirmDeleteActionSheet] =
     useState(false);
-  const [timestamp, setTimestamp] = useState(0);
+  const [timestamp, setTimestamp] = useState(new Date());
   const [subheader, setSubheader] = useState('');
   const addresses = useFirestoreData({
     path: firestoreDocumentPaths.not_at_homes,
@@ -143,7 +143,7 @@ export const Write = () => {
                                           slot="end"
                                           onClick={() => {
                                             setTimestamp(
-                                              address.timestamp as number
+                                              address.timestamp
                                             );
                                             setConfirmMoveActionSheet(true);
                                             setSubheader(header);
@@ -156,7 +156,7 @@ export const Write = () => {
                                           slot="end"
                                           onClick={() => {
                                             setTimestamp(
-                                              address.timestamp as number
+                                              address.timestamp
                                             );
                                             setConfirmDeleteActionSheet(true);
                                             setSubheader(header);
