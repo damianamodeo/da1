@@ -1,14 +1,14 @@
-// import legacy from '@vitejs/plugin-legacy'
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa';
-// import { createHtmlPlugin } from 'vite-plugin-html'; // vite.config.js
 import htmlPlugin from 'vite-plugin-html-config';
 import Info from 'unplugin-info/vite';
 
+const APP_NAME = 'Proclaimer';
+
 const htmlPluginOpt = {
-  title: 'Proclaimer',
+  title: APP_NAME,
   metas: [
     {
       name: 'theme-color',
@@ -23,33 +23,49 @@ const htmlPluginOpt = {
     {
       name: 'apple-mobile-web-app-title',
       media: '-',
-      content: 'APPLE APP',
+      content: APP_NAME,
     },
   ],
 };
 
-const vitePWAOpt: Partial<VitePWAOptions> = { registerType: 'autoUpdate' };
-
-const createHtmlPluginOptions = {
-  minify: true,
-  inject: {
-    data: {
-      title: '<title>test2</title>',
-      all: `<meta
-      name="theme-color"
-      media="(prefers-color-scheme: light)"
-      content="#fff"
-    />
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: dark)"
-      content="#0d0d0d"
-    />`,
-    },
+const vitePWAOpt: Partial<VitePWAOptions> = {
+  registerType: 'autoUpdate',
+  manifest: {
+    short_name: APP_NAME,
+    name: APP_NAME,
+    icons: [
+      {
+        src: 'assets/manifest-icon-192.maskable.png',
+        sizes: '192x192',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: 'assets/manifest-icon-192.maskable.png',
+        sizes: '192x192',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
+      {
+        src: 'assets/manifest-icon-512.maskable.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: 'assets/manifest-icon-512.maskable.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
+    ],
+    start_url: '.',
+    display: 'standalone',
+    theme_color: '#ffffff',
+    background_color: '#ffffff',
   },
 };
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     htmlPlugin(htmlPluginOpt),
@@ -57,12 +73,5 @@ export default defineConfig({
     nxViteTsPaths(),
     VitePWA(vitePWAOpt),
     Info(),
-    // createHtmlPlugin(createHtmlPluginOptions),
-    // legacy()
   ],
-  // test: {
-  //   globals: true,
-  //   environment: 'jsdom',
-  //   setupFiles: './src/setupTests.ts',
-  // }
 });

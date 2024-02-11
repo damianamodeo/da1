@@ -53,6 +53,6 @@ export const path = content.reduce((acc, current) => {
   return acc;
 }, {} as { [key: string]: string });
 
-export const AppShell: React.FC = () => <IonicApp content={content}></IonicApp>;
+export const Proclaimer: React.FC = () => <IonicApp content={content}></IonicApp>;
 
-export default AppShell;
+export default Proclaimer;
