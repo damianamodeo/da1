@@ -1,1 +1,1 @@
-export * from './lib/AppShell';
+export * from './lib/Proclaimer';

@@ -13,7 +13,7 @@ import {
 } from '@ionic/react';
 import { LoadingSpinner } from '@ui-ion';
 import { Suspense } from 'react';
-import { path } from '../../AppShell';
+import { path } from '../../Proclaimer';
 
 export const Home = () => {
   return (
