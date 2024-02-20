@@ -19,7 +19,6 @@ export const addAddress = ({ address }: any) => {
         [string: string]: AddressList;
       };
 
-      const timestamp = new Date().getTime();
       const newAddress = {
         suburb: address.suburb,
         street: address.street,
@@ -29,8 +28,8 @@ export const addAddress = ({ address }: any) => {
         lat: address.coords ? address.coords.lat : 0,
         lng: address.coords ? address.coords.lng : 0,
         user: localStorage.getItem('user') || 'no_user',
-        timestamp,
-      };
+        timestamp: new Date().getTime(),
+      };      
 
       const list = address.sendToLetterList ? write_list : return_list;
       const untouchedList = !address.sendToLetterList
@@ -60,5 +59,6 @@ export const addAddress = ({ address }: any) => {
         ...rest,
       };
     },
+
   });
 };

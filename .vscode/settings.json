@@ -33,7 +33,7 @@
 
   "prettier.bracketSameLine": true,
   "prettier.quoteProps": "consistent",
-
+  // COMMANDS
   "commands.workspaceCommands": {
     "Workspace Scripts": {
       "nestedItems": {
@@ -274,6 +274,13 @@
               }
             },
             // SET PANEL MAXIMIZE OPTION
+            {
+              "command": "commands.toggleSetting",
+              "args": {
+                "setting": "workbench.panel.opensMaximized",
+                "value": ["never"]
+              }
+            },
             {
               "command": "commands.toggleSetting",
               "args": {

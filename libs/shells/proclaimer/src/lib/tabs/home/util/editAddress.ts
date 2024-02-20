@@ -6,16 +6,19 @@ import {
 import { DocumentData } from 'firebase/firestore';
 
 // TODO add error handeling
+
+export type EditAddressOptions =
+  | 'delete_from_write'
+  | 'delete_from_return'
+  | 'move_to_write'
+  | 'move_to_return';
+
 export const editAddress = async ({
   action,
   timestamp,
 }: {
-  action:
-    | 'delete_from_write'
-    | 'delete_from_return'
-    | 'move_to_write'
-    | 'move_to_return';
-  timestamp: string | number;
+  action: EditAddressOptions;
+  timestamp: number;
 }) => {
   await writeFirebaseDoc({
     path: firestoreDocumentPaths.not_at_homes,

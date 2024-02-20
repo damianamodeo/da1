@@ -143,7 +143,7 @@ export const Write = () => {
                                           slot="end"
                                           onClick={() => {
                                             setTimestamp(
-                                              address.timestamp as number
+                                              address.timestamp
                                             );
                                             setConfirmMoveActionSheet(true);
                                             setSubheader(header);
@@ -156,7 +156,7 @@ export const Write = () => {
                                           slot="end"
                                           onClick={() => {
                                             setTimestamp(
-                                              address.timestamp as number
+                                              address.timestamp
                                             );
                                             setConfirmDeleteActionSheet(true);
                                             setSubheader(header);

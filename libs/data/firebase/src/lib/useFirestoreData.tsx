@@ -8,20 +8,16 @@ const collection =
 
 export const useFirestoreData = ({
   path,
-  componentName = 'anon-component',
 }: {
   path: FirestorePaths;
-  componentName?: string;
 }) => {
-  const [data, setData] = useState({} as DocumentData | undefined);
+  const [data, setData] = useState<DocumentData>();
 
   useEffect(() => {
     const unsub = onSnapshot(doc(fdb, collection + '/' + path), (doc) => {
       if (!doc.data()) {
         // return new Error();
       }
-      // console.count(`Read Firestore : ${path} : ${componentName} `);
-
       setData(doc.data());
     });
     return () => {

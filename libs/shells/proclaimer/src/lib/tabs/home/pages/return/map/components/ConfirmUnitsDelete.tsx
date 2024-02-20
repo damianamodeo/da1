@@ -94,7 +94,7 @@ export const ConfirmUnitsDelete = ({
                     icon={mailOpenOutline}
                     slot="end"
                     onClick={() => {
-                      setTimestamp(address.timestamp as number);
+                      setTimestamp(address.timestamp);
                       setConfirmMoveActionSheet(true);
                       setUnitNumber(address.unitNumber);
                     }}
@@ -105,7 +105,7 @@ export const ConfirmUnitsDelete = ({
                     color="danger"
                     slot="end"
                     onClick={() => {
-                      setTimestamp(address.timestamp as number);
+                      setTimestamp(address.timestamp);
                       setConfirmDeleteActionSheet(true);
                       setUnitNumber(address.unitNumber);
                     }}
