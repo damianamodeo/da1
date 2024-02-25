@@ -1,4 +1,10 @@
-import { IonItem, IonText } from '@ionic/react';
+import {
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonText,
+} from '@ionic/react';
 import { timeToNow } from '@util';
 
 import now from '~build/time';
@@ -12,16 +18,16 @@ export const AppVersion = () => {
   }).format(buildTime);
 
   const timeDifference = timeToNow(buildTime);
-  // TODO format AppVersion component
   return (
-    <IonItem detail={false}>
-      <strong>App Build Time</strong>
-      <br />
-      <IonText>{formattedBuildTime}</IonText>
-      <IonText>
-        <div>updated {timeDifference}</div>
-      </IonText>
-    </IonItem>
+    <IonList inset lines="none">
+      <IonListHeader>
+        <IonLabel>App Version</IonLabel>
+      </IonListHeader>
+      <IonItem detail={false}>
+        <IonLabel>{formattedBuildTime}</IonLabel>
+        <IonText>updated {timeDifference}</IonText>
+      </IonItem>
+    </IonList>
   );
 };
 

@@ -121,78 +121,6 @@
             }
           ]
         },
-        "build app :DA": {
-          "sequence": [
-            // SERVE SELECTED APP
-            {
-              "command": "commands.runInTerminal",
-              "args": {
-                "text": "npx nx run app-${input:app}:build --host",
-                "name": "build",
-                "reveal": true,
-                "iconColor": "charts.orange",
-                "waitForExit": false,
-                "reuse": "newest"
-              },
-              "inputs": [
-                {
-                  "type": "pickString",
-                  "id": "app",
-                  "description": "Select app to serve",
-                  "options": ["proclaimer", "ionic-template"]
-                }
-              ]
-            }
-          ]
-        },
-        "serve latest project": {
-          "sequence": [
-            {
-              "command": "commands.runInTerminal",
-              "args": {
-                "text": "npx nx run testing:serve --host",
-                "name": "serve testing",
-                "iconColor": "charts.blue",
-                "reveal": true,
-                "waitForExit": false,
-                "reuse": "newest"
-              }
-            },
-            {
-              "command": "commands.runInTerminal",
-              "args": {
-                "text": "npx nx run proclaimer:serve --host",
-                "name": "serve wip",
-                "reveal": true,
-
-                "iconColor": "charts.green",
-                "waitForExit": false,
-                "reuse": "newest"
-              }
-            },
-            {
-              "command": "commands.runInTerminal",
-              "args": {
-                "text": "lsof -t -i tcp:8080 | xargs kill && exit",
-                "name": "kill",
-                "reveal": true,
-                "waitForExit": true,
-                "reuse": "newest"
-              }
-            },
-            {
-              "command": "commands.runInTerminal",
-              "args": {
-                "text": "firebase emulators:start --import=./local --export-on-exit --only firestore",
-                "name": "emulators",
-                "iconColor": "charts.yellow",
-                "reveal": true,
-                "waitForExit": true,
-                "reuse": "newest"
-              }
-            }
-          ]
-        },
         "end latest project": {
           "sequence": [
             {
@@ -227,6 +155,30 @@
             },
             {
               "command": "workbench.action.terminal.kill"
+            }
+          ]
+        },
+        "build app :DA": {
+          "sequence": [
+            // SERVE SELECTED APP
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "npx nx run app-${input:app}:build --host",
+                "name": "build",
+                "reveal": true,
+                "iconColor": "charts.orange",
+                "waitForExit": false,
+                "reuse": "newest"
+              },
+              "inputs": [
+                {
+                  "type": "pickString",
+                  "id": "app",
+                  "description": "Select app to serve",
+                  "options": ["proclaimer", "ionic-template"]
+                }
+              ]
             }
           ]
         },

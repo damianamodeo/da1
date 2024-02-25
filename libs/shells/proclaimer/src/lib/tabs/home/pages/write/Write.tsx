@@ -114,7 +114,7 @@ export const Write = () => {
                         {Object.keys(groupedByStreet).map((street) => {
                           return (
                             <IonAccordion key={street}>
-                              <IonItem slot="header" color="light">
+                              <IonItem slot="header" color="medium">
                                 {/* TODO add total addresses in street */}
                                 <IonLabel>{street}</IonLabel>
                               </IonItem>

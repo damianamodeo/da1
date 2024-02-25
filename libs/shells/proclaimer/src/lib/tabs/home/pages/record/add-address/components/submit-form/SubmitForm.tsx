@@ -103,9 +103,9 @@ export const SubmitForm = (props: {
   return (
     <>
       <IonList inset>
-        <IonListHeader>
+        {/* <IonListHeader>
           <IonLabel>Address</IonLabel>
-        </IonListHeader>
+        </IonListHeader> */}
 
         <Picker
           value={props.state.suburb}
@@ -122,14 +122,13 @@ export const SubmitForm = (props: {
           onSelect={handleStreetSelect}
         ></Picker>
 
-        {/* TODO right justify input values
-         */}
         <IonItem disabled={props.state.street.length === 0}>
           <IonInput
             value={props.state.houseNumber}
             label="House"
             clearInput={true}
             onIonInput={handleHouseNumberInput}
+            className='ion-text-end'
           ></IonInput>
         </IonItem>
 
@@ -139,6 +138,7 @@ export const SubmitForm = (props: {
             label="Unit"
             clearInput={true}
             onIonInput={handleUnitNumberInput}
+            className='ion-text-end'
           ></IonInput>
         </IonItem>
       </IonList>

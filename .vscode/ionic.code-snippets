@@ -8,6 +8,7 @@
   // Example:
 
   "-Ionic Page": {
+    "isFileTemplate": true,
     "prefix": "ionic",
     "body": [
       "import {",
@@ -45,7 +46,7 @@
       "export default ${TM_FILENAME_BASE};"
     ],
     "description": "description",
-    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+    "scope": "typescriptreact,javascriptreact"
   },
   "-Import Iconic Icon": {
     "prefix": "ionic",

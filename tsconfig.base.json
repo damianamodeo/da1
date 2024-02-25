@@ -22,6 +22,7 @@
       "@feature-mapbox": ["libs/features/mapbox/src/index.ts"],
       "@feature-react-pdf": ["libs/features/react-pdf/src/index.ts"],
       "@global/styles": ["libs/config/src/lib/global.css"],
+      "@shell-orderly": ["libs/shells/orderly/src/index.ts"],
       "@shell-proclaimer": ["libs/shells/proclaimer/src/index.ts"],
       "@shell-testing": ["libs/shells/testing/src/index.ts"],
       "@tools": ["libs/tools/src/index.ts"],

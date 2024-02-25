@@ -1,5 +1,5 @@
 import { GLOBAL_VARIABLES } from '@config';
-import { FirestorePaths, fdb } from '@data-firebase';
+import { FireStoreDocuments, FirestorePaths, fdb } from '@data-firebase';
 import { DocumentData, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
@@ -11,14 +11,14 @@ export const useFirestoreData = ({
 }: {
   path: FirestorePaths;
 }) => {
-  const [data, setData] = useState<DocumentData>();
+  const [data, setData] = useState<FireStoreDocuments>();
 
   useEffect(() => {
     const unsub = onSnapshot(doc(fdb, collection + '/' + path), (doc) => {
       if (!doc.data()) {
         // return new Error();
       }
-      setData(doc.data());
+      setData(doc.data() as FireStoreDocuments);
     });
     return () => {
       unsub();

@@ -17,6 +17,7 @@
     "description": "Creates a React Arrow Function Component with ES7 module system and TypeScript interface",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
+  
   "-useReducer (setup)": {
     "prefix": "react",
     "body": [

@@ -3,6 +3,7 @@ import { SubmitForm } from './components/submit-form/SubmitForm';
 import { ConfirmSubmitModal } from './components/submit-form/ConfirmSubmitModal';
 import { AddNewSuburbModal } from './components/AddNewSuburbModal';
 import { AddNewStreetModal } from './components/AddNewStreetModal';
+import React from 'react';
 
 export type Suburb = {
   name: string;

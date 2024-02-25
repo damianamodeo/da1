@@ -3,15 +3,7 @@ import { IonItem, IonList } from '@ionic/react';
 
 // TODO add dark mode
 export const Settings = () => {
-  return (
-    <>
-      <IonList>
-        <IonItem>
-          <AppVersion></AppVersion>
-        </IonItem>
-      </IonList>
-    </>
-  );
+  return <AppVersion></AppVersion>;
 };
 
 export default Settings;

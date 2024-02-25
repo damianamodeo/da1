@@ -1,9 +1,11 @@
-export type NotAtHomeDocument = {
-  return_list: NotAtHomeAddress[];
-  write_list: NotAtHomeAddress[];
-  suburb_options: SuburbOption[];
-  street_options: StreetOption[];
-};
+export type NotAtHomeDocument =
+  | {
+      return_list: NotAtHomeAddress[];
+      write_list: NotAtHomeAddress[];
+      suburb_options: SuburbOption[];
+      street_options: StreetOption[];
+    }
+  | undefined;
 
 export type SuburbOption = {
   name: string;
@@ -31,6 +33,8 @@ export type NotAtHomeAddress = {
 };
 
 export type AddressList = NotAtHomeAddress[];
+
+export type FireStoreDocuments = NotAtHomeDocument;
 
 export const firestoreDocumentPaths = {
   not_at_homes: 'not_at_homes',
