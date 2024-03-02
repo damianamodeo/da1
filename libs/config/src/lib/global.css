@@ -28,3 +28,7 @@
 ion-card-content {
   text-wrap: balance;
 }
+
+ion-toggle {
+  --track-background: var(--ion-color-medium);
+}

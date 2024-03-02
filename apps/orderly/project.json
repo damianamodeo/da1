@@ -4,12 +4,18 @@
   "sourceRoot": "apps/orderly/src",
   "projectType": "application",
   "targets": {
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "firebase deploy --only hosting:orderly-alpha"
+      }
+    },
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/orderly"
+        "outputPath": "dist/apps/theocratic-software/orderly"
       },
       "configurations": {
         "development": {

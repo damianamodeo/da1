@@ -1,5 +1,5 @@
 import { GLOBAL_VARIABLES } from '@config';
-import { FireStoreDocuments, FirestorePaths, fdb } from '@data-firebase';
+import { FireStoreDocuments, FirestoreDocumentPaths, fdb } from '@data-firebase';
 import { DocumentData, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
@@ -9,7 +9,7 @@ const collection =
 export const useFirestoreData = ({
   path,
 }: {
-  path: FirestorePaths;
+  path: FirestoreDocumentPaths;
 }) => {
   const [data, setData] = useState<FireStoreDocuments>();
 

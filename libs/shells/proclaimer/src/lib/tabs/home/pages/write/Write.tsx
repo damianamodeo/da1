@@ -16,14 +16,18 @@ import {
 } from '@ionic/react';
 import { LoadingSpinner } from '@ui-ion';
 import { Suspense } from 'react';
-import { firestoreDocumentPaths, useFirestoreData } from '@data-firebase';
+import {
+  NotAtHomeDocument,
+  firestoreDocumentPaths,
+  useFirestoreData,
+} from '@data-firebase';
 import { groupBy } from 'lodash';
 import { arrowUndoOutline, trash } from 'ionicons/icons';
 import { useState } from 'react';
 import editAddress from '../../util/editAddress';
 
 export const Write = () => {
-  // TODO sort house numbers 
+  // TODO sort house numbers
   const [confirmMoveActionSheet, setConfirmMoveActionSheet] = useState(false);
   const [confirmDeleteActionSheet, setConfirmDeleteActionSheet] =
     useState(false);
@@ -31,7 +35,7 @@ export const Write = () => {
   const [subheader, setSubheader] = useState('');
   const addresses = useFirestoreData({
     path: firestoreDocumentPaths.not_at_homes,
-  });
+  }) as NotAtHomeDocument;
 
   if (!addresses?.write_list) {
     return null;
@@ -142,9 +146,7 @@ export const Write = () => {
                                           icon={arrowUndoOutline}
                                           slot="end"
                                           onClick={() => {
-                                            setTimestamp(
-                                              address.timestamp
-                                            );
+                                            setTimestamp(address.timestamp);
                                             setConfirmMoveActionSheet(true);
                                             setSubheader(header);
                                           }}
@@ -155,9 +157,7 @@ export const Write = () => {
                                           color="danger"
                                           slot="end"
                                           onClick={() => {
-                                            setTimestamp(
-                                              address.timestamp
-                                            );
+                                            setTimestamp(address.timestamp);
                                             setConfirmDeleteActionSheet(true);
                                             setSubheader(header);
                                           }}

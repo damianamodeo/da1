@@ -17,7 +17,7 @@ export const ListItem = ({
   handleDelete: (address: NotAtHomeAddress) => void;
 }) => {
   return (
-    <IonItem>
+    <IonItem className="ion-padding-bottom" lines="none">
       <IonIcon
         icon={removeCircle}
         color="danger"
@@ -25,7 +25,10 @@ export const ListItem = ({
         onClick={() => handleDelete(address)}
       />
 
-      {addressLabel(address)}
+      {`${address.unitNumber && `${address.unitNumber}/`}
+      ${address.houseNumber} ${address.street}`}
+      <br />
+      {`${address.suburb}`}
 
       <IonIcon
         color="primary"

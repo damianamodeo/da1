@@ -1,11 +1,11 @@
-export type NotAtHomeDocument =
-  | {
-      return_list: NotAtHomeAddress[];
-      write_list: NotAtHomeAddress[];
-      suburb_options: SuburbOption[];
-      street_options: StreetOption[];
-    }
-  | undefined;
+import { SettingsDocument } from './document-types/settings';
+
+export type NotAtHomeDocument = {
+  return_list: NotAtHomeAddress[];
+  write_list: NotAtHomeAddress[];
+  suburb_options: SuburbOption[];
+  street_options: StreetOption[];
+};
 
 export type SuburbOption = {
   name: string;
@@ -34,7 +34,10 @@ export type NotAtHomeAddress = {
 
 export type AddressList = NotAtHomeAddress[];
 
-export type FireStoreDocuments = NotAtHomeDocument;
+export type FireStoreDocuments =
+  | NotAtHomeDocument
+  | SettingsDocument
+  | undefined;
 
 export const firestoreDocumentPaths = {
   not_at_homes: 'not_at_homes',
@@ -46,17 +49,17 @@ export const firestoreDocumentPaths = {
   // 'notAtHomes/MaitlandCongregation': 'notAtHomes/MaitlandCongregation',
 } as const;
 
-export type FirestorePaths =
+export type FirestoreDocumentPaths =
   (typeof firestoreDocumentPaths)[keyof typeof firestoreDocumentPaths];
 
-export const docProperties = {
-  test: 'test',
-  mapData: 'mapData',
-  map_data: 'map_data',
-  maps: 'maps',
-  not_at_homes: 'not_at_homes',
-} as const;
+// export const docProperties = {
+//   test: 'test',
+//   mapData: 'mapData',
+//   map_data: 'map_data',
+//   maps: 'maps',
+//   not_at_homes: 'not_at_homes',
+// } as const;
 
-export type FirestoreProperties = keyof typeof docProperties | string;
+// export type FirestoreProperties = keyof typeof docProperties | string;
 
 export default firestoreDocumentPaths;

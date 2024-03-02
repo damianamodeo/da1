@@ -1,1 +1,1 @@
-export * from './lib/shell-orderly';
+export * from './lib/Orderly';

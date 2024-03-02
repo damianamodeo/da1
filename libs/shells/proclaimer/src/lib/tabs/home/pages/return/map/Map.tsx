@@ -8,6 +8,7 @@ import {
 } from './util/layers';
 import {
   AddressList,
+  NotAtHomeDocument,
   firestoreDocumentPaths,
   useFirestoreData,
 } from '@data-firebase';
@@ -70,7 +71,7 @@ export const Map = () => {
 
   const addresses = useFirestoreData({
     path: firestoreDocumentPaths.not_at_homes,
-  });
+  }) as NotAtHomeDocument;
 
   const locations = prepareLocations(addresses);
 

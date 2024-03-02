@@ -8,17 +8,11 @@
         "examples": [
           "theocratic-software-examples"
         ],
-        "orderly": [
-          "theocratic-software-orderly"
+        "proclaimer-alpha": [
+          "proclaimer-alpha"
         ],
         "orderly-alpha": [
           "theocratic-software-orderly-alpha"
-        ],
-        "proclaimer-alpha": [
-          "theocratic-software-proclaimer-alpha"
-        ],
-        "proclaimer": [
-          "theocratic-software-proclaimer"
         ]
       }
     }

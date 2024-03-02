@@ -9,7 +9,7 @@
     "**/.firebase": true,
     "**/.nx": true,
     "**/.vscode": true,
-    "**/dist": true,
+    // "**/dist": true,
     "**/local": true,
     "**/node_modules": true,
     "**/firebase-export-*": true
@@ -37,6 +37,69 @@
   "commands.workspaceCommands": {
     "Workspace Scripts": {
       "nestedItems": {
+        "serve all apps": {
+          "sequence": [
+            // SERVE ORDERLY
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "npx nx run app-orderly:serve --host",
+                "name": "orderly",
+                "reveal": false,
+                "iconColor": "charts.green",
+                "waitForExit": false,
+                "reuse": "newest"
+              }
+            },
+            // SERVE PROCLAIMER
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "npx nx run app-proclaimer:serve --host",
+                "name": "proclaimer",
+                "reveal": false,
+                "iconColor": "charts.green",
+                "waitForExit": false,
+                "reuse": "newest"
+              }
+            },
+            // SERVE TESTING
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "npx nx run app-testing:serve --host",
+                "name": "testing",
+                "iconColor": "charts.green",
+                "reveal": false,
+                "waitForExit": false,
+                "reuse": "newest"
+              }
+            },
+            // KILL OLD EMULATOR
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "lsof -t -i tcp:8080 | xargs kill && exit",
+                "name": "kill",
+                "reveal": true,
+                "waitForExit": true,
+                "reuse": "newest"
+              }
+            },
+            // SERVE NEW EMULATOR
+            {
+              "command": "commands.runInTerminal",
+              "args": {
+                "text": "firebase emulators:start --import=./local --export-on-exit --only firestore",
+                "name": "emulators",
+                "iconColor": "charts.green",
+                "reveal": true,
+                "waitForExit": false,
+                "reuse": "newest"
+              }
+            }
+          ]
+        },
         "serve for development": {
           "sequence": [
             // SERVE SELECTED APP
@@ -60,7 +123,7 @@
                   "type": "pickString",
                   "id": "app",
                   "description": "Select app to serve",
-                  "options": ["proclaimer", "ionic-template"]
+                  "options": ["orderly", "proclaimer", "ionic-template"]
                 }
               ]
             },
@@ -80,7 +143,7 @@
                   "type": "pickString",
                   "id": "app",
                   "description": "Select app to serve",
-                  "options": ["proclaimer", "ionic-template"]
+                  "options": ["orderly", "proclaimer", "ionic-template"]
                 }
               ]
             },

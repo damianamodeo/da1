@@ -1,9 +1,9 @@
 import { DocumentData, doc, runTransaction } from 'firebase/firestore';
-import { FirestorePaths, fdb } from '@data-firebase';
+import { FirestoreDocumentPaths, fdb } from '@data-firebase';
 import { GLOBAL_VARIABLES } from '@config';
 
 type Arguments = {
-  path: FirestorePaths;
+  path: FirestoreDocumentPaths;
   data: ({
     existingData,
     documentExists,

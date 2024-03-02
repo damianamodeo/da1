@@ -45,7 +45,7 @@ const List = () => {
 
   return (
     <>
-      <IonList>
+      <IonList className='ion-padding-top'>
         {addresses?.map((address: any) => {
           return (
             <ListItem
