@@ -27,6 +27,7 @@
     "framework7": "^8.3.0",
     "framework7-icons": "^5.0.5",
     "framework7-react": "^8.3.0",
+    "immer": "^10.0.4",
     "konsta": "^3.1.2",
     "mapbox-gl": "^2.15.0",
     "material-icons": "^1.13.12",
@@ -55,7 +56,7 @@
     "workbox-routing": "^5.1.4",
     "workbox-strategies": "^5.1.4",
     "workbox-streams": "^5.1.4",
-    "zustand": "^4.4.7"
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.14.5",

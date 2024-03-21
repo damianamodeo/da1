@@ -1,16 +1,16 @@
 {
   "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/*.git": true,
+    // "**/.git": true,
+    // "**/.svn": true,
+    // "**/.hg": true,
+    // "**/CVS": true,
+    // "**/.DS_Store": true,
+    // "**/*.git": true,
     "**/.firebase": true,
     "**/.nx": true,
-    "**/.vscode": true,
+    // // "**/.vscode": true,
     // "**/dist": true,
-    "**/local": true,
+    // "**/local": true,
     "**/node_modules": true,
     "**/firebase-export-*": true
   },
@@ -319,5 +319,6 @@
     }
   },
   "commands.showKeybindings": true,
-  "commands.documentLinksEnabled": true
+  "commands.documentLinksEnabled": true,
+  "editor.minimap.enabled": false
 }

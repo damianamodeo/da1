@@ -18,6 +18,7 @@
     "fabiospampinato.vscode-commands",
     "wallabyjs.console-ninja",
     "pwabuilder.pwa-studio",
-    "genieai.chatgpt-vscode"
+    "genieai.chatgpt-vscode",
+    "sirmspencer.vscode-autohide"
   ]
 }

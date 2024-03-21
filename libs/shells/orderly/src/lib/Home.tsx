@@ -1,58 +1,28 @@
-import {
-  NotAtHomeDocument,
-  StreetOption,
-  SuburbOption,
-  firestoreDocumentPaths,
-  useFirestoreData1,
-} from '@data-firebase';
+import { usePublicSpeaker } from '@data-zustand';
 import {
   IonBackButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonInput,
   IonItem,
   IonList,
   IonPage,
   IonTitle,
-  IonToggle,
   IonToolbar,
 } from '@ionic/react';
 import { LoadingSpinner } from '@ui-ion';
 import { Suspense } from 'react';
 
-function SuburbOptionsList() {
-  const data = useFirestoreData1(firestoreDocumentPaths.not_at_homes);
-
-
-  const suburbOptions =
-    data?.suburb_options.map((s: SuburbOption) => s.name) || [];
-
-  return (
-    <IonList>
-      {suburbOptions.map((s) => {
-        return <IonItem key={s}>{s}</IonItem>;
-      })}
-    </IonList>
-  );
-}
-
-function StreetOptionsList() {
-  const data = useFirestoreData1(firestoreDocumentPaths.not_at_homes);
-
-  const suburbOptions =
-    data?.street_options.map((s: StreetOption) => s.name) || [];
-  console.log('🚀 ~ suburbOptions:', suburbOptions);
-
-  return (
-    <IonList>
-      {suburbOptions.map((s) => {
-        return <IonItem key={s}>{s}</IonItem>;
-      })}
-    </IonList>
-  );
-}
-
 export const Home = () => {
+  const brother = usePublicSpeaker.use.brother();
+  const setFirstName = usePublicSpeaker.use.setFirstName();
+  const setLastName = usePublicSpeaker.use.setLastName();
+  const setDisplayName = usePublicSpeaker.use.setDisplayName();
+  const setCongregation = usePublicSpeaker.use.setCongregation();
+  const setEmail = usePublicSpeaker.use.setEmail();
+  const setPhone = usePublicSpeaker.use.setPhone();
+
   return (
     <IonPage>
       <IonHeader>
@@ -65,8 +35,52 @@ export const Home = () => {
       </IonHeader>
       <IonContent>
         <Suspense fallback={<LoadingSpinner></LoadingSpinner>}>
-          <SuburbOptionsList></SuburbOptionsList>
-          <StreetOptionsList></StreetOptionsList>
+          <div className="full centered">
+            <IonList>
+              <IonItem>
+                <IonInput
+                  label="First Name"
+                  onIonInput={(e) => setFirstName(e.target.value as string)}
+                  value={brother.firstName}
+                ></IonInput>
+              </IonItem>
+              <IonItem>
+                <IonInput
+                  label="Last Name"
+                  onIonInput={(e) => setLastName(e.target.value as string)}
+                  value={brother.lastName}
+                ></IonInput>
+              </IonItem>
+              <IonItem>
+                <IonInput
+                  label="Display Name"
+                  onIonInput={(e) => setDisplayName(e.target.value as string)}
+                  value={brother.displayName}
+                ></IonInput>
+              </IonItem>
+              <IonItem>
+                <IonInput
+                  label="Email"
+                  onIonInput={(e) => setEmail(e.target.value as string)}
+                  value={brother.email}
+                ></IonInput>
+              </IonItem>
+              <IonItem>
+                <IonInput
+                  label="Phone"
+                  onIonInput={(e) => setPhone(e.target.value as string)}
+                  value={brother.phone}
+                ></IonInput>
+              </IonItem>
+              <IonItem>
+                <IonInput
+                  label="Congregation"
+                  onIonInput={(e) => setCongregation(e.target.value as string)}
+                  value={brother.congregation}
+                ></IonInput>
+              </IonItem>
+            </IonList>
+          </div>
         </Suspense>
       </IonContent>
     </IonPage>

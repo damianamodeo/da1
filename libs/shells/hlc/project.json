@@ -1,0 +1,8 @@
+{
+  "name": "shell-hlc",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shells/hlc/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}
