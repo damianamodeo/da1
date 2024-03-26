@@ -16,12 +16,15 @@
     "baseUrl": ".",
     "paths": {
       "@config": ["libs/config/src/index.ts"],
+      "@data": ["lib/data/src/index.ts"],
       "@data-firebase": ["libs/data/firebase/src/index.ts"],
       "@data-mapbox": ["libs/data/mapbox/src/index.ts"],
       "@data-rxdb": ["libs/data/rxdb/src/index.ts"],
       "@data-zustand": ["libs/data/zustand/src/index.ts"],
+      "@feature": ["lib/feature/src/index.ts"],
       "@feature-firebase": ["libs/features/firebase/src/index.ts"],
       "@feature-mapbox": ["libs/features/mapbox/src/index.ts"],
+      "@feature-public-talks": ["libs/features/public-talks/src/index.ts"],
       "@feature-react-pdf": ["libs/features/react-pdf/src/index.ts"],
       "@global/styles": ["libs/config/src/lib/global.css"],
       "@shell-hlc": ["libs/shells/hlc/src/index.ts"],
@@ -32,7 +35,8 @@
       "@ui-base": ["libs/ui/base/src/index.ts"],
       "@ui-ion": ["libs/ui/ion/src/index.ts"],
       "@ui-mapbox": ["libs/ui/mapbox/src/index.ts"],
-      "@util": ["libs/utility/src/index.ts"]
+      "@util": ["libs/utility/src/index.ts"],
+      "@view": ["lib/view/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { createSelectors } from './createSelectors';
+import { createSelectors } from '@util';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 type PublicSpeakerState = {

@@ -17,7 +17,48 @@
     "description": "Creates a React Arrow Function Component with ES7 module system and TypeScript interface",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
-  
+  "-Zustand Init": {
+    "prefix": "react",
+    "body": [
+      "import { create } from 'zustand';",
+      "import { persist } from 'zustand/middleware';",
+      "import { createSelectors } from '@data-zustand';",
+      "",
+      "type ${TM_FILENAME_BASE}State = {",
+      "  ${TM_FILENAME_BASE}: {",
+      "    property: string;",
+      "  };",
+      "};",
+      "",
+      "type ${TM_FILENAME_BASE}Actions = {",
+      "  set${TM_FILENAME_BASE}: (value: string) => void;",
+      "};",
+      "",
+      "const use${TM_FILENAME_BASE}Base = create<",
+      "${TM_FILENAME_BASE}State & ${TM_FILENAME_BASE}Actions",
+      ">()(",
+      "  persist(",
+      "    (set) => ({",
+      "        ${TM_FILENAME_BASE}: {",
+      "        property: '',",
+      "      },",
+      "      set${TM_FILENAME_BASE}: (firstName: string) =>",
+      "        set((state: ${TM_FILENAME_BASE}State) => ({",
+      "          ${TM_FILENAME_BASE}: { ...state.${TM_FILENAME_BASE}, firstName },",
+      "        })),",
+      "    }),",
+      "    {",
+      "      name: '${TM_FILENAME_BASE}', // name of the item in the storage (must be unique)",
+      "    }",
+      "  )",
+      ");",
+      "",
+      "export const use${TM_FILENAME_BASE} = createSelectors(use${TM_FILENAME_BASE}Base);"
+    ],
+    "description": "Creates a React Arrow Function Component with ES7 module system and TypeScript interface",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+
   "-useReducer (setup)": {
     "prefix": "react",
     "body": [

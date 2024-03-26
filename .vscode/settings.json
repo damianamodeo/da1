@@ -8,6 +8,7 @@
     // "**/*.git": true,
     "**/.firebase": true,
     "**/.nx": true,
+    "**/lib/*/*.*": true,
     // // "**/.vscode": true,
     // "**/dist": true,
     // "**/local": true,
