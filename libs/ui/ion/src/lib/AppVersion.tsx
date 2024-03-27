@@ -7,10 +7,10 @@ import {
 } from '@ionic/react';
 import { timeToNow } from '@util';
 
-import now from '~build/time';
+// import now from '~build/time';
 
 export const AppVersion = () => {
-  const buildTime = now.getTime();
+  const buildTime = 123 //now.getTime();
 
   const formattedBuildTime = new Intl.DateTimeFormat('en-AU', {
     dateStyle: 'medium',

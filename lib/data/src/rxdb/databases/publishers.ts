@@ -5,7 +5,6 @@ import {
   RxDocument,
   RxCollection,
 } from 'rxdb';
-import { useOrderlyDB } from '@data-zustand';
 
 export const publishersSchemaLiteral = {
   title: 'publishers schema',
@@ -75,10 +74,8 @@ export const publishersSchema: RxJsonSchema<PublishersDocType> =
 
 export const addPublisher = async (
   publisher: PublishersDocType
-): Promise<PublishersDocument> => {
-  const db = useOrderlyDB.use.db();
-  const doc = db.publishers.insert(publisher);
-  return doc;
+) => {
+  return publisher;
 };
 
 export const publishersDocMethods: PublishersDocMethods = {

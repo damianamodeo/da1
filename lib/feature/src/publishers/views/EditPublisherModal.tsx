@@ -1,4 +1,5 @@
-import {  PublisherForm, useDocumentByID, usePublisher } from '@feature';
+import { useRxDocumentByID } from '@data';
+import { PublisherForm, usePublisher } from '@feature';
 import {
   IonButton,
   IonButtons,
@@ -18,7 +19,7 @@ export const EditPublisherModal = ({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const publisher: any = usePublisher.use.publisher();
-  const doc = useDocumentByID(publisher.id);
+  const { doc } = useRxDocumentByID(publisher.id);
 
   const update = async () => {
     await doc.update({
@@ -36,7 +37,7 @@ export const EditPublisherModal = ({
     <IonModal isOpen={isOpen}>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>EditPublisherModal</IonTitle>
+          <IonTitle>Edit Publisher</IonTitle>
           <IonButtons slot="start">
             <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
           </IonButtons>
@@ -48,7 +49,7 @@ export const EditPublisherModal = ({
         </IonToolbar>
       </IonHeader>
       <IonContent>
-      <PublisherForm></PublisherForm>
+        <PublisherForm></PublisherForm>
       </IonContent>
     </IonModal>
   );

@@ -1,9 +1,9 @@
 import { useRxData } from '@data';
 
-export const usePublishersCollection = () => {
+export const useRxAllDocuments = (name: string) => {
   return useRxData(
     // the collection to be queried
-    'publishers',
+    name,
     // a function returning the query to be applied
     (collection) => collection.find()
   );

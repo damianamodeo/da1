@@ -29,16 +29,19 @@ export const PublisherListPage = () => {
               <IonIcon icon={add}></IonIcon>
             </IonButton>
           </IonButtons>
-          <IonTitle>Home</IonTitle>
+          <IonTitle>Publishers</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         <Suspense fallback={<LoadingSpinner></LoadingSpinner>}>
+
           <PublishersList></PublishersList>
+
           <AddPublisherModal
             isOpen={isOpen}
             setIsOpen={setIsOpen}
           ></AddPublisherModal>
+
         </Suspense>
       </IonContent>
     </IonPage>

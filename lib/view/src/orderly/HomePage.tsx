@@ -1,4 +1,3 @@
-import { AddPublisher, PublishersList } from '@feature';
 import {
   IonBackButton,
   IonButton,
@@ -26,7 +25,11 @@ export const HomePage = () => {
       </IonHeader>
       <IonContent>
         <Suspense fallback={<LoadingSpinner></LoadingSpinner>}>
-          <IonButton routerLink={path.PublisherListPage}>Publishers</IonButton>
+          <div className="full centered">
+            <IonButton routerLink={path.PublisherListPage}>
+              Publishers
+            </IonButton>
+          </div>
         </Suspense>
       </IonContent>
     </IonPage>

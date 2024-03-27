@@ -1,4 +1,4 @@
-import { useOrderlyDB } from '@data';
+import { useRxDB } from '@data';
 import { PublisherForm, usePublisher } from '@feature';
 import {
   IonButton,
@@ -19,18 +19,16 @@ export const AddPublisherModal = ({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const publisher = usePublisher.use.publisher();
-  const db = useOrderlyDB.use.db();
+  const db: any = useRxDB();
 
-  console.log(db);
   const handleAdd = async () => {
-    
-    // await db.publishers.insert({
-    //   id: crypto.randomUUID(),
-    //   displayName: publisher.displayName,
-    //   firstName: publisher.firstName,
-    //   lastName: publisher.lastName,
-    //   middleName: publisher.middleName,
-    // });
+    await db.publishers.insert({
+      id: crypto.randomUUID(),
+      displayName: publisher.displayName,
+      firstName: publisher.firstName,
+      lastName: publisher.lastName,
+      middleName: publisher.middleName,
+    });
     setIsOpen(false);
   };
 
@@ -38,7 +36,7 @@ export const AddPublisherModal = ({
     <IonModal isOpen={isOpen}>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>AddPublisherModal</IonTitle>
+          <IonTitle>Add Publisher</IonTitle>
           <IonButtons slot="start">
             <IonButton onClick={() => setIsOpen(false)}>Cancel</IonButton>
           </IonButtons>

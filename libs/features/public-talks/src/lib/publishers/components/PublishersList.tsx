@@ -1,9 +1,7 @@
-import { useRxData } from '@data';
-import { useOrderlyDB } from '@data-zustand';
-import { usePublishersCollection } from '@feature';
+import { useRxAllDocuments } from '@data';
 
 export const PublishersList = () => {
-  const { result: publishers, isFetching } = usePublishersCollection();
+  const { result: publishers, isFetching } = useRxAllDocuments("publishers");
 
   console.log('publishers', publishers);
 

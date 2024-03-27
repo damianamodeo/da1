@@ -8,7 +8,7 @@ import {
   publishersCollectionMethods,
   publishersDocMethods,
   publishersSchema,
-} from '@feature';
+} from './publishers';
 addRxPlugin(RxDBAttachmentsPlugin);
 
 export type OrderlyCollections = {

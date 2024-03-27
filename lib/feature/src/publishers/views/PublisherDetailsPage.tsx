@@ -1,12 +1,10 @@
-import { PublisherDetails, usePublisher, usePublisherByID } from '@feature';
+import { PublisherDetails, usePublisher } from '@feature';
 import {
   IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
   IonHeader,
-  IonItem,
-  IonList,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -14,8 +12,8 @@ import {
 import { LoadingSpinner } from '@ui-ion';
 import { Suspense, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { path } from '../Orderly';
 import EditPublisherModal from './EditPublisherModal';
+import { useRxDocumentByID } from '@data';
 
 interface UserDetailPageProps
   extends RouteComponentProps<{
@@ -24,7 +22,7 @@ interface UserDetailPageProps
 
 export const PublisherDetailsPage = ({ match }: UserDetailPageProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const publisher: any = usePublisherByID(match.params.id);
+  const { doc: publisher }: any = useRxDocumentByID(match.params.id);
   const setPublisher = usePublisher.use.setPublisher();
 
   useEffect(() => {
@@ -42,12 +40,10 @@ export const PublisherDetailsPage = ({ match }: UserDetailPageProps) => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton text={"Publishers"}></IonBackButton>
+            <IonBackButton text={'Publishers'}></IonBackButton>
           </IonButtons>
           <IonButtons slot="end">
-            <IonButton onClick={() => setIsOpen(true)}>
-              Edit
-            </IonButton>
+            <IonButton onClick={() => setIsOpen(true)}>Edit</IonButton>
           </IonButtons>
           <IonTitle>
             {publisher?.displayName

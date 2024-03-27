@@ -3,10 +3,9 @@ import { settingsOutline, homeOutline } from 'ionicons/icons';
 import '@global/styles';
 import { HomePage } from './HomePage';
 import { Settings } from './SettingsPage';
-import { useEffect } from 'react';
-import { useOrderlyDB } from '@data-zustand';
-import PublisherDetailsPage from './publisher/PublisherDetailsPage';
-import PublisherListPage from './publisher/PublisherListPage';
+import { useEffect, useState } from 'react';
+import { PublisherDetailsPage, PublisherListPage } from '@feature';
+import { initOrderlyDB, Provider } from '@data';
 
 const content = [
   // HOME
@@ -46,13 +45,17 @@ export const path = content.reduce((acc, current) => {
 }, {} as { [key: string]: string });
 
 export const Orderly: React.FC = () => {
-  const initDb = useOrderlyDB.use.init();
+  const [db, setDb] = useState<any>();
 
   useEffect(() => {
-    initDb();
-  }, [initDb]);
+    initOrderlyDB().then(setDb);
+  }, []);
 
-  return <IonicApp content={content}></IonicApp>;
+  return (
+    <Provider db={db}>
+      <IonicApp content={content}></IonicApp>
+    </Provider>
+  );
 };
 
 export default Orderly;

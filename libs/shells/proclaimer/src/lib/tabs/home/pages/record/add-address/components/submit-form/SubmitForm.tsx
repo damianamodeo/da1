@@ -136,8 +136,8 @@ export const SubmitForm = (props: {
           <IonInput
             value={props.state.unitNumber}
             label="Unit"
-            clearInput={true}
             onIonInput={handleUnitNumberInput}
+            clearInput={true}
             className='ion-text-end'
           ></IonInput>
         </IonItem>

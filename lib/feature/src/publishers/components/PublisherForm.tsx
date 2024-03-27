@@ -1,4 +1,4 @@
-import { IonInput, IonItem } from '@ionic/react';
+import { IonInput, IonItem, IonList } from '@ionic/react';
 import { usePublisher } from '@feature';
 
 export const PublisherForm = () => {
@@ -6,7 +6,7 @@ export const PublisherForm = () => {
   const setPublisherProperty = usePublisher.use.setPublisherProperty();
 
   return (
-    <>
+    <IonList inset>
       <IonItem>
         <IonInput
           label="Display Name"
@@ -15,6 +15,8 @@ export const PublisherForm = () => {
           }
           value={publisher.displayName}
           name="displayName"
+          clearInput={true}
+          className='ion-text-end'
         ></IonInput>
       </IonItem>
 
@@ -26,6 +28,8 @@ export const PublisherForm = () => {
           }
           value={publisher.firstName}
           name="firstName"
+          clearInput={true}
+          className='ion-text-end'
         ></IonInput>
       </IonItem>
 
@@ -37,6 +41,8 @@ export const PublisherForm = () => {
           }
           value={publisher.middleName}
           name="middleName"
+          clearInput={true}
+          className='ion-text-end'
         ></IonInput>
       </IonItem>
 
@@ -48,8 +54,10 @@ export const PublisherForm = () => {
           }
           value={publisher.lastName}
           name="lastName"
+          clearInput={true}
+          className='ion-text-end'
         ></IonInput>
       </IonItem>
-    </>
+    </IonList>
   );
 };
